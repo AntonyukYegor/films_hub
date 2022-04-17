@@ -30,19 +30,14 @@ class FilmsFilter extends BaseFilter<AbstractFilm> {
           );
         }));
 
-  static bool _patternContains(Iterable<String> sources, String pattern) {
-    for (var source in sources) {
-      if (source.contains(pattern)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   FilmsFilter.chain(Iterable<AbstractFilter<AbstractFilm>> filterChainLinks)
       : super.chain(filterChainLinks);
 
   FilmsFilter.empty() : super.empty();
 
   FilmsFilter(AbstractFilter<AbstractFilm> filter) : super(filter);
+
+  static bool _patternContains(Iterable<String> sources, String pattern) {
+    return sources.any((s) => s.contains(pattern));
+  }
 }
