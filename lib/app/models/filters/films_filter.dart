@@ -42,5 +42,7 @@ class FilmsFilter extends BaseFilter<AbstractFilm> {
   FilmsFilter.chain(Iterable<AbstractFilter<AbstractFilm>> filterChainLinks)
       : super.chain(filterChainLinks);
 
+  FilmsFilter.empty() : super.empty();
+
   FilmsFilter(AbstractFilter<AbstractFilm> filter) : super(filter);
 }
