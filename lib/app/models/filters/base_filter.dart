@@ -1,17 +1,23 @@
 import 'package:films_hub/app/models/filters/abstract_filter.dart';
-import 'package:films_hub/app/models/filters/abstract_filters_chain_builder.dart';
 
 class BaseFilter<T> implements AbstractFilter<T> {
-  final AbstractFilter<T> _filter;
+  final Iterable<AbstractFilter<T>> _filterChainLinks;
 
-  BaseFilter.chain(AbstractFiltersChainBuilder<T> chainBuilder,
-      Iterable<AbstractFilter<T>> filterChainLinks)
-      : this(chainBuilder.filtersChainBuild(filterChainLinks));
+  BaseFilter.chain(this._filterChainLinks);
 
-  BaseFilter(this._filter);
+  BaseFilter(AbstractFilter<T> filter) : this.chain([filter]);
 
   @override
   Stream<T> apply(Stream<T> source) async* {
-    yield* _filter.apply(source);
+    yield* _filterFunc(source, _filterChainLinks);
+  }
+
+  Stream<T> _filterFunc(
+      Stream<T> source, Iterable<AbstractFilter<T>> filters) async* {
+    if (filters.isEmpty) {
+      yield* source;
+    } else {
+      yield* _filterFunc(filters.first.apply(source), filters.skip(1));
+    }
   }
 }

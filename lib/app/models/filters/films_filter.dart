@@ -1,6 +1,5 @@
 import 'package:films_hub/app/models/films/abstract_film.dart';
 import 'package:films_hub/app/models/filters/abstract_filter.dart';
-import 'package:films_hub/app/models/filters/abstract_filters_chain_builder.dart';
 import 'package:films_hub/app/models/filters/base_filter.dart';
 import 'package:films_hub/app/models/filters/function_filter.dart';
 
@@ -40,9 +39,8 @@ class FilmsFilter extends BaseFilter<AbstractFilm> {
     return false;
   }
 
-  FilmsFilter.chain(AbstractFiltersChainBuilder<AbstractFilm> chainBuilder,
-      Iterable<AbstractFilter<AbstractFilm>> filterChainLinks)
-      : super.chain(chainBuilder, filterChainLinks);
+  FilmsFilter.chain(Iterable<AbstractFilter<AbstractFilm>> filterChainLinks)
+      : super.chain(filterChainLinks);
 
   FilmsFilter(AbstractFilter<AbstractFilm> filter) : super(filter);
 }
