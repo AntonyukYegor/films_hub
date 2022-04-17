@@ -14,10 +14,8 @@ class BaseFilter<T> implements AbstractFilter<T> {
 
   Stream<T> _filterFunc(
       Stream<T> source, Iterable<AbstractFilter<T>> filters) async* {
-    if (filters.isEmpty) {
-      yield* source;
-    } else {
-      yield* _filterFunc(filters.first.apply(source), filters.skip(1));
-    }
+    yield* (filters.isEmpty)
+        ? source
+        : _filterFunc(filters.first.apply(source), filters.skip(1));
   }
 }

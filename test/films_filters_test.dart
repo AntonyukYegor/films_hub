@@ -59,14 +59,14 @@ void main() async {
       Function eq = const ListEquality().equals;
 
       var expected = true;
-      var actual = eq([sourceFilms[0],sourceFilms[2]], filteredFilms);
+      var actual = eq([sourceFilms[0], sourceFilms[2]], filteredFilms);
 
       expect(actual, expected);
     });
 
     test('.apply() Chain Filter', () async {
       AbstractFilmsRepository filmsRepository = FakeFilmsRepository();
-      var filter = FilmsFilter.chain( [
+      var filter = FilmsFilter.chain([
         FilmsFilter.clampByVoteAverage(8.2, 10),
         FilmsFilter.containsPattern("Danila"),
       ]);
