@@ -9,7 +9,7 @@ void main() async {
   group('Filters', () {
     test('.apply() noFiltered', () async {
       AbstractFilmsRepository filmsRepository = FakeFilmsRepository();
-      var noFilteredFilter = FilmsFilter(FunctionFilter.noFiltered());
+      var noFilteredFilter = FilmsFilter.empty();
       var sourceFilms = await filmsRepository.films().toList();
       var filteredFilms =
           await noFilteredFilter.apply(filmsRepository.films()).toList();
