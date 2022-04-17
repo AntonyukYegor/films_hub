@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart';
 import 'package:films_hub/app/models/filters/films_filter.dart';
-import 'package:films_hub/app/models/filters/function_filter.dart';
 import 'package:films_hub/app/repositories/films/abstract_films_repository.dart';
 import 'package:films_hub/app/repositories/films/fake_films_repository.dart';
 import 'package:test/test.dart';
