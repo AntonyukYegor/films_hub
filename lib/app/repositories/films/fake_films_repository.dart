@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:films_hub/app/models/films/abstract_film.dart';
 import 'package:films_hub/app/models/films/base_film.dart';
 import 'package:films_hub/app/models/languages/extentions/named_language.dart';
@@ -77,6 +79,7 @@ class FakeFilmsRepository implements AbstractFilmsRepository {
 
   @override
   List<AbstractFilm> films() {
+    sleep(_duration * _fakeFilms.length);
     return _fakeFilms;
   }
 }
