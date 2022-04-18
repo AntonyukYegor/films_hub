@@ -11,7 +11,7 @@ void main() async {
       var noFilteredFilter = FilmsFilter.empty();
       var sourceFilms = await filmsRepository.filmsAsStream().toList();
       var filteredFilms =
-          await noFilteredFilter.apply(filmsRepository.filmsAsStream())).toList();
+          await noFilteredFilter.applyToStream(filmsRepository.filmsAsStream()).toList();
 
       Function eq = const ListEquality().equals;
 
