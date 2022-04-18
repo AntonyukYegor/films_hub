@@ -10,13 +10,35 @@ class BaseFilter<T> implements AbstractFilter<T> {
   BaseFilter.chain(this._filterChainLinks);
 
   @override
-  Stream<T> apply(Stream<T> source) async* {
+  Stream<T> applyToStream(Stream<T> source) async* {
     var result = source;
 
     for (final filter in _filterChainLinks) {
-      result = filter.apply(result);
+      result = filter.applyToStream(result);
     }
 
     yield* result;
+  }
+
+  @override
+  Future<List<T>> applyToList(List<T> source) async {
+    var result = source;
+
+    for (final filter in _filterChainLinks) {
+      result = await filter.applyToList(result);
+    }
+
+    return Future.value(result);
+  }
+
+  @override
+  List<T> applyToListSync(List<T> source) {
+    var result = source;
+
+    for (final filter in _filterChainLinks) {
+      result = filter.applyToListSync(result);
+    }
+
+    return result;
   }
 }

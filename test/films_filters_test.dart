@@ -10,8 +10,9 @@ void main() async {
       AbstractFilmsRepository filmsRepository = FakeFilmsRepository();
       var noFilteredFilter = FilmsFilter.empty();
       var sourceFilms = await filmsRepository.filmsAsStream().toList();
-      var filteredFilms =
-          await noFilteredFilter.applyToStream(filmsRepository.filmsAsStream()).toList();
+      var filteredFilms = await noFilteredFilter
+          .applyToStream(filmsRepository.filmsAsStream())
+          .toList();
 
       Function eq = const ListEquality().equals;
 
@@ -25,7 +26,8 @@ void main() async {
       AbstractFilmsRepository filmsRepository = FakeFilmsRepository();
       var filter = FilmsFilter.containsPattern("Danila");
       var sourceFilms = await filmsRepository.filmsAsStream().toList();
-      var filteredFilms = await filter.apply(filmsRepository.filmsAsStream()).toList();
+      var filteredFilms =
+          await filter.applyToStream(filmsRepository.filmsAsStream()).toList();
 
       Function eq = const ListEquality().equals;
 
@@ -39,7 +41,8 @@ void main() async {
       AbstractFilmsRepository filmsRepository = FakeFilmsRepository();
       var filter = FilmsFilter.containsPattern("Брат");
       var sourceFilms = await filmsRepository.filmsAsStream().toList();
-      var filteredFilms = await filter.apply(filmsRepository.filmsAsStream()).toList();
+      var filteredFilms =
+          await filter.applyToStream(filmsRepository.filmsAsStream()).toList();
 
       Function eq = const ListEquality().equals;
 
@@ -53,7 +56,8 @@ void main() async {
       AbstractFilmsRepository filmsRepository = FakeFilmsRepository();
       var filter = FilmsFilter.clampByVoteAverage(8.2, 10);
       var sourceFilms = await filmsRepository.filmsAsStream().toList();
-      var filteredFilms = await filter.apply(filmsRepository.filmsAsStream()).toList();
+      var filteredFilms =
+          await filter.applyToStream(filmsRepository.filmsAsStream()).toList();
 
       Function eq = const ListEquality().equals;
 
@@ -70,7 +74,8 @@ void main() async {
         FilmsFilter.containsPattern("Danila"),
       ]);
       var sourceFilms = await filmsRepository.filmsAsStream().toList();
-      var filteredFilms = await filter.apply(filmsRepository.filmsAsStream()).toList();
+      var filteredFilms =
+          await filter.applyToStream(filmsRepository.filmsAsStream()).toList();
 
       Function eq = const ListEquality().equals;
 

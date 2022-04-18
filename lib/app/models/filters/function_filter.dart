@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:films_hub/app/models/filters/abstract_filter.dart';
 
 class FunctionFilter<T> implements AbstractFilter<T> {
@@ -20,7 +21,18 @@ class FunctionFilter<T> implements AbstractFilter<T> {
   FunctionFilter(this._filterFunction);
 
   @override
-  Stream<T> apply(Stream<T> source) async* {
+  Stream<T> applyToStream(Stream<T> source) async* {
     yield* source.where((event) => _filterFunction(event));
+  }
+
+  @override
+  Future<List<T>> applyToList(List<T> source) async {
+    return Future.value(
+        await applyToStream(Stream.fromIterable(source)).toList());
+  }
+
+  @override
+  List<T> applyToListSync(List<T> source) {
+    return source.where((event) => _filterFunction(event)).toList();
   }
 }
