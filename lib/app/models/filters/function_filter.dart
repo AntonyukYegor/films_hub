@@ -5,22 +5,12 @@ class FunctionFilter<T> implements AbstractFilter<T> {
 
   FunctionFilter.all(Iterable<bool Function(T)> filterFunctions)
       : this.single((value) {
-          for (final filter in filterFunctions) {
-            if (filter(value) == false) {
-              return false;
-            }
-          }
-          return true;
+          return filterFunctions.every((filter) => filter(value));
         });
 
   FunctionFilter.any(Iterable<bool Function(T)> filterFunctions)
       : this.single((value) {
-          for (final filter in filterFunctions) {
-            if (filter(value) == true) {
-              return true;
-            }
-          }
-          return false;
+          return filterFunctions.any((filter) => filter(value));
         });
 
   FunctionFilter.single(bool Function(T) filterFunction) : this(filterFunction);
