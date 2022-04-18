@@ -5,7 +5,21 @@ import 'package:films_hub/app/models/languages/language.dart';
 import 'package:films_hub/app/repositories/films/abstract_films_repository.dart';
 
 class FakeFilmsRepository implements AbstractFilmsRepository {
-  final List<AbstractFilm> fakeFilms = [
+  final Duration _duration;
+
+  FakeFilmsRepository() : this.delayed(const Duration());
+
+  factory FakeFilmsRepository.delayedInSeconds(int seconds) {
+    return FakeFilmsRepository.delayed(Duration(seconds: seconds));
+  }
+
+  factory FakeFilmsRepository.delayedInMilliseconds(int milliseconds) {
+    return FakeFilmsRepository.delayed(Duration(milliseconds: milliseconds));
+  }
+
+  FakeFilmsRepository.delayed(this._duration);
+
+  final List<AbstractFilm> _fakeFilms = [
     BaseFilm(
       "1",
       "Брат",
@@ -49,9 +63,20 @@ class FakeFilmsRepository implements AbstractFilmsRepository {
   ];
 
   @override
-  Stream<AbstractFilm> films() async* {
-    for (var film in fakeFilms) {
+  Stream<AbstractFilm> filmsAsStream() async* {
+    for (var film in _fakeFilms) {
+      await Future.delayed(_duration);
       yield film;
     }
+  }
+
+  @override
+  Future<List<AbstractFilm>> filmsAsync() async {
+    return Future.value(filmsAsStream().toList());
+  }
+
+  @override
+  List<AbstractFilm> films() {
+    return _fakeFilms;
   }
 }
