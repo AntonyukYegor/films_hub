@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:films_hub/app/models/films/abstract_film.dart';
 import 'package:films_hub/app/models/films/base_film.dart';
-import 'package:films_hub/app/models/languages/extentions/named_language.dart';
+import 'package:films_hub/app/models/languages/extensions/named_language.dart';
 import 'package:films_hub/app/models/languages/language.dart';
 import 'package:films_hub/app/repositories/films/abstract_films_repository.dart';
 
