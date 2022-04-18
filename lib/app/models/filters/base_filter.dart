@@ -13,7 +13,7 @@ class BaseFilter<T> implements AbstractFilter<T> {
   Stream<T> apply(Stream<T> source) async* {
     var result = source;
 
-    for (var filter in _filterChainLinks) {
+    for (final filter in _filterChainLinks) {
       result = filter.apply(result);
     }
 
