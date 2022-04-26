@@ -17,5 +17,6 @@ class FutureListFilter<T> extends Filter<Future<List<T>>> {
   FutureListFilter.anyCondition(Iterable<AbstractCondition<T>> conditions)
       : this.condition(AnyAggregateCondition(conditions));
 
-  FutureListFilter(Iterable<AbstractFilter<Future<List<T>>>> filters) : super(filters);
+  FutureListFilter(Iterable<AbstractFilter<Future<List<T>>>> filters)
+      : super(filters);
 }

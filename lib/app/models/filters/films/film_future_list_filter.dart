@@ -20,6 +20,7 @@ class FilmFutureListFilter extends FutureListFilter<AbstractFilm> {
       Iterable<AbstractCondition<AbstractFilm>> conditions)
       : this.condition(AnyAggregateCondition(conditions));
 
-  FilmFutureListFilter(Iterable<AbstractFilter<Future<List<AbstractFilm>>>> filters)
+  FilmFutureListFilter(
+      Iterable<AbstractFilter<Future<List<AbstractFilm>>>> filters)
       : super(filters);
 }

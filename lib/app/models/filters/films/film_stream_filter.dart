@@ -16,7 +16,8 @@ class FilmStreamFilter extends StreamFilter<AbstractFilm> {
       Iterable<AbstractCondition<AbstractFilm>> conditions)
       : this.condition(AggregateCondition(conditions));
 
-  FilmStreamFilter.anyCondition(Iterable<AbstractCondition<AbstractFilm>> conditions)
+  FilmStreamFilter.anyCondition(
+      Iterable<AbstractCondition<AbstractFilm>> conditions)
       : this.condition(AnyAggregateCondition(conditions));
 
   FilmStreamFilter(Iterable<AbstractFilter<Stream<AbstractFilm>>> filters)

@@ -1,3 +1,3 @@
-abstract class AbstractFilter<C> {
-  C apply(C source);
+abstract class AbstractFilter<T> {
+  T apply(T source);
 }

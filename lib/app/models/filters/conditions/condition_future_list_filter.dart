@@ -8,6 +8,8 @@ class ConditionFutureListFilter<T> implements AbstractFilter<Future<List<T>>> {
 
   @override
   Future<List<T>> apply(Future<List<T>> source) async {
-    return (await source).where((element) => _condition.check(element)).toList();
+    return (await source)
+        .where((element) => _condition.check(element))
+        .toList();
   }
 }

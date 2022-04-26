@@ -12,10 +12,12 @@ class FilmListFilter extends ListFilter<AbstractFilm> {
   FilmListFilter.condition(AbstractCondition<AbstractFilm> condition)
       : super([ConditionListFilter(condition)]);
 
-  FilmListFilter.everyConditions(Iterable<AbstractCondition<AbstractFilm>> conditions)
+  FilmListFilter.everyConditions(
+      Iterable<AbstractCondition<AbstractFilm>> conditions)
       : this.condition(AggregateCondition(conditions));
 
-  FilmListFilter.anyCondition(Iterable<AbstractCondition<AbstractFilm>> conditions)
+  FilmListFilter.anyCondition(
+      Iterable<AbstractCondition<AbstractFilm>> conditions)
       : this.condition(AnyAggregateCondition(conditions));
 
   FilmListFilter(Iterable<AbstractFilter<List<AbstractFilm>>> filters)
