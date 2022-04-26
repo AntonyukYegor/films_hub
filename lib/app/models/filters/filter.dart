@@ -1,10 +1,9 @@
 import 'package:films_hub/app/models/filters/abstract_filter.dart';
-import 'package:films_hub/app/models/filters/empty_filter.dart';
 
 class Filter<T> implements AbstractFilter<T> {
   final Iterable<AbstractFilter<T>> _filters;
 
-  Filter.empty() : this([EmptyFilter()]);
+  Filter.empty() : this([]);
 
   Filter(this._filters);
 
