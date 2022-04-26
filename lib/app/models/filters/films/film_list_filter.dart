@@ -3,8 +3,8 @@ import 'package:films_hub/app/models/filters/abstract_filter.dart';
 import 'package:films_hub/app/models/filters/conditions/abstract_condition.dart';
 import 'package:films_hub/app/models/filters/conditions/aggregate_condition.dart';
 import 'package:films_hub/app/models/filters/conditions/any_aggregate_condition.dart';
-import 'package:films_hub/app/models/filters/conditions/condition_list_filter.dart';
-import 'package:films_hub/app/models/filters/list_filter.dart';
+import 'package:films_hub/app/models/filters/list/condition_list_filter.dart';
+import 'package:films_hub/app/models/filters/list/list_filter.dart';
 
 class FilmListFilter extends ListFilter<AbstractFilm> {
   FilmListFilter.empty() : super.empty();

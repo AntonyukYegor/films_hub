@@ -1,10 +1,10 @@
 import 'package:films_hub/app/models/films/abstract_film.dart';
 import 'package:films_hub/app/models/filters/abstract_filter.dart';
-import 'package:films_hub/app/models/filters/condition_stream_filter.dart';
+import 'package:films_hub/app/models/filters/stream/condition_stream_filter.dart';
 import 'package:films_hub/app/models/filters/conditions/abstract_condition.dart';
 import 'package:films_hub/app/models/filters/conditions/aggregate_condition.dart';
 import 'package:films_hub/app/models/filters/conditions/any_aggregate_condition.dart';
-import 'package:films_hub/app/models/filters/stream_filter.dart';
+import 'package:films_hub/app/models/filters/stream/stream_filter.dart';
 
 class FilmStreamFilter extends StreamFilter<AbstractFilm> {
   FilmStreamFilter.empty() : super.empty();
