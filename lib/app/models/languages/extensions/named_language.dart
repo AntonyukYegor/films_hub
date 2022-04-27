@@ -4,13 +4,26 @@ extension NamedLanguage on Language {
   String toPrettyString() {
     switch (this) {
       case Language.russian:
-        return 'Русский';
+        return 'Russian';
       case Language.english:
-        return 'Английский';
+        return 'English';
       case Language.french:
-        return 'Французский';
+        return 'French';
       case Language.unknown:
-        return 'Неизвестный';
+        return 'Unknown';
+    }
+  }
+
+  String toShortString() {
+    switch (this) {
+      case Language.russian:
+        return 'RU';
+      case Language.english:
+        return 'ENG';
+      case Language.french:
+        return 'FR';
+      case Language.unknown:
+        return 'UNK';
     }
   }
 }
