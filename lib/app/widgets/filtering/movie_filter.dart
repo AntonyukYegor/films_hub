@@ -34,6 +34,7 @@ class _MovieFilterState extends State<MovieFilter> {
                     splashColor: Colors.transparent,
                     highlightColor: Colors.transparent),
                 child: ExpansionTile(
+                  maintainState: true,
                   iconColor: Theme.of(context)
                           .textTheme
                           .bodyMedium
