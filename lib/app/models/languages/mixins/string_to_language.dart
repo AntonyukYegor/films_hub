@@ -5,11 +5,11 @@ mixin StringToLanguage {
 
   Language stringToLanguage() {
     switch (language) {
-      case 'Русский':
+      case 'Russian':
         return Language.russian;
-      case 'Английский':
+      case 'English':
         return Language.english;
-      case 'Французский':
+      case 'French':
         return Language.french;
       default:
         return Language.unknown;
