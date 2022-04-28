@@ -58,7 +58,7 @@ class _HomePageState extends State<HomePage> {
           physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
-              MovieFilter(applyFilter),
+              MovieFilter(_applyFilter),
               ...List.generate(_films.length, (index) {
                 var film = _films[index];
                 var cardModel = MovieListCardModel.fromFilmModel(film);
@@ -73,7 +73,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Future<void> applyFilter(FilmFutureListFilter filter) async {
+  Future<void> _applyFilter(FilmFutureListFilter filter) async {
     await filter.apply(widget._filmsRepository.filmsAsync()).then((value) {
       setState(() {
         _films.clear();
