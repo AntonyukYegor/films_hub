@@ -16,10 +16,14 @@ class MovieFilter extends StatefulWidget {
   State<MovieFilter> createState() => _MovieFilterState();
 }
 
-class _MovieFilterState extends State<MovieFilter> {
+class _MovieFilterState extends State<MovieFilter>
+    with AutomaticKeepAliveClientMixin {
   final GlobalKey<FilmLanguageFilterState> _keyLanguageFilter = GlobalKey();
   final GlobalKey<FilmVoteAverageSliderFilterState> _keyVoteAverageFilter =
       GlobalKey();
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
