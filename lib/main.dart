@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
         );
       },
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Movies List',
       themeMode: ThemeMode.system,
       darkTheme: ThemeData(
           brightness: Brightness.dark,
