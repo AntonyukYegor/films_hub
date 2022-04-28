@@ -1,3 +1,5 @@
+import 'package:films_hub/app/models/films/abstract_film.dart';
+import 'package:films_hub/app/models/filters/abstract_filter.dart';
 import 'package:films_hub/app/models/filters/conditions/films/film_clamp_by_vote_average_condition.dart';
 import 'package:films_hub/app/models/filters/film_filter_source.dart';
 import 'package:films_hub/app/models/filters/films/film_future_list_filter.dart';
@@ -43,7 +45,7 @@ class FilmVoteAverageSliderFilterState
   }
 
   @override
-  FilmFutureListFilter filter() {
+  AbstractFilter<Future<List<AbstractFilm>>> filter() {
     if (_currentRangeValues == _defaultRangeValues) {
       return FilmFutureListFilter.empty();
     }

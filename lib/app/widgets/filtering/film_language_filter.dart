@@ -1,3 +1,5 @@
+import 'package:films_hub/app/models/films/abstract_film.dart';
+import 'package:films_hub/app/models/filters/abstract_filter.dart';
 import 'package:films_hub/app/models/filters/conditions/films/film_language_equals_condition.dart';
 import 'package:films_hub/app/models/filters/film_filter_source.dart';
 import 'package:films_hub/app/models/filters/films/film_future_list_filter.dart';
@@ -13,7 +15,8 @@ class FilmLanguageFilter extends StatefulWidget {
   State createState() => FilmLanguageFilterState();
 }
 
-class FilmLanguageFilterState extends State<FilmLanguageFilter>  implements FilmFilterSource  {
+class FilmLanguageFilterState extends State<FilmLanguageFilter>
+    implements FilmFilterSource {
   final List<LanguageFilterEntry> _cast = <LanguageFilterEntry>[
     ...Language.values.map((l) => LanguageFilterEntry(l.toPrettyString()))
   ];
@@ -54,21 +57,19 @@ class FilmLanguageFilterState extends State<FilmLanguageFilter>  implements Film
   }
 
   @override
-  void reset()
-  {
+  void reset() {
     setState(() {
       _filters.clear();
     });
   }
 
   @override
-  FilmFutureListFilter filter() {
-    if(_filters.isEmpty)
-    {
+  AbstractFilter<Future<List<AbstractFilm>>> filter() {
+    if (_filters.isEmpty) {
       return FilmFutureListFilter.empty();
     }
 
-    var filmConditions = _filters.map((f)=> FilmLanguageEqualsCondition(f));
+    var filmConditions = _filters.map((f) => FilmLanguageEqualsCondition(f));
     return FilmFutureListFilter.anyCondition(filmConditions);
   }
 }

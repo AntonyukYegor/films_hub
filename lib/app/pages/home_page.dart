@@ -1,5 +1,5 @@
 import 'package:films_hub/app/models/films/abstract_film.dart';
-import 'package:films_hub/app/models/filters/films/film_future_list_filter.dart';
+import 'package:films_hub/app/models/filters/abstract_filter.dart';
 import 'package:films_hub/app/models/movie_list_card_model.dart';
 import 'package:films_hub/app/repositories/films/abstract_films_repository.dart';
 import 'package:films_hub/app/widgets/appbar/app_bar_flexible_space.dart';
@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             flexibleSpace:
-            AppBarFlexibleSpace(_appBarBorderRadius, widget.title),
+                AppBarFlexibleSpace(_appBarBorderRadius, widget.title),
           ),
         ],
         body: SingleChildScrollView(
@@ -73,7 +73,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Future<void> _applyFilter(FilmFutureListFilter filter) async {
+  Future<void> _applyFilter(
+      AbstractFilter<Future<List<AbstractFilm>>> filter) async {
     await filter.apply(widget._filmsRepository.filmsAsync()).then((value) {
       setState(() {
         _films.clear();

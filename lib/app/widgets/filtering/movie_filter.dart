@@ -1,3 +1,5 @@
+import 'package:films_hub/app/models/films/abstract_film.dart';
+import 'package:films_hub/app/models/filters/abstract_filter.dart';
 import 'package:films_hub/app/models/filters/films/film_future_list_filter.dart';
 import 'package:films_hub/app/widgets/filtering/film_language_filter.dart';
 import 'package:films_hub/app/widgets/filtering/film_vote_average_slider_filter.dart';
@@ -7,7 +9,8 @@ import 'package:collection/collection.dart';
 
 class MovieFilter extends StatefulWidget {
   const MovieFilter(this._onApply, {Key? key}) : super(key: key);
-  final Future<void> Function(FilmFutureListFilter) _onApply;
+  final Future<void> Function(AbstractFilter<Future<List<AbstractFilm>>>)
+      _onApply;
 
   @override
   State<MovieFilter> createState() => _MovieFilterState();
