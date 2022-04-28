@@ -43,19 +43,23 @@ class _MovieFilterState extends State<MovieFilter> {
                       Colors.black,
                   backgroundColor: Colors.transparent,
                   collapsedBackgroundColor: Colors.transparent,
-                  title: Center(
-                      child: Text(
-                    "Filters",
-                    style: TextStyle(
-                      color: Theme.of(context)
-                              .textTheme
-                              .bodyMedium
-                              ?.color
-                              ?.withOpacity(1) ??
-                          Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )),
+                  title: Align(
+                      alignment: AlignmentDirectional.centerStart,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 4.0),
+                        child: Text(
+                          "Filters",
+                          style: TextStyle(
+                            color: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.color
+                                    ?.withOpacity(1) ??
+                                Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      )),
                   childrenPadding: const EdgeInsets.only(
                       left: 16, top: 8, right: 16, bottom: 8),
                   children: <Widget>[
