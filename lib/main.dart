@@ -57,26 +57,26 @@ class MyApp extends StatelessWidget {
         shadowColor: Colors.black.withOpacity(0.3),
         fontFamily: fontFamily,
       ),
-      home: MyHomePage(ExtendedFakeFilmsRepository.delayedInMilliseconds(100),title: 'Movies List'),
+      home: HomePage(ExtendedFakeFilmsRepository.delayedInMilliseconds(100),title: 'Movies List'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage(this._filmsRepository, {Key? key, required this.title})
+class HomePage extends StatefulWidget {
+  const HomePage(this._filmsRepository, {Key? key, required this.title})
       : super(key: key);
   final String title;
   final AbstractFilmsRepository _filmsRepository;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _HomePageState extends State<HomePage> {
   final double _appBarBorderRadius = 32;
   final List<AbstractFilm> _films = [];
 
-  _MyHomePageState();
+  _HomePageState();
 
   @override
   void initState() {
