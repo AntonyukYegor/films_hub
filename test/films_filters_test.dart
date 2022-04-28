@@ -1,11 +1,11 @@
 import 'package:collection/collection.dart';
-import 'package:films_hub/app/models/filters/conditions/films/film_clamp_by_vote_average_condition.dart';
-import 'package:films_hub/app/models/filters/conditions/films/film_contains_pattern_condition.dart';
-import 'package:films_hub/app/models/filters/films/film_future_list_filter.dart';
-import 'package:films_hub/app/models/filters/films/film_list_filter.dart';
-import 'package:films_hub/app/models/filters/films/film_stream_filter.dart';
-import 'package:films_hub/app/repositories/films/abstract_films_repository.dart';
-import 'package:films_hub/app/repositories/films/fake_films_repository.dart';
+import 'package:films_hub/app/domain/models/filters/conditions/films/film_clamp_by_vote_average_condition.dart';
+import 'package:films_hub/app/domain/models/filters/conditions/films/film_contains_pattern_condition.dart';
+import 'package:films_hub/app/domain/models/filters/films/film_future_list_filter.dart';
+import 'package:films_hub/app/domain/models/filters/films/film_list_filter.dart';
+import 'package:films_hub/app/domain/models/filters/films/film_stream_filter.dart';
+import 'package:films_hub/app/domain/repositories/films/abstract_films_repository.dart';
+import 'package:films_hub/app/data/repositories/films/fake_films_repository.dart';
 import 'package:test/test.dart';
 
 void main() async {

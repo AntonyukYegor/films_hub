@@ -1,7 +1,7 @@
-import 'package:films_hub/app/behaviors/custom_scroll_behavior.dart';
-import 'package:films_hub/app/colors/custom_colors.dart';
-import 'package:films_hub/app/pages/home_page.dart';
-import 'package:films_hub/app/repositories/films/extended_fake_films_repository.dart';
+import 'package:films_hub/app/presentation/behaviors/custom_scroll_behavior.dart';
+import 'package:films_hub/app/presentation/colors/custom_colors.dart';
+import 'package:films_hub/app/presentation/pages/home_page.dart';
+import 'package:films_hub/app/data/repositories/films/extended_fake_films_repository.dart';
 import 'package:flutter/material.dart';
 
 void main() {
