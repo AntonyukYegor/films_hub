@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CustomColors implements Colors {
-  static const MaterialColor _darkBlack = MaterialColor(
+  static const MaterialColor darkBlack = MaterialColor(
     _darkBlackPrimaryValue,
     <int, Color>{
       50: Color(0x00000000),
@@ -16,8 +16,6 @@ class CustomColors implements Colors {
       900: Color(0xFFFFFFFF),
     },
   );
-
-  static MaterialColor get darkBlack => _darkBlack;
 
   static const int _darkBlackPrimaryValue = 0xA0FFFFfF;
 }
