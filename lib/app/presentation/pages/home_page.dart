@@ -54,20 +54,19 @@ class _HomePageState extends State<HomePage> {
                 AppBarFlexibleSpace(_appBarBorderRadius, widget.title),
           ),
         ],
-        body: SingleChildScrollView(
+        body: ListView.builder(
           physics: const BouncingScrollPhysics(),
-          child: Column(
-            children: [
-              MovieFilter(_applyFilter),
-              ...List.generate(_films.length, (index) {
-                var film = _films[index];
-                var cardModel = MovieListCardModel.fromFilmModel(film);
-                return MovieListCard(
-                  cardModel: cardModel,
-                );
-              })
-            ],
-          ),
+          itemCount: _films.length + 1,
+          itemBuilder: (context, i) {
+            if (i == 0) {
+              return MovieFilter(_applyFilter);
+            }
+            var film = _films[(i % _films.length + 1) - 1];
+            var cardModel = MovieListCardModel.fromFilmModel(film);
+            return MovieListCard(
+              cardModel: cardModel,
+            );
+          },
         ),
       ),
     );
