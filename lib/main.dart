@@ -1,3 +1,4 @@
+import 'package:films_hub/app/behaviors/custom_scroll_behavior.dart';
 import 'package:films_hub/app/models/films/abstract_film.dart';
 import 'package:films_hub/app/models/filters/films/film_future_list_filter.dart';
 import 'package:films_hub/app/models/movie_list_card_model.dart';
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       builder: (context, child) {
         return ScrollConfiguration(
-          behavior: MyBehavior(),
+          behavior: CustomScrollBehavior(),
           child: child ?? Container(),
         );
       },
@@ -58,14 +59,6 @@ class MyApp extends StatelessWidget {
       ),
       home: MyHomePage(ExtendedFakeFilmsRepository.delayedInMilliseconds(100),title: 'Movies List'),
     );
-  }
-}
-
-class MyBehavior extends ScrollBehavior {
-  @override
-  Widget buildOverscrollIndicator(
-      BuildContext context, Widget child, ScrollableDetails details) {
-    return child;
   }
 }
 
