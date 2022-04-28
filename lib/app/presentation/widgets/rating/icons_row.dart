@@ -10,14 +10,16 @@ class IconsRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        for (int i = 0; i < _model.iconsCount; i++)
-          FittedBox(
+        ...List.generate(
+          _model.iconsCount,
+          (int index) => FittedBox(
             fit: BoxFit.contain,
             child: Icon(
               _model.iconData,
               color: _model.iconColor,
             ),
           ),
+        ),
       ],
     );
   }
