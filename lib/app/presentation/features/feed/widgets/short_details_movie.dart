@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
 class ShortDetailsMovie extends StatelessWidget {
-  const ShortDetailsMovie(this._language, this._description, {Key? key}) : super(key: key);
+  const ShortDetailsMovie(this._language, this._description, {Key? key})
+      : super(key: key);
   final String _language;
   final String _description;
+
   @override
   Widget build(BuildContext context) {
-
     return Padding(
-      padding: const EdgeInsets.only(
-          left: 20.0, right: 20.0, bottom: 30),
+      padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 30),
       child: Column(
         children: [
           Align(
@@ -24,8 +24,7 @@ class ShortDetailsMovie extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(right: 8),
                       child: Container(
-                        margin: const EdgeInsets.only(
-                            top: 4, bottom: 1),
+                        margin: const EdgeInsets.only(top: 4, bottom: 1),
                         child: Text(
                           _language,
                           style: const TextStyle(
@@ -59,13 +58,15 @@ class ShortDetailsMovie extends StatelessWidget {
             alignment: AlignmentDirectional.topStart,
             child: Padding(
               padding: const EdgeInsets.only(top: 8),
-              child: Text(' ' * 5 + _description,
-                  textAlign: TextAlign.justify,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    fontStyle: FontStyle.italic,
-                    fontWeight: FontWeight.normal,
-                  )),
+              child: Text(
+                ' ' * 5 + _description,
+                textAlign: TextAlign.justify,
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontStyle: FontStyle.italic,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
             ),
           )
         ],

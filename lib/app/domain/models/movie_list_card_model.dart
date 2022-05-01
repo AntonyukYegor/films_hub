@@ -1,7 +1,7 @@
 import 'package:films_hub/app/domain/models/films/abstract_film.dart';
 import 'package:films_hub/app/domain/models/languages/extensions/named_language.dart';
 
-class MovieListCardModel {
+class MovieCardModel {
   final String title;
   final double voteAverage;
   final double voteAverageInPercent;
@@ -10,8 +10,8 @@ class MovieListCardModel {
   final String description;
   final String releaseDate;
 
-  factory MovieListCardModel.fromFilmModel(AbstractFilm film) {
-    return MovieListCardModel(
+  factory MovieCardModel.fromFilmModel(AbstractFilm film) {
+    return MovieCardModel(
       film.title,
       film.voteAverage,
       film.voteAverage * 0.1,
@@ -22,7 +22,7 @@ class MovieListCardModel {
     );
   }
 
-  const MovieListCardModel(
+  const MovieCardModel(
     this.title,
     this.voteAverage,
     this.voteAverageInPercent,

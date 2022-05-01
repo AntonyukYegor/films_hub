@@ -1,7 +1,9 @@
+import 'package:films_hub/app/presentation/common/widgets/image_network.dart';
 import 'package:flutter/material.dart';
 
 class Poster extends StatelessWidget {
-  const Poster(this._posterUrl, this._borderRadius, {Key? key}) : super(key: key);
+  const Poster(this._posterUrl, this._borderRadius, {Key? key})
+      : super(key: key);
   final String _posterUrl;
   final double _borderRadius;
 
@@ -11,8 +13,7 @@ class Poster extends StatelessWidget {
       aspectRatio: 3 / 4,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(
-              _borderRadius),
+          borderRadius: BorderRadius.circular(_borderRadius),
           boxShadow: <BoxShadow>[
             BoxShadow(
               color: Theme.of(context).shadowColor,
@@ -26,8 +27,7 @@ class Poster extends StatelessWidget {
           fit: StackFit.expand,
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.circular(
-                  _borderRadius),
+              borderRadius: BorderRadius.circular(_borderRadius),
               child: ShaderMask(
                 blendMode: BlendMode.plus,
                 shaderCallback: (Rect bounds) {
@@ -39,31 +39,23 @@ class Poster extends StatelessWidget {
                         Colors.white.withOpacity(0.1),
                         Colors.transparent,
                         Colors.white.withOpacity(0.2),
-                        Colors.white
-                            .withOpacity(0.25),
+                        Colors.white.withOpacity(0.25),
                         Colors.transparent,
                       ]).createShader(bounds);
                 },
                 child: Container(
-                  color: Theme.of(context)
-                      .primaryColor,
-                  child: Image.network(
-                    _posterUrl,
-                    fit: BoxFit.cover,
-                  ),
+                  color: Theme.of(context).primaryColor,
+                  child: ImageNetwork(_posterUrl, fit: BoxFit.cover),
                 ),
               ),
             ),
             Container(
               decoration: BoxDecoration(
                 border: Border.all(
-                    color:  Theme.of(context)
-                        .primaryColor
-                        .withOpacity(0.7),
+                    color: Theme.of(context).primaryColor.withOpacity(0.7),
                     width: 1.5),
                 borderRadius: BorderRadius.all(
-                  Radius.circular(
-                      _borderRadius), //         <--- border radius here
+                  Radius.circular(_borderRadius),
                 ),
               ),
             )

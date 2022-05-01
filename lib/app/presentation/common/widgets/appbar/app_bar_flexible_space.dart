@@ -1,4 +1,4 @@
-import 'package:films_hub/app/presentation/widgets/blur/symmetrical_blur.dart';
+import 'package:films_hub/app/presentation/common/widgets/blur/symmetrical_blur.dart';
 import 'package:flutter/material.dart';
 
 class AppBarFlexibleSpace extends StatelessWidget {

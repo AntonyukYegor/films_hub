@@ -1,26 +1,24 @@
 import 'package:films_hub/app/domain/models/stars_rate_progress_bar_model.dart';
-import 'package:films_hub/app/presentation/widgets/rating/stars_rate_progress_bar.dart';
+import 'package:films_hub/app/presentation/common/widgets/rating/stars_rate_progress_bar.dart';
 import 'package:flutter/material.dart';
 
 class CombineRate extends StatelessWidget {
-  const CombineRate(this._percent, {Key? key}) : super(key: key);
+  const CombineRate(this._percent, {Key? key, this.height = 16})
+      : super(key: key);
   final double _percent;
+  final double height;
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 16,
+      height: height,
       child: Row(
-        crossAxisAlignment:
-        CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
         children: [
           StarsRateProgressBar(
             StarsRateProgressBarModel(
               Colors.transparent,
-              Theme.of(context)
-                  .textTheme
-                  .bodyMedium
-                  ?.color
-                  ?.withOpacity(1) ??
+              Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(1) ??
                   Colors.black,
               5,
               _percent,
@@ -29,13 +27,11 @@ class CombineRate extends StatelessWidget {
           FittedBox(
             fit: BoxFit.contain,
             child: Padding(
-              padding:
-              const EdgeInsets.only(left: 8),
+              padding: const EdgeInsets.only(left: 8),
               child: Container(
-                margin: const EdgeInsets.only(
-                    top: 4, bottom: 1),
+                margin: const EdgeInsets.only(top: 4, bottom: 1),
                 child: Text(
-                  (_percent*10).toStringAsFixed(1),
+                  (_percent * 10).toStringAsFixed(1),
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
