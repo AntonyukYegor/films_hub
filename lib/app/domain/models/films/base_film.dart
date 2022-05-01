@@ -11,7 +11,7 @@ class BaseFilm extends AbstractFilm {
   final String _duration;
   final String _language;
 
-  BaseFilm(this._id, this._title, this._poster, this._voteAverage,
+  const BaseFilm(this._id, this._title, this._poster, this._voteAverage,
       this._releaseDate, this._description, this._language, this._duration);
 
   @override
