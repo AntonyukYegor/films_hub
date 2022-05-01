@@ -70,6 +70,7 @@ class AppBarFlexibleSpace extends StatelessWidget {
                   ),
                 ),
                 FlexibleSpaceBar(
+                  centerTitle: true,
                   title: Text(
                     _title,
                     style: const TextStyle(
