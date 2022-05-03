@@ -24,6 +24,13 @@ class ImageNetwork extends StatelessWidget {
           ),
         );
       },
+      errorBuilder: (BuildContext context,
+          Object error,
+          StackTrace? stackTrace) {
+        return Image.asset(
+        "assets/images/poster-placeholder.jpg",
+        fit: BoxFit.cover);
+      },
       fit: fit,
     );
   }
