@@ -1,4 +1,4 @@
-import 'package:films_hub/app/data/repositories/films/extended_fake_films_repository.dart';
+import 'package:films_hub/app/data/repositories/films/omdb_films_repository.dart';
 import 'package:films_hub/app/domain/models/movie_list_card_model.dart';
 import 'package:films_hub/app/domain/models/settings_arguments.dart';
 import 'package:films_hub/app/domain/models/tab.dart';
@@ -35,8 +35,7 @@ class _BaseTabsSource implements TabsSource {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-  static const AbstractFilmsRepository _filmsRepository =
-      ExtendedFakeFilmsRepository.delayed(Duration(milliseconds: 150));
+  static const AbstractFilmsRepository _filmsRepository = OMDBFilmsRepository();
 
   static const TabsSource _tabsSource = _BaseTabsSource(
     [
@@ -46,7 +45,7 @@ class MyApp extends StatelessWidget {
         page: FeedPage(
           title: 'Feed',
           filmsRepository: _filmsRepository,
-        ), // HomePage(_filmsRepository, title: 'Feed'),
+        ),
       ),
       NavigationTab(
         icon: Icon(Icons.grid_view),
@@ -71,7 +70,7 @@ class MyApp extends StatelessWidget {
       },
       debugShowCheckedModeBanner: false,
       title: 'Movies Hub',
-      themeMode: ThemeMode.system,
+      themeMode: ThemeMode.dark,
       darkTheme: ThemeData(
           brightness: Brightness.dark,
           primarySwatch: CustomColors.darkBlack,
