@@ -1,7 +1,7 @@
-import 'dart:io';
-
 import 'package:films_hub/app/domain/models/films/abstract_film.dart';
 import 'package:films_hub/app/domain/models/films/base_film.dart';
+import 'package:films_hub/app/domain/models/filters/conditions/films/film_contains_pattern_condition.dart';
+import 'package:films_hub/app/domain/models/filters/films/film_stream_filter.dart';
 import 'package:films_hub/app/domain/models/languages/extensions/named_language.dart';
 import 'package:films_hub/app/domain/models/languages/language.dart';
 import 'package:films_hub/app/domain/repositories/films/abstract_films_repository.dart';
@@ -30,7 +30,7 @@ class FakeFilmsRepository implements AbstractFilmsRepository {
       "1997",
       "Demobilizovannyy iz armii Danila Bagrov reshilsya podat'sya v Peterburg, gde uzhe neskol'ko let protsvetaet ego starshiy brat. Danila nashel brata. No vse okazalos' ne tak prosto.",
       Language.russian.toPrettyString(),
-      "1.40",
+      "https://www.kino-teatr.ru/movie/posters/big/9/629.jpg",
     ),
     BaseFilm(
       "2",
@@ -50,7 +50,7 @@ class FakeFilmsRepository implements AbstractFilmsRepository {
       "2014",
       "Наше время на Земле подошло к концу, команда исследователей берет на себя самую важную миссию в истории человечества; путешествуя за пределами нашей галактики, чтобы узнать есть ли у человечества будущее среди звезд.",
       Language.english.toPrettyString(),
-      "2.49",
+      "https://b1.filmpro.ru/c/258954.jpg",
     ),
     BaseFilm(
       "4",
@@ -60,26 +60,27 @@ class FakeFilmsRepository implements AbstractFilmsRepository {
       "2000",
       "Uchastvuya v programme na televidenii, Danila Bagrov vstrechaet svoikh druzey po Chechne. Odnogo iz nikh vnezapno ubivayut. Danila znaet, chto u togo byli nepriyatnosti iz-za brata-khokkeista v Amerike. Danila dolzhen razobrat'sya.",
       Language.russian.toPrettyString(),
-      "2.7",
+      "https://avatars.mds.yandex.net/get-kinopoisk-image/1629390/649da998-2f4f-4fcf-87e0-de52917b3812/1920x",
     )
   ];
 
   @override
-  Stream<AbstractFilm> filmsAsStream() async* {
-    for (var film in _fakeFilms) {
-      await Future.delayed(_duration);
-      yield film;
-    }
+  Stream<AbstractFilm> filmsAsStream(
+      {String searchQuery = "",
+      int page = 1,
+      void Function(String errorMessage)? errorCallback}) async* {
+    await Future.delayed(_duration);
+    var filter = FilmStreamFilter.condition(
+      FilmContainsPatternCondition(searchQuery),
+    );
+    yield* filter.apply(Stream.fromIterable(_fakeFilms));
   }
 
   @override
-  Future<List<AbstractFilm>> filmsAsync() async {
-    return Future.value(filmsAsStream().toList());
-  }
-
-  @override
-  List<AbstractFilm> films() {
-    sleep(_duration * _fakeFilms.length);
-    return _fakeFilms;
+  Future<List<AbstractFilm>> filmsAsync(
+      {String searchQuery = "",
+      int page = 1,
+      void Function(String errorMessage)? errorCallback}) async {
+    return Future.value(await filmsAsStream(searchQuery: searchQuery).toList());
   }
 }
