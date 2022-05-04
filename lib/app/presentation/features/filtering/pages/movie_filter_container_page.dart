@@ -42,7 +42,7 @@ class MovieFilterContainerPageState extends State<MovieFilterContainerPage> {
   static const double _appBarBorderRadius = 32;
   AbstractFilms _films = Films(0, []);
   bool _showShimmer = true;
-  final _scrollController = ScrollController();
+  ScrollController? _scrollController;
   bool _isLoading = false;
   int _page = 1;
 
@@ -57,13 +57,13 @@ class MovieFilterContainerPageState extends State<MovieFilterContainerPage> {
   @override
   void initState() {
     _fetchDataForPage(_page);
-    _scrollController.addListener(_pagination);
+    _scrollController?.addListener(_pagination);
     super.initState();
   }
 
   @override
   void dispose() {
-    _scrollController.dispose();
+    _scrollController?.dispose();
     super.dispose();
   }
 
@@ -71,6 +71,7 @@ class MovieFilterContainerPageState extends State<MovieFilterContainerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      extendBody: true,
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
           SliverAppBar(
@@ -109,46 +110,49 @@ class MovieFilterContainerPageState extends State<MovieFilterContainerPage> {
         ],
         body: RefreshIndicator(
           onRefresh: _onRefresh,
-          child: CustomScrollView(
-            controller: _scrollController,
-            physics: const BouncingScrollPhysics(),
-            slivers: [
-              SliverToBoxAdapter(
-                child: SearchField(
-                  initialText: _searchText,
-                  onSearchFieldTextChanged: _onSearchFieldTextChanged,
+          child: Builder(builder: (context) {
+            _scrollController ??= PrimaryScrollController.of(context)
+              ?..addListener(_pagination);
+            return CustomScrollView(
+              physics: const BouncingScrollPhysics(),
+              slivers: [
+                SliverToBoxAdapter(
+                  child: SearchField(
+                    initialText: _searchText,
+                    onSearchFieldTextChanged: _onSearchFieldTextChanged,
+                  ),
                 ),
-              ),
-              SliverToBoxAdapter(
-                child: Container(
-                  padding: const EdgeInsets.only(
-                      left: 16, top: 40, right: 16, bottom: 16),
-                  child: MovieFilter(_applyFilter),
+                SliverToBoxAdapter(
+                  child: Container(
+                    padding: const EdgeInsets.only(
+                        left: 16, top: 40, right: 16, bottom: 16),
+                    child: MovieFilter(_applyFilter),
+                  ),
                 ),
-              ),
-              widget._builder(context, _filteredFilms),
-              SliverToBoxAdapter(
-                child: _isLoading || _showShimmer
-                    ? widget._shimmerBuilder(context)
-                    : Container(),
-              ),
-              SliverToBoxAdapter(
-                child: (_isLoading == false && _filteredFilms.isEmpty)
-                    ? const NotGettingAnyResults()
-                    : Container(),
-              ),
-              SliverToBoxAdapter(
-                child: (_isLoading == false &&
-                        _films.films.isNotEmpty &&
-                        _films.pagesCount <= _page)
-                    ? const DontHaveMoreResults()
-                    : Container(),
-              ),
-              const SliverPadding(
-                padding: EdgeInsets.only(bottom: 80),
-              ),
-            ],
-          ),
+                widget._builder(context, _filteredFilms),
+                SliverToBoxAdapter(
+                  child: _isLoading || _showShimmer
+                      ? widget._shimmerBuilder(context)
+                      : Container(),
+                ),
+                SliverToBoxAdapter(
+                  child: (_isLoading == false && _filteredFilms.isEmpty)
+                      ? const NotGettingAnyResults()
+                      : Container(),
+                ),
+                SliverToBoxAdapter(
+                  child: (_isLoading == false &&
+                          _films.films.isNotEmpty &&
+                          _films.pagesCount <= _page)
+                      ? const DontHaveMoreResults()
+                      : Container(),
+                ),
+                const SliverPadding(
+                  padding: EdgeInsets.only(bottom: 80),
+                ),
+              ],
+            );
+          }),
         ),
       ),
     );
@@ -196,16 +200,16 @@ class MovieFilterContainerPageState extends State<MovieFilterContainerPage> {
   }
 
   void _fetchDataForPage(int page) async {
-    if(_isLoading == false){
+    if (_isLoading == false) {
       setState(() {
         _isLoading = true;
         _showShimmer = true;
       });
       widget._filmsRepository
           .filmsAsync(
-          searchQuery: _searchText,
-          errorCallback: errorCallbackMethod,
-          page: page)
+              searchQuery: _searchText,
+              errorCallback: errorCallbackMethod,
+              page: page)
           .then((value) {
         if (mounted) {
           setState(() {
@@ -226,12 +230,13 @@ class MovieFilterContainerPageState extends State<MovieFilterContainerPage> {
     showErrorDialog(context, error: errorMessage);
   }
 
-  static const int paginationOffset = 200;
+  static const int _paginationOffset = 200;
 
   void _pagination() {
     if (_isLoading == false &&
-        (_scrollController.position.pixels >=
-            _scrollController.position.maxScrollExtent - paginationOffset) &&
+        ((_scrollController?.position.pixels ?? 0) >=
+            (_scrollController?.position.maxScrollExtent ??
+                0 - _paginationOffset)) &&
         (_films.pagesCount > _page)) {
       setState(() {
         _page += 1;
