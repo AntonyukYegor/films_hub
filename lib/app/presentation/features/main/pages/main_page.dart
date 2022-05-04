@@ -50,60 +50,62 @@ class _MainPageState extends State<MainPage> {
                   ),
                 ],
               ),
-              child: Stack(
-                children: [
-                  Positioned.fill(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: Stack(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(16),
-                              ),
-                              border: Border.all(
-                                  width: 5.0,
-                                  color: Theme.of(context).primaryColor),
-                              color: Theme.of(context)
-                                  .primaryColor
-                                  .withOpacity(0.3),
-                            ),
-                          ),
-                          const SymmetricalBlur.frost(),
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(16)),
-                              border: Border.all(
-                                width: 2.0,
+              child: SafeArea(
+                child: Stack(
+                  children: [
+                    Positioned.fill(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: Stack(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(16),
+                                ),
+                                border: Border.all(
+                                    width: 5.0,
+                                    color: Theme.of(context).primaryColor),
                                 color: Theme.of(context)
                                     .primaryColor
-                                    .withOpacity(0.1),
+                                    .withOpacity(0.3),
                               ),
                             ),
-                          ),
-                        ],
+                            const SymmetricalBlur.frost(),
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(16)),
+                                border: Border.all(
+                                  width: 2.0,
+                                  color: Theme.of(context)
+                                      .primaryColor
+                                      .withOpacity(0.1),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  BottomNavigationBar(
-                    elevation: 0,
-                    backgroundColor: Colors.transparent,
-                    selectedItemColor:
-                        Theme.of(context).textTheme.titleSmall?.color,
-                    unselectedItemColor: Theme.of(context)
-                        .textTheme
-                        .titleSmall
-                        ?.color
-                        ?.withOpacity(0.4),
-                    items: widget._tabsSource.tabs
-                        .map((t) => t.toBottomNavigationBarItem())
-                        .toList(),
-                    currentIndex: _selectedIndex,
-                    onTap: _onItemTapped,
-                  ),
-                ],
+                    BottomNavigationBar(
+                      elevation: 0,
+                      backgroundColor: Colors.transparent,
+                      selectedItemColor:
+                          Theme.of(context).textTheme.titleSmall?.color,
+                      unselectedItemColor: Theme.of(context)
+                          .textTheme
+                          .titleSmall
+                          ?.color
+                          ?.withOpacity(0.4),
+                      items: widget._tabsSource.tabs
+                          .map((t) => t.toBottomNavigationBarItem())
+                          .toList(),
+                      currentIndex: _selectedIndex,
+                      onTap: _onItemTapped,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
