@@ -62,12 +62,6 @@ class MovieFilterContainerPageState extends State<MovieFilterContainerPage> {
   }
 
   @override
-  void dispose() {
-    _scrollController?.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
