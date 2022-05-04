@@ -17,6 +17,7 @@ class DetailsMoviePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -33,6 +34,7 @@ class DetailsMoviePage extends StatelessWidget {
         physics: const BouncingScrollPhysics(),
         child: Column(
           children: [
+            const Padding(padding: EdgeInsets.only(top: 80)),
             Container(
               margin: const EdgeInsets.only(
                   left: 16, top: 16, right: 16, bottom: 16),
@@ -169,12 +171,14 @@ class DetailsMoviePage extends StatelessWidget {
                               alignment: AlignmentDirectional.topStart,
                               child: Padding(
                                 padding: const EdgeInsets.only(top: 8),
-                                child: Text(' ' * 5 + _model.description,
-                                    textAlign: TextAlign.justify,
-                                    style: const TextStyle(
-                                      fontStyle: FontStyle.italic,
-                                      fontWeight: FontWeight.normal,
-                                    )),
+                                child: Text(
+                                  ' ' * 5 + _model.description,
+                                  textAlign: TextAlign.justify,
+                                  style: const TextStyle(
+                                    fontStyle: FontStyle.italic,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
                               ),
                             )
                           ],
@@ -185,6 +189,7 @@ class DetailsMoviePage extends StatelessWidget {
                 ),
               ]),
             ),
+            const Padding(padding: EdgeInsets.only(top: 80)),
           ],
         ),
       ),
