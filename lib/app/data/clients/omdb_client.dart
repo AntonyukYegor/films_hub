@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:films_hub/app/data/clients/omdb_client_api_keys_container.dart';
 import 'package:films_hub/app/data/dtos/omdb/movie_details_omdb_dto.dart';
+import 'package:films_hub/app/data/dtos/omdb/movies_with_details_omdb_to_response.dart';
 import 'package:films_hub/app/data/dtos/omdb/search_by_title_response_omdb_dto.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
@@ -11,7 +12,8 @@ class OMDBClient {
       requestBody: true,
     ));
 
-  static final OMDBClientApiKeysContainer _apiKeysContainer = OMDBClientApiKeysContainer();
+  static final OMDBClientApiKeysContainer _apiKeysContainer =
+      OMDBClientApiKeysContainer();
 
   static const _baseURL = 'https://www.omdbapi.com/?apikey=';
 
@@ -19,7 +21,7 @@ class OMDBClient {
 
   Future<SearchByTitleResponseOMDBDTO> _search(
       {required String searchQuery, int page = 1}) async {
-    String url =  '$_currentBaseURL&type=movie';
+    String url = '$_currentBaseURL&type=movie';
     final Response<dynamic> response = await _dio.get<dynamic>(
       url,
       queryParameters: <String, dynamic>{
@@ -41,23 +43,26 @@ class OMDBClient {
     return MovieDetailsOMDBDTO.fromJson(response.data);
   }
 
-  Future<List<MovieDetailsOMDBDTO>> searchWithDetails(
-      {required String searchQuery, int page = 1, void Function(String errorMessage)? errorCallback}) async {
-    try{
+  Future<MoviesWithDetailsOMDBDTOResponse> searchWithDetails(
+      {required String searchQuery,
+      int page = 1,
+      void Function(String errorMessage)? errorCallback}) async {
+    try {
       var searchResponse = _search(searchQuery: searchQuery, page: page);
 
-      return Future.wait(
+      var movies = Future.wait(
         (await searchResponse).search.map(
               (e) => _loadMovieDetail(
-            imdbID: e.imdbID,
-          ),
-        ),
+                imdbID: e.imdbID,
+              ),
+            ),
       );
-    } on DioError catch (error)
-    {
-      final statusCode = error.toString();//error.response?.statusCode;
+      return MoviesWithDetailsOMDBDTOResponse(
+          int.tryParse((await searchResponse).totalResults) ?? 0, await movies);
+    } on DioError catch (error) {
+      final statusCode = error.toString(); //error.response?.statusCode;
       errorCallback?.call(statusCode.toString());
-      return [];
+      return MoviesWithDetailsOMDBDTOResponse(0, []);
     }
   }
 }

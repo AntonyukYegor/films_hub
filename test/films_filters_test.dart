@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:films_hub/app/domain/models/films/abstract_film.dart';
 import 'package:films_hub/app/domain/models/filters/conditions/films/film_clamp_by_vote_average_condition.dart';
 import 'package:films_hub/app/domain/models/filters/conditions/films/film_contains_pattern_condition.dart';
 import 'package:films_hub/app/domain/models/filters/films/film_future_list_filter.dart';
@@ -99,12 +100,12 @@ void main() async {
       var noFilteredFilter = FilmFutureListFilter.empty();
       var sourceFilms = await filmsRepository.filmsAsync();
       var filteredFilms =
-          await noFilteredFilter.apply(filmsRepository.filmsAsync());
+          await noFilteredFilter.apply(Future.value(sourceFilms.films));
 
       Function eq = const ListEquality().equals;
 
       bool expected = true;
-      bool actual = eq(sourceFilms, filteredFilms);
+      bool actual = eq(sourceFilms.films, filteredFilms);
 
       expect(actual, expected);
     });
@@ -112,14 +113,15 @@ void main() async {
     test('.apply() Filter By Pattern In Description', () async {
       AbstractFilmsRepository filmsRepository = FakeFilmsRepository();
       var filter = FilmFutureListFilter.condition(FilmContainsPatternCondition(
-          "Danila")); //FilmsFilter.containsPattern();
+          "Danila"));
       var sourceFilms = await filmsRepository.filmsAsync();
-      var filteredFilms = await filter.apply(filmsRepository.filmsAsync());
+      Future<List<AbstractFilm>> films = Future.value(sourceFilms.films.toList());
+      var filteredFilms = await filter.apply(films);
 
       Function eq = const ListEquality().equals;
 
       var expected = true;
-      var actual = eq([sourceFilms[0], sourceFilms[3]], filteredFilms);
+      var actual = eq([sourceFilms.films[0], sourceFilms.films[3]], filteredFilms);
 
       expect(actual, expected);
     });
@@ -129,12 +131,11 @@ void main() async {
       var filter =
           FilmFutureListFilter.condition(FilmContainsPatternCondition("Брат"));
       var sourceFilms = await filmsRepository.filmsAsync();
-      var filteredFilms = await filter.apply(filmsRepository.filmsAsync());
-
+      var filteredFilms = await filter.apply(Future.value(sourceFilms.films));
       Function eq = const ListEquality().equals;
 
       var expected = true;
-      var actual = eq([sourceFilms[0], sourceFilms[3]], filteredFilms);
+      var actual = eq([sourceFilms.films[0], sourceFilms.films[3]], filteredFilms);
 
       expect(actual, expected);
     });
@@ -144,12 +145,12 @@ void main() async {
       var filter = FilmFutureListFilter.condition(
           FilmClampByVoteAverageCondition(8.2, 10));
       var sourceFilms = await filmsRepository.filmsAsync();
-      var filteredFilms = await filter.apply(filmsRepository.filmsAsync());
+      var filteredFilms = await filter.apply(Future.value(sourceFilms.films));
 
       Function eq = const ListEquality().equals;
 
       var expected = true;
-      var actual = eq([sourceFilms[0], sourceFilms[2]], filteredFilms);
+      var actual = eq([sourceFilms.films[0], sourceFilms.films[2]], filteredFilms);
 
       expect(actual, expected);
     });
@@ -161,12 +162,13 @@ void main() async {
         FilmContainsPatternCondition("Danila")
       ]);
       var sourceFilms = await filmsRepository.filmsAsync();
-      var filteredFilms = await filter.apply(filmsRepository.filmsAsync());
+
+      var filteredFilms = await filter.apply(Future.value(sourceFilms.films));
 
       Function eq = const ListEquality().equals;
 
       var expected = true;
-      var actual = eq([sourceFilms[0]], filteredFilms);
+      var actual = eq([sourceFilms.films[0]], filteredFilms);
 
       expect(actual, expected);
     });

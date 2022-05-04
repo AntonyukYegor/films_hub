@@ -1,5 +1,7 @@
 import 'package:films_hub/app/domain/models/films/abstract_film.dart';
+import 'package:films_hub/app/domain/models/films/abstract_films.dart';
 import 'package:films_hub/app/domain/models/films/base_film.dart';
+import 'package:films_hub/app/domain/models/films/films.dart';
 import 'package:films_hub/app/domain/models/filters/conditions/films/film_contains_pattern_condition.dart';
 import 'package:films_hub/app/domain/models/filters/films/film_stream_filter.dart';
 import 'package:films_hub/app/domain/models/languages/extensions/named_language.dart';
@@ -77,10 +79,12 @@ class FakeFilmsRepository implements AbstractFilmsRepository {
   }
 
   @override
-  Future<List<AbstractFilm>> filmsAsync(
+  Future<AbstractFilms> filmsAsync(
       {String searchQuery = "",
       int page = 1,
       void Function(String errorMessage)? errorCallback}) async {
-    return Future.value(await filmsAsStream(searchQuery: searchQuery).toList());
+    var films = await filmsAsStream(searchQuery: searchQuery).toList();
+    var result = Films(films.length, films);
+    return result;
   }
 }
