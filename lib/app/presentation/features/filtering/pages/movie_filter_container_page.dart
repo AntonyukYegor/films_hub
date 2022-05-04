@@ -196,27 +196,30 @@ class MovieFilterContainerPageState extends State<MovieFilterContainerPage> {
   }
 
   void _fetchDataForPage(int page) async {
-    setState(() {
-      _showShimmer = true;
-    });
-    widget._filmsRepository
-        .filmsAsync(
-            searchQuery: _searchText,
-            errorCallback: errorCallbackMethod,
-            page: page)
-        .then((value) {
-      if (mounted) {
-        setState(() {
-          if (_films.films.isNotEmpty) {
-            _films.addAll(value.films);
-          } else {
-            _films = value;
-          }
-          _addFilteredFilms(value);
-          _isLoading = false;
-        });
-      }
-    });
+    if(_isLoading == false){
+      setState(() {
+        _isLoading = true;
+        _showShimmer = true;
+      });
+      widget._filmsRepository
+          .filmsAsync(
+          searchQuery: _searchText,
+          errorCallback: errorCallbackMethod,
+          page: page)
+          .then((value) {
+        if (mounted) {
+          setState(() {
+            if (_films.films.isNotEmpty) {
+              _films.addAll(value.films);
+            } else {
+              _films = value;
+            }
+            _addFilteredFilms(value);
+            _isLoading = false;
+          });
+        }
+      });
+    }
   }
 
   void errorCallbackMethod(String errorMessage) {
@@ -231,7 +234,6 @@ class MovieFilterContainerPageState extends State<MovieFilterContainerPage> {
             _scrollController.position.maxScrollExtent - paginationOffset) &&
         (_films.pagesCount > _page)) {
       setState(() {
-        _isLoading = true;
         _page += 1;
         _fetchDataForPage(_page);
       });
@@ -244,7 +246,6 @@ class MovieFilterContainerPageState extends State<MovieFilterContainerPage> {
 
   Future<void> _reload() async {
     setState(() {
-      _isLoading = true;
       _filteredFilms.clear();
       _films.clear();
       _page = 1;
