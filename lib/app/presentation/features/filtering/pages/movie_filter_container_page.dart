@@ -198,30 +198,28 @@ class MovieFilterContainerPageState extends State<MovieFilterContainerPage> {
   }
 
   void _fetchDataForPage(int page) async {
-    if (_isLoading == false) {
-      setState(() {
-        _isLoading = true;
-        _showShimmer = true;
-      });
-      widget._filmsRepository
-          .filmsAsync(
-              searchQuery: _searchText,
-              errorCallback: errorCallbackMethod,
-              page: page)
-          .then((value) {
-        if (mounted) {
-          setState(() {
-            if (_films.films.isNotEmpty) {
-              _films.addAll(value.films);
-            } else {
-              _films = value;
-            }
-            _addFilteredFilms(value);
-            _isLoading = false;
-          });
-        }
-      });
-    }
+    setState(() {
+      _isLoading = true;
+      _showShimmer = true;
+    });
+    widget._filmsRepository
+        .filmsAsync(
+            searchQuery: _searchText,
+            errorCallback: errorCallbackMethod,
+            page: page)
+        .then((value) {
+      if (mounted) {
+        setState(() {
+          if (_films.films.isNotEmpty) {
+            _films.addAll(value.films);
+          } else {
+            _films = value;
+          }
+          _addFilteredFilms(value);
+          _isLoading = false;
+        });
+      }
+    });
   }
 
   void errorCallbackMethod(String errorMessage) {
