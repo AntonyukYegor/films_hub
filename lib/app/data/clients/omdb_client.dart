@@ -21,7 +21,7 @@ class OMDBClient {
   static final OMDBClientApiKeysContainer _apiKeysContainer =
       OMDBClientApiKeysContainer();
 
-  static const _baseURL = 'https://www.omdbapii.com/?apikey=';
+  static const _baseURL = 'https://www.omdbapi.com/?apikey=';
 
   OMDBClient({required Function(String, String) onErrorHandler})
       : _onErrorHandler = onErrorHandler;
