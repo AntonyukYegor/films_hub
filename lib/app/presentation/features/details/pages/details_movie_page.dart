@@ -63,9 +63,12 @@ class DetailsMoviePage extends StatelessWidget {
                                     children: [
                                       Align(
                                         alignment: Alignment.centerLeft,
-                                        child: CombineRate(
-                                          _model.voteAverageInPercent,
-                                          height: 22,
+                                        child: FittedBox(
+                                          fit: BoxFit.contain,
+                                          child: CombineRate(
+                                            _model.voteAverageInPercent,
+                                            height: 22,
+                                          ),
                                         ),
                                       ),
                                       Padding(
