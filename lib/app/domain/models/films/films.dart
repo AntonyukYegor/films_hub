@@ -2,7 +2,7 @@ import 'package:films_hub/app/domain/models/films/abstract_film.dart';
 import 'package:films_hub/app/domain/models/films/abstract_films.dart';
 
 class Films implements AbstractFilms {
-  final int _totalCount;
+  int _totalCount;
 
   final List<AbstractFilm> _films;
 
@@ -20,10 +20,16 @@ class Films implements AbstractFilms {
   }
 
   @override
-  int get pagesCount => (_totalCount/10).ceil();
+  int get pagesCount => (_totalCount / 10).ceil();
 
   @override
   void clear() {
     _films.clear();
+  }
+
+  @override
+  void update(AbstractFilms films) {
+    _totalCount = films.totalCount;
+    _films.addAll(films.films);
   }
 }

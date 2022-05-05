@@ -35,20 +35,21 @@ class MovieFilterContainerPage extends StatefulWidget {
 
   @override
   State<MovieFilterContainerPage> createState() =>
-      MovieFilterContainerPageState();
+      _MovieFilterContainerPageState();
 }
 
-class MovieFilterContainerPageState extends State<MovieFilterContainerPage> {
+class _MovieFilterContainerPageState extends State<MovieFilterContainerPage> {
   static const double _appBarBorderRadius = 32;
+
   AbstractFilms _films = Films(0, []);
+  AbstractFilms _filteredFilms = Films(0, []);
+
   bool _showShimmer = true;
   ScrollController? _scrollController;
   bool _isLoading = false;
   int _page = 1;
 
-  final List<AbstractFilm> _filteredFilms = [];
-
-  MovieFilterContainerPageState();
+  _MovieFilterContainerPageState();
 
   String _searchText = "Batman";
   AbstractFilter<Future<List<AbstractFilm>>> _currentFilter =
@@ -56,7 +57,7 @@ class MovieFilterContainerPageState extends State<MovieFilterContainerPage> {
 
   @override
   void initState() {
-    _fetchDataForPage(_page);
+    _fetchDataForPage(_page, _films, _filteredFilms);
     _scrollController?.addListener(_pagination);
     super.initState();
   }
@@ -127,14 +128,14 @@ class MovieFilterContainerPageState extends State<MovieFilterContainerPage> {
                     child: MovieFilter(_applyFilter),
                   ),
                 ),
-                widget._builder(context, _filteredFilms),
+                widget._builder(context, _filteredFilms.films.toList()),
                 SliverToBoxAdapter(
                   child: _isLoading || _showShimmer
                       ? widget._shimmerBuilder(context)
                       : Container(),
                 ),
                 SliverToBoxAdapter(
-                  child: (_isLoading == false && _filteredFilms.isEmpty)
+                  child: (_isLoading == false && _filteredFilms.films.isEmpty)
                       ? const NotGettingAnyResults()
                       : Container(),
                 ),
@@ -169,16 +170,16 @@ class MovieFilterContainerPageState extends State<MovieFilterContainerPage> {
         _filteredFilms.clear();
       });
     }
-
-    _addFilteredFilms(_films);
+    _addFilteredFilms(_films, _filteredFilms);
   }
 
-  Future<void> _addFilteredFilms(AbstractFilms film) async {
-    await _currentFilter.apply(Future.value(film.films)).then(
+  Future<void> _addFilteredFilms(
+      AbstractFilms source, AbstractFilms target) async {
+    await _currentFilter.apply(Future.value(source.films.toList())).then(
       (value) {
         if (mounted) {
           setState(() {
-            _filteredFilms.addAll(value);
+            target.addAll(value);
             _showShimmer = false;
           });
         }
@@ -197,7 +198,8 @@ class MovieFilterContainerPageState extends State<MovieFilterContainerPage> {
     });
   }
 
-  void _fetchDataForPage(int page) async {
+  void _fetchDataForPage(
+      int page, AbstractFilms films, AbstractFilms filtrationFilms) async {
     setState(() {
       _isLoading = true;
       _showShimmer = true;
@@ -210,12 +212,9 @@ class MovieFilterContainerPageState extends State<MovieFilterContainerPage> {
         .then((value) {
       if (mounted) {
         setState(() {
-          if (_films.films.isNotEmpty) {
-            _films.addAll(value.films);
-          } else {
-            _films = value;
-          }
-          _addFilteredFilms(value);
+          films.update(value);
+
+          _addFilteredFilms(value, filtrationFilms);
           _isLoading = false;
         });
       }
@@ -236,7 +235,11 @@ class MovieFilterContainerPageState extends State<MovieFilterContainerPage> {
         (_films.pagesCount > _page)) {
       setState(() {
         _page += 1;
-        _fetchDataForPage(_page);
+        _fetchDataForPage(
+          _page,
+          _films,
+          _filteredFilms,
+        );
       });
     }
   }
@@ -247,11 +250,15 @@ class MovieFilterContainerPageState extends State<MovieFilterContainerPage> {
 
   Future<void> _reload() async {
     setState(() {
-      _filteredFilms.clear();
-      _films.clear();
+      _filteredFilms = Films(0, []);
+      _films = Films(0, []);
       _page = 1;
       _showShimmer = false;
-      _fetchDataForPage(_page);
+      _fetchDataForPage(
+        _page,
+        _films,
+        _filteredFilms,
+      );
     });
   }
 }

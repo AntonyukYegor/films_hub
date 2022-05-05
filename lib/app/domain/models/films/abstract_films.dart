@@ -9,5 +9,7 @@ abstract class AbstractFilms {
 
   void addAll(Iterable<AbstractFilm> value);
 
+  void update(AbstractFilms films);
+
   void clear();
 }
