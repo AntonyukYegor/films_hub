@@ -167,10 +167,10 @@ class _MovieFilterContainerPageState extends State<MovieFilterContainerPage> {
     if (mounted) {
       setState(() {
         _showShimmer = true;
-        _filteredFilms.clear();
+        _filteredFilms = Films(0, []);
+        _addFilteredFilms(_films, _filteredFilms);
       });
     }
-    _addFilteredFilms(_films, _filteredFilms);
   }
 
   Future<void> _addFilteredFilms(
@@ -189,12 +189,10 @@ class _MovieFilterContainerPageState extends State<MovieFilterContainerPage> {
 
   void _onSearchFieldTextChanged(String text) {
     DelayedAction.run(() {
-      if (_searchText != text) {
-        setState(() {
-          _searchText = text;
-        });
+      setState(() {
+        _searchText = text;
         _reload();
-      }
+      });
     });
   }
 
