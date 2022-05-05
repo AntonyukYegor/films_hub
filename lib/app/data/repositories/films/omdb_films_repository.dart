@@ -5,9 +5,11 @@ import 'package:films_hub/app/domain/models/films/abstract_films.dart';
 import 'package:films_hub/app/domain/repositories/films/abstract_films_repository.dart';
 
 class OMDBFilmsRepository implements AbstractFilmsRepository {
-  static final OMDBClient _client = OMDBClient();
 
-  const OMDBFilmsRepository();
+  final OMDBClient _client;
+
+  OMDBFilmsRepository({required OMDBClient client})
+      : _client = client;
 
   @override
   Stream<AbstractFilm> filmsAsStream(
