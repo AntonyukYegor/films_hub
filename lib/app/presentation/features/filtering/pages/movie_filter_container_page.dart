@@ -1,5 +1,4 @@
 import 'package:films_hub/app/components/delayed_action.dart';
-import 'package:films_hub/app/components/dialogs/error_dialog.dart';
 import 'package:films_hub/app/domain/models/films/abstract_film.dart';
 import 'package:films_hub/app/domain/models/films/abstract_films.dart';
 import 'package:films_hub/app/domain/models/films/films.dart';
@@ -205,7 +204,6 @@ class _MovieFilterContainerPageState extends State<MovieFilterContainerPage> {
     widget._filmsRepository
         .filmsAsync(
             searchQuery: _searchText,
-            errorCallback: errorCallbackMethod,
             page: page)
         .then((value) {
       if (mounted) {
@@ -216,11 +214,12 @@ class _MovieFilterContainerPageState extends State<MovieFilterContainerPage> {
           _isLoading = false;
         });
       }
+    }).onError((error, stackTrace) {
+      setState(() {
+        _showShimmer = false;
+        _isLoading = false;
+      });
     });
-  }
-
-  void errorCallbackMethod(String errorMessage) {
-    showErrorDialog(context, error: errorMessage);
   }
 
   static const int _paginationOffset = 200;

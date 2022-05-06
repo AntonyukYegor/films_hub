@@ -68,9 +68,7 @@ class FakeFilmsRepository implements AbstractFilmsRepository {
 
   @override
   Stream<AbstractFilm> filmsAsStream(
-      {String searchQuery = "",
-      int page = 1,
-      void Function(String errorMessage)? errorCallback}) async* {
+      {String searchQuery = "", int page = 1}) async* {
     await Future.delayed(_duration);
     var filter = FilmStreamFilter.condition(
       FilmContainsPatternCondition(searchQuery),
@@ -80,9 +78,7 @@ class FakeFilmsRepository implements AbstractFilmsRepository {
 
   @override
   Future<AbstractFilms> filmsAsync(
-      {String searchQuery = "",
-      int page = 1,
-      void Function(String errorMessage)? errorCallback}) async {
+      {String searchQuery = "", int page = 1}) async {
     var films = await filmsAsStream(searchQuery: searchQuery).toList();
     var result = Films(films.length, films);
     return result;

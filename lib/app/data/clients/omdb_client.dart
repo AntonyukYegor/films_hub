@@ -56,22 +56,16 @@ class OMDBClient {
       {required String searchQuery,
       int page = 1,
       void Function(String errorMessage)? errorCallback}) async {
-    try {
-      var searchResponse = _search(searchQuery: searchQuery, page: page);
+    var searchResponse = _search(searchQuery: searchQuery, page: page);
 
-      var movies = Future.wait(
-        (await searchResponse).search.map(
-              (e) => _loadMovieDetail(
-                imdbID: e.imdbID,
-              ),
+    var movies = Future.wait(
+      (await searchResponse).search.map(
+            (e) => _loadMovieDetail(
+              imdbID: e.imdbID,
             ),
-      );
-      return MoviesWithDetailsOMDBDTOResponse(
-          int.tryParse((await searchResponse).totalResults) ?? 0, await movies);
-    } on DioError catch (error) {
-      final statusCode = error.toString(); //error.response?.statusCode;
-      errorCallback?.call(statusCode.toString());
-      return MoviesWithDetailsOMDBDTOResponse(0, []);
-    }
+          ),
+    );
+    return MoviesWithDetailsOMDBDTOResponse(
+        int.tryParse((await searchResponse).totalResults) ?? 0, await movies);
   }
 }

@@ -8,6 +8,7 @@ import 'package:films_hub/app/domain/repositories/films/abstract_films_repositor
 import 'package:films_hub/app/components/behaviors/custom_scroll_behavior.dart';
 import 'package:films_hub/app/components/colors/custom_colors.dart';
 import 'package:films_hub/app/error_bloc/error_bloc.dart';
+import 'package:films_hub/app/error_bloc/error_event.dart';
 import 'package:films_hub/app/presentation/features/catalog/pages/catalog_page.dart';
 import 'package:films_hub/app/presentation/features/details/pages/details_movie_page.dart';
 import 'package:films_hub/app/presentation/features/feed/pages/feed_page.dart';
@@ -40,22 +41,10 @@ class _BaseTabsSource implements TabsSource {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  static _onErrorHandler(String first, String second) {
-
-
-  }
-
-  static final OMDBClient client = OMDBClient(onErrorHandler: _onErrorHandler);
-  static final AbstractFilmsRepository _filmsRepository =
-      OMDBFilmsRepository(client: client);
-
   @override
   Widget build(BuildContext context) {
     var fontFamily = "Comfortaa";
-    return BlocProvider<ErrorBloc>(
-      lazy: false,
-      create: (_) => ErrorBloc(context),
-      child: MaterialApp(
+    return MaterialApp(
         builder: (context, child) {
           return ScrollConfiguration(
             behavior: CustomScrollBehavior(),
@@ -80,40 +69,53 @@ class MyApp extends StatelessWidget {
         initialRoute: MainPage.navigationPath,
         onGenerateRoute: (RouteSettings settings) {
           if (settings.name == MainPage.navigationPath) {
-            return MaterialPageRoute(
+                return MaterialPageRoute(
               builder: (context) {
-                return RepositoryProvider<AbstractFilmsRepository>(
-                    lazy: true,
-                    create: (BuildContext context) =>
-                        OMDBFilmsRepository(client: client),
-                    child: RepositoryProvider<TabsSource>(
-                      lazy: false,
-                      create: (BuildContext context) => _BaseTabsSource(
-                        [
-                          NavigationTab(
-                            icon: const Icon(Icons.list),
-                            label: 'Feed',
-                            page: FeedPage(
-                              title: 'Feed',
-                              filmsRepository: _filmsRepository,
-                            ),
-                          ),
-                          NavigationTab(
-                            icon: const Icon(Icons.grid_view),
-                            label: 'Catalog',
-                            page: CatalogPage(
-                              title: 'Catalog',
-                              filmsRepository: _filmsRepository,
-                            ),
-                          ),
-                        ],
-                      ),
-                      child: BlocProvider<MainBloc>(
+                return  BlocProvider<ErrorBloc>(
+                  lazy: false,
+                  create: (_) => ErrorBloc(context),
+                  child: RepositoryProvider<OMDBClient>(
+                    lazy: false,
+                      create : (BuildContext context) =>
+                          OMDBClient(onErrorHandler: (String code, String message) {
+                            context
+                                .read<ErrorBloc>()
+                                .add(ShowDialogEvent(title: code, message: message));
+                          }),
+                    child: RepositoryProvider<AbstractFilmsRepository>(
+                        lazy: false,
                         create: (BuildContext context) =>
-                            MainBloc(tabsSource: context.read<TabsSource>()),
-                        child: const MainPage(),
-                      ),
-                    ));
+                            OMDBFilmsRepository(client: context.read<OMDBClient>()),
+                        child: RepositoryProvider<TabsSource>(
+                          lazy: false,
+                          create: (BuildContext context) => _BaseTabsSource(
+                            [
+                              NavigationTab(
+                                icon: const Icon(Icons.list),
+                                label: 'Feed',
+                                page: FeedPage(
+                                  title: 'Feed',
+                                  filmsRepository: context.read<AbstractFilmsRepository>(),
+                                ),
+                              ),
+                              NavigationTab(
+                                icon: const Icon(Icons.grid_view),
+                                label: 'Catalog',
+                                page: CatalogPage(
+                                  title: 'Catalog',
+                                  filmsRepository: context.read<AbstractFilmsRepository>(),
+                                ),
+                              ),
+                            ],
+                          ),
+                          child: BlocProvider<MainBloc>(
+                            create: (BuildContext context) =>
+                                MainBloc(tabsSource: context.read<TabsSource>()),
+                            child: const MainPage(),
+                          ),
+                        )),
+                  ),
+                );
               },
             );
           }
@@ -141,7 +143,6 @@ class MyApp extends StatelessWidget {
             builder: (_) => const NotFoundPage(),
           );
         },
-      ),
-    );
+      );
   }
 }

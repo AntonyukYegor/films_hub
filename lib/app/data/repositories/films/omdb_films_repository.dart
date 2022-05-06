@@ -5,20 +5,15 @@ import 'package:films_hub/app/domain/models/films/abstract_films.dart';
 import 'package:films_hub/app/domain/repositories/films/abstract_films_repository.dart';
 
 class OMDBFilmsRepository implements AbstractFilmsRepository {
-
   final OMDBClient _client;
 
-  OMDBFilmsRepository({required OMDBClient client})
-      : _client = client;
+  OMDBFilmsRepository({required OMDBClient client}) : _client = client;
 
   @override
   Stream<AbstractFilm> filmsAsStream(
-      {String searchQuery = "",
-      int page = 1,
-      void Function(String errorMessage)? errorCallback}) async* {
+      {String searchQuery = "", int page = 1}) async* {
     var films = await filmsAsync(
       searchQuery: searchQuery,
-      errorCallback: errorCallback,
       page: page,
     );
     for (var film in films.films) {
@@ -28,12 +23,9 @@ class OMDBFilmsRepository implements AbstractFilmsRepository {
 
   @override
   Future<AbstractFilms> filmsAsync(
-      {String searchQuery = "",
-      int page = 1,
-      void Function(String errorMessage)? errorCallback}) async {
+      {String searchQuery = "", int page = 1}) async {
     return (await _client.searchWithDetails(
       searchQuery: searchQuery,
-      errorCallback: errorCallback,
       page: page,
     ))
         .toDomain();
