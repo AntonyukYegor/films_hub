@@ -1,7 +1,6 @@
 import 'package:films_hub/app/data/clients/omdb_client.dart';
 import 'package:films_hub/app/data/repositories/films/omdb_films_repository.dart';
 import 'package:films_hub/app/presentation/common/models/movie_list_card_model.dart';
-import 'package:films_hub/app/presentation/features/settings/models/settings_arguments.dart';
 import 'package:films_hub/app/presentation/features/main/models/tab.dart';
 import 'package:films_hub/app/presentation/features/main/models/tabs_source.dart';
 import 'package:films_hub/app/domain/repositories/films/abstract_films_repository.dart';
@@ -125,11 +124,9 @@ class MyApp extends StatelessWidget {
         }
 
         if (settings.name == SettingsPage.navigationPath) {
-          final SettingsArguments arguments =
-              settings.arguments as SettingsArguments;
           return MaterialPageRoute(
             builder: (BuildContext context) {
-              return SettingsPage(arguments: arguments);
+              return const SettingsPage();
             },
           );
         }
