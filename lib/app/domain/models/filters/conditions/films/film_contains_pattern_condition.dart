@@ -1,9 +1,7 @@
 import 'package:films_hub/app/domain/models/films/abstract_film.dart';
 import 'package:films_hub/app/domain/models/filters/conditions/abstract_condition.dart';
-import 'package:flutter/foundation.dart';
 
 class FilmContainsPatternCondition implements AbstractCondition<AbstractFilm> {
-  @protected
   final String pattern;
 
   FilmContainsPatternCondition(this.pattern);

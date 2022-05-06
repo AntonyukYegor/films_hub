@@ -1,8 +1,8 @@
 import 'package:films_hub/app/data/repositories/films/omdb_films_repository.dart';
 import 'package:films_hub/app/domain/models/movie_list_card_model.dart';
 import 'package:films_hub/app/domain/models/settings_arguments.dart';
-import 'package:films_hub/app/domain/models/tab.dart';
-import 'package:films_hub/app/domain/models/tabs_source.dart';
+import 'package:films_hub/app/presentation/features/main/models/tab.dart';
+import 'package:films_hub/app/presentation/features/main/models/tabs_source.dart';
 import 'package:films_hub/app/domain/repositories/films/abstract_films_repository.dart';
 import 'package:films_hub/app/components/behaviors/custom_scroll_behavior.dart';
 import 'package:films_hub/app/components/colors/custom_colors.dart';
