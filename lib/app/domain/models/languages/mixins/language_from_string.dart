@@ -11,6 +11,8 @@ mixin LanguageFromString {
         return Language.english;
       case 'French':
         return Language.french;
+      case 'Spanish':
+        return Language.spanish ;
       default:
         return Language.unknown;
     }
