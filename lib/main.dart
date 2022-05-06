@@ -12,6 +12,7 @@ import 'package:films_hub/app/error_bloc/error_event.dart';
 import 'package:films_hub/app/presentation/features/catalog/pages/catalog_page.dart';
 import 'package:films_hub/app/presentation/features/details/pages/details_movie_page.dart';
 import 'package:films_hub/app/presentation/features/feed/pages/feed_page.dart';
+import 'package:films_hub/app/presentation/features/filtering/bloc/filtering_page_bloc.dart';
 import 'package:films_hub/app/presentation/features/main/bloc/main_block.dart';
 import 'package:films_hub/app/presentation/features/main/pages/main_page.dart';
 import 'package:films_hub/app/presentation/features/no_found/pages/not_found_page.dart';
@@ -73,48 +74,49 @@ class MyApp extends StatelessWidget {
             builder: (context) {
               return BlocProvider<ErrorBloc>(
                 lazy: false,
-                create: (_) => ErrorBloc(context),
-                child: MultiRepositoryProvider(
-                  providers: [
-                    RepositoryProvider<AbstractFilmsRepository>(
-                      lazy: false,
-                      create: (BuildContext context) => OMDBFilmsRepository(
-                          client: OMDBClient(
-                              onErrorHandler: (String code, String message) {
-                        context.read<ErrorBloc>().add(
+                create: (BuildContext providerContext) =>
+                    ErrorBloc(providerContext),
+                child: RepositoryProvider<AbstractFilmsRepository>(
+                  lazy: false,
+                  create: (providerContext) => OMDBFilmsRepository(
+                    client: OMDBClient(
+                      onErrorHandler: (String code, String message) {
+                        providerContext.read<ErrorBloc>().add(
                             ShowDialogEvent(title: code, message: message));
-                      })),
+                      },
                     ),
-                    RepositoryProvider<TabsSource>(
+                  ),
+                  child: BlocProvider<FilteringPageBloc>(
+                    lazy: false,
+                    create: (providerContext) => FilteringPageBloc(
+                        repository:
+                            providerContext.read<AbstractFilmsRepository>()),
+                    child: RepositoryProvider<TabsSource>(
                       lazy: false,
-                      create: (BuildContext context) => _BaseTabsSource(
+                      create: (_) => const _BaseTabsSource(
                         [
                           NavigationTab(
-                            icon: const Icon(Icons.list),
+                            icon: Icon(Icons.list),
                             label: 'Feed',
                             page: FeedPage(
                               title: 'Feed',
-                              filmsRepository:
-                                  context.read<AbstractFilmsRepository>(),
                             ),
                           ),
                           NavigationTab(
-                            icon: const Icon(Icons.grid_view),
+                            icon: Icon(Icons.grid_view),
                             label: 'Catalog',
                             page: CatalogPage(
                               title: 'Catalog',
-                              filmsRepository:
-                                  context.read<AbstractFilmsRepository>(),
                             ),
                           ),
                         ],
                       ),
+                      child: BlocProvider<MainBloc>(
+                        create: (providerContext) => MainBloc(
+                            tabsSource: providerContext.read<TabsSource>()),
+                        child: const MainPage(),
+                      ),
                     ),
-                  ],
-                  child: BlocProvider<MainBloc>(
-                    create: (BuildContext context) =>
-                        MainBloc(tabsSource: context.read<TabsSource>()),
-                    child: const MainPage(),
                   ),
                 ),
               );
