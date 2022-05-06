@@ -45,104 +45,106 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     var fontFamily = "Comfortaa";
     return MaterialApp(
-        builder: (context, child) {
-          return ScrollConfiguration(
-            behavior: CustomScrollBehavior(),
-            child: child ?? Container(),
-          );
-        },
-        debugShowCheckedModeBanner: false,
-        title: 'Movies Hub',
-        themeMode: ThemeMode.system,
-        darkTheme: ThemeData(
-            brightness: Brightness.dark,
-            primarySwatch: CustomColors.darkBlack,
-            fontFamily: fontFamily,
-            shadowColor: Colors.white.withOpacity(0.08),
-            scaffoldBackgroundColor: Colors.black),
-        theme: ThemeData(
-          brightness: Brightness.light,
-          primarySwatch: Colors.grey,
-          shadowColor: Colors.black.withOpacity(0.3),
+      builder: (context, child) {
+        return ScrollConfiguration(
+          behavior: CustomScrollBehavior(),
+          child: child ?? Container(),
+        );
+      },
+      debugShowCheckedModeBanner: false,
+      title: 'Movies Hub',
+      themeMode: ThemeMode.system,
+      darkTheme: ThemeData(
+          brightness: Brightness.dark,
+          primarySwatch: CustomColors.darkBlack,
           fontFamily: fontFamily,
-        ),
-        initialRoute: MainPage.navigationPath,
-        onGenerateRoute: (RouteSettings settings) {
-          if (settings.name == MainPage.navigationPath) {
-                return MaterialPageRoute(
-              builder: (context) {
-                return  BlocProvider<ErrorBloc>(
-                  lazy: false,
-                  create: (_) => ErrorBloc(context),
-                  child: RepositoryProvider<OMDBClient>(
-                    lazy: false,
-                      create : (BuildContext context) =>
-                          OMDBClient(onErrorHandler: (String code, String message) {
-                            context
-                                .read<ErrorBloc>()
-                                .add(ShowDialogEvent(title: code, message: message));
-                          }),
-                    child: RepositoryProvider<AbstractFilmsRepository>(
-                        lazy: false,
-                        create: (BuildContext context) =>
-                            OMDBFilmsRepository(client: context.read<OMDBClient>()),
-                        child: RepositoryProvider<TabsSource>(
-                          lazy: false,
-                          create: (BuildContext context) => _BaseTabsSource(
-                            [
-                              NavigationTab(
-                                icon: const Icon(Icons.list),
-                                label: 'Feed',
-                                page: FeedPage(
-                                  title: 'Feed',
-                                  filmsRepository: context.read<AbstractFilmsRepository>(),
-                                ),
-                              ),
-                              NavigationTab(
-                                icon: const Icon(Icons.grid_view),
-                                label: 'Catalog',
-                                page: CatalogPage(
-                                  title: 'Catalog',
-                                  filmsRepository: context.read<AbstractFilmsRepository>(),
-                                ),
-                              ),
-                            ],
-                          ),
-                          child: BlocProvider<MainBloc>(
-                            create: (BuildContext context) =>
-                                MainBloc(tabsSource: context.read<TabsSource>()),
-                            child: const MainPage(),
-                          ),
-                        )),
-                  ),
-                );
-              },
-            );
-          }
-
-          if (settings.name == SettingsPage.navigationPath) {
-            final SettingsArguments arguments =
-                settings.arguments as SettingsArguments;
-            return MaterialPageRoute(
-              builder: (BuildContext context) {
-                return SettingsPage(arguments: arguments);
-              },
-            );
-          }
-
-          if (settings.name == DetailsMoviePage.navigationPath) {
-            final MovieCardModel model = settings.arguments as MovieCardModel;
-            return MaterialPageRoute(
-              builder: (BuildContext context) {
-                return DetailsMoviePage(model: model);
-              },
-            );
-          }
-
+          shadowColor: Colors.white.withOpacity(0.08),
+          scaffoldBackgroundColor: Colors.black),
+      theme: ThemeData(
+        brightness: Brightness.light,
+        primarySwatch: Colors.grey,
+        shadowColor: Colors.black.withOpacity(0.3),
+        fontFamily: fontFamily,
+      ),
+      initialRoute: MainPage.navigationPath,
+      onGenerateRoute: (RouteSettings settings) {
+        if (settings.name == MainPage.navigationPath) {
           return MaterialPageRoute(
-            builder: (_) => const NotFoundPage(),
+            builder: (context) {
+              return BlocProvider<ErrorBloc>(
+                lazy: false,
+                create: (_) => ErrorBloc(context),
+                child: MultiRepositoryProvider(
+                  providers: [
+                    RepositoryProvider<AbstractFilmsRepository>(
+                      lazy: false,
+                      create: (BuildContext context) => OMDBFilmsRepository(
+                          client: OMDBClient(
+                              onErrorHandler: (String code, String message) {
+                        context.read<ErrorBloc>().add(
+                            ShowDialogEvent(title: code, message: message));
+                      })),
+                    ),
+                    RepositoryProvider<TabsSource>(
+                      lazy: false,
+                      create: (BuildContext context) => _BaseTabsSource(
+                        [
+                          NavigationTab(
+                            icon: const Icon(Icons.list),
+                            label: 'Feed',
+                            page: FeedPage(
+                              title: 'Feed',
+                              filmsRepository:
+                                  context.read<AbstractFilmsRepository>(),
+                            ),
+                          ),
+                          NavigationTab(
+                            icon: const Icon(Icons.grid_view),
+                            label: 'Catalog',
+                            page: CatalogPage(
+                              title: 'Catalog',
+                              filmsRepository:
+                                  context.read<AbstractFilmsRepository>(),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                  child: BlocProvider<MainBloc>(
+                    create: (BuildContext context) =>
+                        MainBloc(tabsSource: context.read<TabsSource>()),
+                    child: const MainPage(),
+                  ),
+                ),
+              );
+            },
           );
-        },
-      );
+        }
+
+        if (settings.name == SettingsPage.navigationPath) {
+          final SettingsArguments arguments =
+              settings.arguments as SettingsArguments;
+          return MaterialPageRoute(
+            builder: (BuildContext context) {
+              return SettingsPage(arguments: arguments);
+            },
+          );
+        }
+
+        if (settings.name == DetailsMoviePage.navigationPath) {
+          final MovieCardModel model = settings.arguments as MovieCardModel;
+          return MaterialPageRoute(
+            builder: (BuildContext context) {
+              return DetailsMoviePage(model: model);
+            },
+          );
+        }
+
+        return MaterialPageRoute(
+          builder: (_) => const NotFoundPage(),
+        );
+      },
+    );
   }
 }
