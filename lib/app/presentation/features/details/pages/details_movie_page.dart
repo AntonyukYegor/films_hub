@@ -1,4 +1,4 @@
-import 'package:films_hub/app/domain/models/movie_list_card_model.dart';
+import 'package:films_hub/app/presentation/common/models/movie_list_card_model.dart';
 import 'package:films_hub/app/presentation/common/widgets/appbar/app_bar_flexible_space.dart';
 import 'package:films_hub/app/presentation/common/widgets/app_theme_card_background.dart';
 import 'package:films_hub/app/presentation/common/widgets/poster.dart';

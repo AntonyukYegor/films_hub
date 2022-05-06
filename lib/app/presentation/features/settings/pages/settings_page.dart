@@ -1,4 +1,4 @@
-import 'package:films_hub/app/domain/models/settings_arguments.dart';
+import 'package:films_hub/app/presentation/features/settings/models/settings_arguments.dart';
 import 'package:films_hub/app/presentation/common/widgets/appbar/app_bar_flexible_space.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

@@ -1,10 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
-
 part 'movie_details_omdb_dto.g.dart';
 
-class SearchResponseWithMoviesDetails {
-  
-}
 
 @JsonSerializable()
 class MovieDetailsOMDBDTO {

@@ -1,7 +1,7 @@
 import 'package:films_hub/app/components/delayed_action.dart';
 import 'package:films_hub/app/domain/models/films/abstract_film.dart';
 import 'package:films_hub/app/domain/models/filters/abstract_filter.dart';
-import 'package:films_hub/app/domain/models/settings_arguments.dart';
+import 'package:films_hub/app/presentation/features/settings/models/settings_arguments.dart';
 import 'package:films_hub/app/presentation/common/widgets/appbar/app_bar_flexible_space.dart';
 import 'package:films_hub/app/presentation/features/filtering/bloc/filtering_page_bloc.dart';
 import 'package:films_hub/app/presentation/features/filtering/bloc/filtering_page_event.dart';

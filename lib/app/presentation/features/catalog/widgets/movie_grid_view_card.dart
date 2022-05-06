@@ -1,4 +1,4 @@
-import 'package:films_hub/app/domain/models/movie_list_card_model.dart';
+import 'package:films_hub/app/presentation/common/models/movie_list_card_model.dart';
 import 'package:films_hub/app/presentation/features/catalog/widgets/blur_image_background_tile.dart';
 import 'package:films_hub/app/presentation/features/details/pages/details_movie_page.dart';
 import 'package:films_hub/app/presentation/common/widgets/buttons/favorite_checked_button.dart';
