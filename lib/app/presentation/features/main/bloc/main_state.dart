@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:films_hub/app/domain/models/tabs_source.dart';
+import 'package:films_hub/app/presentation/features/main/models/tabs_source.dart';
 import 'package:flutter/cupertino.dart';
 
 class MainState extends Equatable {

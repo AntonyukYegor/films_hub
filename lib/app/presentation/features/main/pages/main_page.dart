@@ -1,4 +1,3 @@
-import 'package:films_hub/app/domain/models/tabs_source.dart';
 import 'package:films_hub/app/presentation/common/widgets/blur/symmetrical_blur.dart';
 import 'package:films_hub/app/presentation/features/main/bloc/main_block.dart';
 import 'package:films_hub/app/presentation/features/main/bloc/main_event.dart';

@@ -1,6 +1,6 @@
-import 'package:films_hub/app/domain/models/tabs_source.dart';
 import 'package:films_hub/app/presentation/features/main/bloc/main_event.dart';
 import 'package:films_hub/app/presentation/features/main/bloc/main_state.dart';
+import 'package:films_hub/app/presentation/features/main/models/tabs_source.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MainBloc extends Bloc<MainEvent, MainState> {
