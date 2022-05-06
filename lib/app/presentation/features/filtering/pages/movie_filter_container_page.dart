@@ -136,27 +136,13 @@ class _MovieFilterContainerPageState extends State<MovieFilterContainerPage> {
                   ),
                 ),
                 BlocBuilder<FilteringPageBloc, FilteringPageState>(
-                  buildWhen: (oldState, newState) =>
-                      oldState.isLoading != newState.isLoading &&
-                      newState.films.films.isEmpty !=
-                          oldState.films.films.isEmpty,
+                  buildWhen: (oldState, newState) => oldState != newState,
                   builder: (context, state) => SliverToBoxAdapter(
-                    child: (state.isLoading == false &&
-                            state.filteredFilms.films.isEmpty)
+                    child: state.filteredFilms.films.isEmpty
                         ? const NotGettingAnyResults()
-                        : const SizedBox(),
-                  ),
-                ),
-                BlocBuilder<FilteringPageBloc, FilteringPageState>(
-                  buildWhen: (oldState, newState) =>
-                      oldState.isLoading != newState.isLoading &&
-                      newState.page != oldState.page,
-                  builder: (context, state) => SliverToBoxAdapter(
-                    child: (state.isLoading == false &&
-                            state.filteredFilms.films.isNotEmpty &&
-                            state.page >= state.films.pagesCount)
-                        ? const DontHaveMoreResults()
-                        : const SizedBox(),
+                        : state.page >= state.films.pagesCount
+                            ? const DontHaveMoreResults()
+                            : const SizedBox(),
                   ),
                 ),
                 const SliverPadding(
