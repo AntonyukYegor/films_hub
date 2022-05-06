@@ -1,4 +1,4 @@
-import 'package:films_hub/app/domain/models/tab.dart';
+import 'package:films_hub/app/presentation/features/main/models/tab.dart';
 import 'package:flutter/material.dart';
 
 abstract class TabsSource {
