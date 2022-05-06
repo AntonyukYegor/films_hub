@@ -1,4 +1,4 @@
-import 'package:films_hub/app/domain/models/stars_rate_progress_bar_model.dart';
+import 'package:films_hub/app/presentation/common/widgets/rating/models/stars_rate_progress_bar_model.dart';
 import 'package:films_hub/app/presentation/common/widgets/rating/stars_rate_progress_bar.dart';
 import 'package:flutter/material.dart';
 
