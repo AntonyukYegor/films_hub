@@ -1,6 +1,6 @@
 import 'package:films_hub/app/domain/models/languages/language.dart';
 
-mixin StringToLanguage {
+mixin LanguageFromString {
   String get language;
 
   Language stringToLanguage() {
