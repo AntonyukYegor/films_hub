@@ -1,7 +1,6 @@
-import 'package:films_hub/app/domain/models/languages/string_to_language.dart';
+import 'package:films_hub/app/domain/models/languages/mixins/string_to_language.dart';
 
 abstract class AbstractFilm with StringToLanguage {
-
   const AbstractFilm();
 
   String get id;
