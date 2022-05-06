@@ -4,10 +4,8 @@ import 'package:films_hub/app/presentation/features/main/bloc/main_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MainBloc extends Bloc<MainEvent, MainState> {
-
   MainBloc({required TabsSource tabsSource})
-      :
-        super(MainState(selectedIndex: 0, tabsSource: tabsSource)) {
+      : super(MainState(selectedIndex: 0, tabsSource: tabsSource)) {
     on<SelectedIndexChangedEvent>(_onChangedSelectedIndex);
   }
 
