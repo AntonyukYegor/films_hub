@@ -6,6 +6,7 @@ import 'package:films_hub/app/presentation/features/settings/bloc/settings_state
 import 'package:films_hub/app/presentation/common/widgets/appbar/app_bar_flexible_space.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -32,7 +33,6 @@ class SettingsPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text( '${SettingsLocal.user}${arguments.name}'),
             BlocBuilder<SettingsBloc, SettingsState>(
                 buildWhen: (oldState, newState) =>
                 oldState.name != newState.name,
