@@ -1,3 +1,4 @@
+import 'package:films_hub/app/components/constants.dart';
 import 'package:films_hub/app/data/clients/omdb_client.dart';
 import 'package:films_hub/app/data/repositories/films/omdb_films_repository.dart';
 import 'package:films_hub/app/presentation/common/models/movie_list_card_model.dart';
@@ -43,12 +44,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var fontFamily = "Comfortaa";
     return MaterialApp(
       builder: (context, child) {
         return ScrollConfiguration(
           behavior: CustomScrollBehavior(),
-          child: child ?? Container(),
+          child: child ?? const SizedBox(),
         );
       },
       debugShowCheckedModeBanner: false,
@@ -57,14 +57,14 @@ class MyApp extends StatelessWidget {
       darkTheme: ThemeData(
           brightness: Brightness.dark,
           primarySwatch: CustomColors.darkBlack,
-          fontFamily: fontFamily,
+          fontFamily: CommonLocal.fontFamily,
           shadowColor: Colors.white.withOpacity(0.08),
           scaffoldBackgroundColor: Colors.black),
       theme: ThemeData(
         brightness: Brightness.light,
         primarySwatch: Colors.grey,
         shadowColor: Colors.black.withOpacity(0.3),
-        fontFamily: fontFamily,
+        fontFamily: CommonLocal.fontFamily,
       ),
       initialRoute: MainPage.navigationPath,
       onGenerateRoute: (RouteSettings settings) {
@@ -95,17 +95,17 @@ class MyApp extends StatelessWidget {
                       create: (_) => const _BaseTabsSource(
                         [
                           NavigationTab(
-                            icon: Icon(Icons.list),
-                            label: 'Feed',
+                            icon: FeedLocal.navigationBarIcon,
+                            label: FeedLocal.title,
                             page: FeedPage(
-                              title: 'Feed',
+                              title: FeedLocal.title,
                             ),
                           ),
                           NavigationTab(
-                            icon: Icon(Icons.grid_view),
-                            label: 'Catalog',
+                            icon: CatalogLocal.navigationBarIcon,
+                            label: CatalogLocal.title,
                             page: CatalogPage(
-                              title: 'Catalog',
+                              title: CatalogLocal.title,
                             ),
                           ),
                         ],

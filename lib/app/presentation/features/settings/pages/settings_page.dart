@@ -1,3 +1,4 @@
+import 'package:films_hub/app/components/constants.dart';
 import 'package:films_hub/app/presentation/common/widgets/buttons/settings_button.dart';
 import 'package:films_hub/app/presentation/features/settings/bloc/settings_bloc.dart';
 import 'package:films_hub/app/presentation/features/settings/bloc/settings_event.dart';
@@ -5,33 +6,12 @@ import 'package:films_hub/app/presentation/features/settings/bloc/settings_state
 import 'package:films_hub/app/presentation/common/widgets/appbar/app_bar_flexible_space.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
 
   static const navigationPath = '/settings';
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider<SettingsBloc>(
-        lazy: false,
-        create: (_) => SettingsBloc()
-          ..add(
-            LoadNameEvent(),
-          ),
-        child: const SettingsPageContent());
-  }
-}
-
-class SettingsPageContent extends StatefulWidget {
-  const SettingsPageContent({Key? key}) : super(key: key);
-
-  @override
-  State<SettingsPageContent> createState() => _SettingsPageState();
-}
-
-class _SettingsPageState extends State<SettingsPageContent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,16 +21,18 @@ class _SettingsPageState extends State<SettingsPageContent> {
         centerTitle: true,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(32),
-            bottomRight: Radius.circular(32),
+            bottomLeft: Radius.circular(AppStyle.appBarBorderRadius),
+            bottomRight: Radius.circular(AppStyle.appBarBorderRadius),
           ),
         ),
-        flexibleSpace: const AppBarFlexibleSpace(32, "Settings"),
+        flexibleSpace: const AppBarFlexibleSpace(
+            AppStyle.appBarBorderRadius, SettingsLocal.title),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Text( '${SettingsLocal.user}${arguments.name}'),
             BlocBuilder<SettingsBloc, SettingsState>(
                 buildWhen: (oldState, newState) =>
                 oldState.name != newState.name,
@@ -75,7 +57,7 @@ class _SettingsPageState extends State<SettingsPageContent> {
                 mainAxisSize: MainAxisSize.min,
                 children: const <Widget>[
                   Icon(Icons.exit_to_app),
-                  Text('Exit'),
+                  Text(SettingsLocal.exit),
                 ],
               ),
             ),
@@ -87,7 +69,7 @@ class _SettingsPageState extends State<SettingsPageContent> {
                 mainAxisSize: MainAxisSize.min,
                 children: const <Widget>[
                   Icon(Icons.arrow_back),
-                  Text('Back'),
+                  Text(SettingsLocal.back),
                 ],
               ),
             ),

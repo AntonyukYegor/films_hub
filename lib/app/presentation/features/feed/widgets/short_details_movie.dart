@@ -1,3 +1,4 @@
+import 'package:films_hub/app/components/constants.dart';
 import 'package:flutter/material.dart';
 
 class ShortDetailsMovie extends StatelessWidget {
@@ -47,7 +48,7 @@ class ShortDetailsMovie extends StatelessWidget {
           ),
           const Align(
             alignment: AlignmentDirectional.topStart,
-            child: Text("Description:",
+            child: Text(ShortDetailsLocal.description,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   fontSize: 14,
@@ -59,7 +60,7 @@ class ShortDetailsMovie extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(top: 8),
               child: Text(
-                ' ' * 5 + _description,
+                CommonLocal.tab + _description,
                 textAlign: TextAlign.justify,
                 style: const TextStyle(
                   fontSize: 12,

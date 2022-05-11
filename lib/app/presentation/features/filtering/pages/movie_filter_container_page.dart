@@ -1,3 +1,4 @@
+import 'package:films_hub/app/components/constants.dart';
 import 'package:films_hub/app/components/delayed_action.dart';
 import 'package:films_hub/app/domain/models/films/abstract_film.dart';
 import 'package:films_hub/app/domain/models/filters/abstract_filter.dart';
@@ -146,7 +147,7 @@ class _MovieFilterContainerPageState extends State<MovieFilterContainerPage> {
                   ),
                 ),
                 const SliverPadding(
-                  padding: EdgeInsets.only(bottom: 80),
+                  padding: EdgeInsets.only(bottom: AppStyle.safePadding),
                 ),
               ],
             );
