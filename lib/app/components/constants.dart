@@ -37,9 +37,16 @@ class ShortDetailsLocal {
   static const String description = 'Description:';
 }
 
+class DetailsMovieLocal {
+  static const String description = 'Description: ';
+  static const String title = "Details";
+  static const String release = 'Release: ';
+}
+
 class AppStyle {
   static const double appBarBorderRadius = 32;
   static const double blurRadius = 15;
   static const double frostBlurRadiusSigma = 20;
   static const String posterPlaceHolderPath = 'assets/images/poster-placeholder.jpg';
+  static const double safePadding = 80;
 }
