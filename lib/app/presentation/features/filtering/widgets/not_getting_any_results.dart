@@ -1,3 +1,4 @@
+import 'package:films_hub/app/components/constants.dart';
 import 'package:flutter/material.dart';
 
 class NotGettingAnyResults extends StatelessWidget {
@@ -15,7 +16,7 @@ class NotGettingAnyResults extends StatelessWidget {
             child: Icon(Icons.search),
           ),
           Text(
-            "Hmmm, we're not getting any results. Our bad - try another search",
+            CommonLocal.notGettingAnyResults,
             textAlign: TextAlign.center,
           ),
         ],

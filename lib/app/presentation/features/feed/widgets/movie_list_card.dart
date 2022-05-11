@@ -1,3 +1,4 @@
+import 'package:films_hub/app/components/constants.dart';
 import 'package:films_hub/app/presentation/common/models/movie_list_card_model.dart';
 import 'package:films_hub/app/presentation/features/details/pages/details_movie_page.dart';
 import 'package:films_hub/app/presentation/common/widgets/buttons/favorite_checked_transparent_button.dart';
@@ -107,7 +108,7 @@ class MovieListCard extends StatelessWidget {
                   width: double.infinity,
                   child: PrimaryButton(
                     const Center(
-                      child: Text('More'),
+                      child: Text(MovieLocal.more),
                     ),
                     onPressed: () {
                       Navigator.pushNamed(

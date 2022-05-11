@@ -1,3 +1,4 @@
+import 'package:films_hub/app/components/constants.dart';
 import 'package:films_hub/app/domain/models/films/abstract_film.dart';
 import 'package:films_hub/app/domain/models/filters/abstract_filter.dart';
 import 'package:films_hub/app/domain/models/filters/films/film_future_list_filter.dart';
@@ -30,7 +31,7 @@ class _MovieFilterState extends State<MovieFilter>
   @override
   Widget build(BuildContext context) {
     return Stack(children: [
-      const AppThemeCardBackground('https://picsum.photos/4', 8, 0),
+      const AppThemeCardBackground(AppStyle.randomBackgroundImageUrl, 8, 0),
       Column(
         children: [
           Padding(
@@ -60,7 +61,7 @@ class _MovieFilterState extends State<MovieFilter>
                     child: Padding(
                       padding: const EdgeInsets.only(left: 4.0),
                       child: Text(
-                        "Filters",
+                        FilteringLocal.title,
                         style: TextStyle(
                           color: Theme.of(context)
                                   .textTheme
@@ -82,7 +83,7 @@ class _MovieFilterState extends State<MovieFilter>
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         const Text(
-                          "By pattern:",
+                          FilteringLocal.byPattern,
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         Padding(
@@ -100,7 +101,7 @@ class _MovieFilterState extends State<MovieFilter>
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         const Text(
-                          "By language:",
+                          FilteringLocal.byLanguage,
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         ShaderMask(
@@ -130,7 +131,7 @@ class _MovieFilterState extends State<MovieFilter>
                   Row(
                     children: [
                       const Text(
-                        "By rating:",
+                        FilteringLocal.byRating,
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       Expanded(
@@ -146,7 +147,7 @@ class _MovieFilterState extends State<MovieFilter>
                           padding: const EdgeInsets.only(right: 8),
                           child: ElevatedButton(
                             onPressed: resetFilters,
-                            child: const Text("Reset"),
+                            child: const Text(FilteringLocal.reset),
                           ),
                         ),
                       ),
@@ -155,7 +156,7 @@ class _MovieFilterState extends State<MovieFilter>
                           padding: const EdgeInsets.only(left: 8),
                           child: ElevatedButton(
                             onPressed: onPressedApply,
-                            child: const Text("Apply"),
+                            child: const Text( FilteringLocal.apply),
                           ),
                         ),
                       ),

@@ -52,19 +52,19 @@ class MyApp extends StatelessWidget {
         );
       },
       debugShowCheckedModeBanner: false,
-      title: 'Movies Hub',
+      title: AppLocal.appName,
       themeMode: ThemeMode.system,
       darkTheme: ThemeData(
           brightness: Brightness.dark,
           primarySwatch: CustomColors.darkBlack,
-          fontFamily: CommonLocal.fontFamily,
+          fontFamily: AppStyle.fontFamily,
           shadowColor: Colors.white.withOpacity(0.08),
           scaffoldBackgroundColor: Colors.black),
       theme: ThemeData(
         brightness: Brightness.light,
         primarySwatch: Colors.grey,
         shadowColor: Colors.black.withOpacity(0.3),
-        fontFamily: CommonLocal.fontFamily,
+        fontFamily: AppStyle.fontFamily,
       ),
       initialRoute: MainPage.navigationPath,
       onGenerateRoute: (RouteSettings settings) {

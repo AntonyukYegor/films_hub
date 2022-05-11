@@ -1,3 +1,4 @@
+import 'package:films_hub/app/components/constants.dart';
 import 'package:flutter/material.dart';
 
 class DontHaveMoreResults extends StatelessWidget {
@@ -9,7 +10,7 @@ class DontHaveMoreResults extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       child: Center(
         child: Text(
-          "Don't have more result.",
+          CommonLocal.dontHaveMoreResults,
           style: TextStyle(color: Theme.of(context).primaryColor),
         ),
       ),

@@ -59,7 +59,7 @@ class _MovieFilterContainerPageState extends State<MovieFilterContainerPage> {
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
           SliverAppBar(
             backgroundColor: Colors.transparent,
-            expandedHeight: 100,
+            expandedHeight: AppStyle.expandedHeight,
             pinned: true,
             elevation: 0,
             centerTitle: true,

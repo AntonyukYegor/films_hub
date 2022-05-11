@@ -29,7 +29,7 @@ class DetailsMoviePage extends StatelessWidget {
             bottomRight: Radius.circular(AppStyle.appBarBorderRadius),
           ),
         ),
-        flexibleSpace: const AppBarFlexibleSpace(32, "Details"),
+        flexibleSpace: const AppBarFlexibleSpace(32, DetailsMovieLocal.title),
       ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -165,7 +165,7 @@ class DetailsMoviePage extends StatelessWidget {
                                 )),
                             const Padding(
                               padding: EdgeInsets.only(top: 32.0),
-                              child: Text("Description:",
+                              child: Text(DetailsMovieLocal.description,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,

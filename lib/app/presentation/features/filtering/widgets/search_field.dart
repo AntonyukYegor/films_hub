@@ -1,3 +1,4 @@
+import 'package:films_hub/app/components/constants.dart';
 import 'package:films_hub/app/presentation/common/widgets/app_theme_card_background.dart';
 import 'package:flutter/material.dart';
 
@@ -37,7 +38,7 @@ class SearchFieldState extends State<SearchField> {
       padding: const EdgeInsets.only(left: 16, top: 32, right: 16),
       child: Stack(
         children: [
-          const AppThemeCardBackground('https://picsum.photos/4', 8, 0),
+          const AppThemeCardBackground(AppStyle.randomBackgroundImageUrl, 8, 0),
           ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(8)),
             child: TextField(

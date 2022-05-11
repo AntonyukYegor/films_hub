@@ -39,14 +39,14 @@ class SettingsPage extends StatelessWidget {
                 builder: (context2, state) {
                   return Text(state.name);
                 }),
-            SettingsButton('Get name', onPressed: () {
+            SettingsButton(SettingsLocal.getName, onPressed: () {
               context.read<SettingsBloc>().add(LoadNameEvent());
             }),
-            SettingsButton('Save name',
+            SettingsButton(SettingsLocal.saveName,
                 onPressed: () => context
                     .read<SettingsBloc>()
                     .add(const SaveNameEvent(name: 'Egor'))),
-            SettingsButton('Clear name',
+            SettingsButton(SettingsLocal.clearName,
                 onPressed: () =>
                     context.read<SettingsBloc>().add(ClearNameEvent())),
             ElevatedButton(
