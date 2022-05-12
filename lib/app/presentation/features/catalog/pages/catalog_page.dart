@@ -1,7 +1,7 @@
 import 'package:films_hub/app/domain/models/films/abstract_film.dart';
-import 'package:films_hub/app/presentation/features/filtering/pages/movie_filter_container_page.dart';
 import 'package:films_hub/app/presentation/features/catalog/widgets/movies_grid.dart';
 import 'package:films_hub/app/presentation/features/catalog/widgets/app_theme_grid_view_movies_cards_shimmer.dart';
+import 'package:films_hub/app/presentation/features/search/pages/movie_search_container_page.dart';
 import 'package:flutter/material.dart';
 
 class CatalogPage extends StatelessWidget {
@@ -14,7 +14,7 @@ class CatalogPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MovieFilterContainerPage(
+    return MovieSearchContainerPage(
       builder: (BuildContext context, List<AbstractFilm> films) =>
           MoviesGrid(films: films),
       title: _title,

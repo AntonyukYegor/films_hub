@@ -18,6 +18,11 @@ class CatalogLocal {
   static const Icon navigationBarIcon = Icon(Icons.grid_view);
 }
 
+class FavoriteLocal {
+  static const title = 'Favorite';
+  static const Icon navigationBarIcon = Icon(Icons.favorite);
+}
+
 class CommonLocal {
   static const String tab = '     ';
   static const String notGettingAnyResults = "Hmmm, we're not getting any results. Our bad - try another search";
@@ -71,6 +76,6 @@ class AppStyle {
   static const String posterPlaceHolderPath = 'assets/images/poster-placeholder.jpg';
   static const double safePadding = 80;
   static const String randomBackgroundImageUrl = 'https://picsum.photos/4';
-  static const double expandedHeight = 100;
+  static const double expandedHeight = 150;
   static const String fontFamily = 'Comfortaa';
 }

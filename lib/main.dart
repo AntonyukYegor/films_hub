@@ -1,7 +1,9 @@
 import 'package:films_hub/app/components/constants.dart';
 import 'package:films_hub/app/data/clients/omdb_client.dart';
+import 'package:films_hub/app/data/repositories/films/extended_fake_films_repository.dart';
 import 'package:films_hub/app/data/repositories/films/omdb_films_repository.dart';
 import 'package:films_hub/app/presentation/common/models/movie_list_card_model.dart';
+import 'package:films_hub/app/presentation/features/favorites/pages/favorites_page.dart';
 import 'package:films_hub/app/presentation/features/main/models/tab.dart';
 import 'package:films_hub/app/presentation/features/main/models/tabs_source.dart';
 import 'package:films_hub/app/domain/repositories/films/abstract_films_repository.dart';
@@ -16,6 +18,8 @@ import 'package:films_hub/app/presentation/features/filtering/bloc/filtering_pag
 import 'package:films_hub/app/presentation/features/main/bloc/main_block.dart';
 import 'package:films_hub/app/presentation/features/main/pages/main_page.dart';
 import 'package:films_hub/app/presentation/features/no_found/pages/not_found_page.dart';
+import 'package:films_hub/app/presentation/features/search/bloc/search_page_bloc.dart';
+import 'package:films_hub/app/presentation/features/settings/bloc/settings_bloc.dart';
 import 'package:films_hub/app/presentation/features/settings/pages/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -86,34 +90,51 @@ class MyApp extends StatelessWidget {
                     ),
                   ),
                   child: BlocProvider<FilteringPageBloc>(
-                    lazy: false,
-                    create: (providerContext) => FilteringPageBloc(
-                        repository:
-                            providerContext.read<AbstractFilmsRepository>()),
-                    child: RepositoryProvider<TabsSource>(
+                    create: (providerContext) => FilteringPageBloc(),
+                    child: BlocProvider<SearchPageBloc>(
                       lazy: false,
-                      create: (_) => const _BaseTabsSource(
-                        [
-                          NavigationTab(
-                            icon: FeedLocal.navigationBarIcon,
-                            label: FeedLocal.title,
-                            page: FeedPage(
-                              title: FeedLocal.title,
-                            ),
+                      create: (providerContext) => SearchPageBloc(
+                          filteringPageBloc:
+                              providerContext.read<FilteringPageBloc>(),
+                          repository:
+                              providerContext.read<AbstractFilmsRepository>()),
+                      child: RepositoryProvider<AbstractFilmsRepository>(
+                        lazy: false,
+                        create: (providerContext) =>
+                            ExtendedFakeFilmsRepository(),
+                        child: RepositoryProvider<TabsSource>(
+                          lazy: false,
+                          create: (_) => const _BaseTabsSource(
+                            [
+                              NavigationTab(
+                                icon: FeedLocal.navigationBarIcon,
+                                label: FeedLocal.title,
+                                page: FeedPage(
+                                  title: FeedLocal.title,
+                                ),
+                              ),
+                              NavigationTab(
+                                icon: CatalogLocal.navigationBarIcon,
+                                label: CatalogLocal.title,
+                                page: CatalogPage(
+                                  title: CatalogLocal.title,
+                                ),
+                              ),
+                              NavigationTab(
+                                icon: FavoriteLocal.navigationBarIcon,
+                                label: FavoriteLocal.title,
+                                page: FavoritesPage(
+                                  title: FavoriteLocal.title,
+                                ),
+                              ),
+                            ],
                           ),
-                          NavigationTab(
-                            icon: CatalogLocal.navigationBarIcon,
-                            label: CatalogLocal.title,
-                            page: CatalogPage(
-                              title: CatalogLocal.title,
-                            ),
+                          child: BlocProvider<MainBloc>(
+                            create: (providerContext) => MainBloc(
+                                tabsSource: providerContext.read<TabsSource>()),
+                            child: const MainPage(),
                           ),
-                        ],
-                      ),
-                      child: BlocProvider<MainBloc>(
-                        create: (providerContext) => MainBloc(
-                            tabsSource: providerContext.read<TabsSource>()),
-                        child: const MainPage(),
+                        ),
                       ),
                     ),
                   ),
@@ -126,7 +147,9 @@ class MyApp extends StatelessWidget {
         if (settings.name == SettingsPage.navigationPath) {
           return MaterialPageRoute(
             builder: (BuildContext context) {
-              return const SettingsPage();
+              return BlocProvider<SettingsBloc>(
+                  create: (context) => SettingsBloc(),
+                  child: const SettingsPage());
             },
           );
         }
