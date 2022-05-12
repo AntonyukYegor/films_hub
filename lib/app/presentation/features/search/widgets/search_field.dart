@@ -54,7 +54,7 @@ class SearchFieldState extends State<SearchField> {
                 hoverColor: Theme.of(context).textTheme.titleSmall?.color,
                 enabledBorder: InputBorder.none,
                 focusedBorder: InputBorder.none,
-                labelText: 'Search',
+                labelText: SearchLocal.search,
                 labelStyle: TextStyle(
                   color: Theme.of(context).textTheme.titleSmall?.color,
                 ),
