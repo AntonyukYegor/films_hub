@@ -18,8 +18,8 @@ class CatalogLocal {
   static const Icon navigationBarIcon = Icon(Icons.grid_view);
 }
 
-class FavoriteLocal {
-  static const title = 'Favorite';
+class FavouritesLocal {
+  static const title = 'Favourites';
   static const Icon navigationBarIcon = Icon(Icons.favorite);
 }
 
