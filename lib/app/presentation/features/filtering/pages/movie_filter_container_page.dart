@@ -1,19 +1,19 @@
+import 'package:films_hub/app/components/constants.dart';
 import 'package:films_hub/app/components/delayed_action.dart';
-import 'package:films_hub/app/components/dialogs/error_dialog.dart';
 import 'package:films_hub/app/domain/models/films/abstract_film.dart';
-import 'package:films_hub/app/domain/models/films/abstract_films.dart';
-import 'package:films_hub/app/domain/models/films/films.dart';
 import 'package:films_hub/app/domain/models/filters/abstract_filter.dart';
-import 'package:films_hub/app/domain/models/filters/films/film_future_list_filter.dart';
 import 'package:films_hub/app/domain/models/settings_arguments.dart';
-import 'package:films_hub/app/domain/repositories/films/abstract_films_repository.dart';
 import 'package:films_hub/app/presentation/common/widgets/appbar/app_bar_flexible_space.dart';
+import 'package:films_hub/app/presentation/features/filtering/bloc/filtering_page_bloc.dart';
+import 'package:films_hub/app/presentation/features/filtering/bloc/filtering_page_event.dart';
+import 'package:films_hub/app/presentation/features/filtering/bloc/filtering_page_state.dart';
 import 'package:films_hub/app/presentation/features/filtering/widgets/dont_have_more_results.dart';
 import 'package:films_hub/app/presentation/features/filtering/widgets/movie_filter.dart';
 import 'package:films_hub/app/presentation/features/filtering/widgets/not_getting_any_results.dart';
 import 'package:films_hub/app/presentation/features/filtering/widgets/search_field.dart';
 import 'package:films_hub/app/presentation/features/settings/pages/settings_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MovieFilterContainerPage extends StatefulWidget {
   final Widget Function(BuildContext context, List<AbstractFilm> films)
@@ -21,7 +21,7 @@ class MovieFilterContainerPage extends StatefulWidget {
 
   final Widget Function(BuildContext context) _shimmerBuilder;
 
-  const MovieFilterContainerPage(this._filmsRepository,
+  const MovieFilterContainerPage(
       {Key? key,
       required this.title,
       required Widget Function(BuildContext context, List<AbstractFilm> films)
@@ -31,7 +31,6 @@ class MovieFilterContainerPage extends StatefulWidget {
         _shimmerBuilder = shimmerBuilder,
         super(key: key);
   final String title;
-  final AbstractFilmsRepository _filmsRepository;
 
   @override
   State<MovieFilterContainerPage> createState() =>
@@ -41,31 +40,14 @@ class MovieFilterContainerPage extends StatefulWidget {
 class _MovieFilterContainerPageState extends State<MovieFilterContainerPage> {
   static const double _appBarBorderRadius = 32;
 
-  AbstractFilms _films = Films(0, []);
-  AbstractFilms _filteredFilms = Films(0, []);
-
-  bool _showShimmer = true;
   ScrollController? _scrollController;
-  bool _isLoading = false;
-  int _page = 1;
 
   _MovieFilterContainerPageState();
 
-  String _searchText = "Batman";
-  AbstractFilter<Future<List<AbstractFilm>>> _currentFilter =
-      FilmFutureListFilter.empty();
-
   @override
-  void initState() {
-    _fetchDataForPage(_page, _films, _filteredFilms);
-    _scrollController?.addListener(_pagination);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _scrollController?.dispose();
-    super.dispose();
+  void didChangeDependencies() {
+    context.read<FilteringPageBloc>().add(ReloadDataEvent());
+    super.didChangeDependencies();
   }
 
   @override
@@ -118,9 +100,13 @@ class _MovieFilterContainerPageState extends State<MovieFilterContainerPage> {
               physics: const BouncingScrollPhysics(),
               slivers: [
                 SliverToBoxAdapter(
-                  child: SearchField(
-                    initialText: _searchText,
-                    onSearchFieldTextChanged: _onSearchFieldTextChanged,
+                  child: BlocBuilder<FilteringPageBloc, FilteringPageState>(
+                    buildWhen: (oldState, newState) =>
+                        oldState.searchText != newState.searchText,
+                    builder: (context, state) => SearchField(
+                      initialText: state.searchText,
+                      onSearchFieldTextChanged: _onSearchFieldTextChanged,
+                    ),
                   ),
                 ),
                 SliverToBoxAdapter(
@@ -134,26 +120,48 @@ class _MovieFilterContainerPageState extends State<MovieFilterContainerPage> {
                     child: MovieFilter(_applyFilter),
                   ),
                 ),
-                widget._builder(context, _filteredFilms.films.toList()),
-                SliverToBoxAdapter(
-                  child: _isLoading || _showShimmer
-                      ? widget._shimmerBuilder(context)
-                      : Container(),
+                BlocBuilder<FilteringPageBloc, FilteringPageState>(
+                  buildWhen: (oldState, newState) =>
+                      oldState.filteredFilms != newState.filteredFilms,
+                  builder: (context, state) =>
+                      widget._builder(context, state.filteredFilms.films),
                 ),
-                SliverToBoxAdapter(
-                  child: (_isLoading == false && _filteredFilms.films.isEmpty)
-                      ? const NotGettingAnyResults()
-                      : Container(),
+                BlocBuilder<FilteringPageBloc, FilteringPageState>(
+                  buildWhen: (oldState, newState) =>
+                      oldState.isLoading != newState.isLoading ||
+                      oldState.showShimmer != newState.showShimmer,
+                  builder: (context, state) => SliverToBoxAdapter(
+                    child: state.isLoading || state.showShimmer
+                        ? widget._shimmerBuilder(context)
+                        : const SizedBox(),
+                  ),
                 ),
-                SliverToBoxAdapter(
-                  child: (_isLoading == false &&
-                          _films.films.isNotEmpty &&
-                          _films.pagesCount <= _page)
-                      ? const DontHaveMoreResults()
-                      : Container(),
+                BlocBuilder<FilteringPageBloc, FilteringPageState>(
+                  buildWhen: (oldState, newState) =>
+                      oldState.isLoading != newState.isLoading &&
+                      newState.films.films.isEmpty !=
+                          oldState.films.films.isEmpty,
+                  builder: (context, state) => SliverToBoxAdapter(
+                    child: (state.isLoading == false &&
+                            state.filteredFilms.films.isEmpty)
+                        ? const NotGettingAnyResults()
+                        : const SizedBox(),
+                  ),
+                ),
+                BlocBuilder<FilteringPageBloc, FilteringPageState>(
+                  buildWhen: (oldState, newState) =>
+                      oldState.isLoading != newState.isLoading &&
+                      newState.page != oldState.page,
+                  builder: (context, state) => SliverToBoxAdapter(
+                    child: (state.isLoading == false &&
+                            state.filteredFilms.films.isNotEmpty &&
+                            state.page >= state.films.pagesCount)
+                        ? const DontHaveMoreResults()
+                        : const SizedBox(),
+                  ),
                 ),
                 const SliverPadding(
-                  padding: EdgeInsets.only(bottom: 80),
+                  padding: EdgeInsets.only(bottom: AppStyle.safePadding),
                 ),
               ],
             );
@@ -163,106 +171,28 @@ class _MovieFilterContainerPageState extends State<MovieFilterContainerPage> {
     );
   }
 
-  Future<void> _applyFilter(
-      AbstractFilter<Future<List<AbstractFilm>>> filter) async {
-    _currentFilter = filter;
-    _performFiltration();
-  }
-
-  void _performFiltration() {
-    if (mounted) {
-      setState(() {
-        _showShimmer = true;
-        _filteredFilms = Films(0, []);
-        _addFilteredFilms(_films, _filteredFilms);
-      });
-    }
-  }
-
-  Future<void> _addFilteredFilms(
-      AbstractFilms source, AbstractFilms target) async {
-    await _currentFilter.apply(Future.value(source.films.toList())).then(
-      (value) {
-        if (mounted) {
-          setState(() {
-            target.addAll(value);
-            _showShimmer = false;
-          });
-        }
-      },
-    );
+  void _applyFilter(AbstractFilter<Future<List<AbstractFilm>>> filter) async {
+    context.read<FilteringPageBloc>().add(ApplyFilterEvent(filter: filter));
   }
 
   void _onSearchFieldTextChanged(String text) {
+    var searchChangedEvent = SearchChangedEvent(search: text);
     DelayedAction.run(() {
-      setState(() {
-        _searchText = text;
-        _reload();
-      });
+      context.read<FilteringPageBloc>().add(searchChangedEvent);
     });
-  }
-
-  void _fetchDataForPage(
-      int page, AbstractFilms films, AbstractFilms filtrationFilms) async {
-    setState(() {
-      _isLoading = true;
-      _showShimmer = true;
-    });
-    widget._filmsRepository
-        .filmsAsync(
-            searchQuery: _searchText,
-            errorCallback: errorCallbackMethod,
-            page: page)
-        .then((value) {
-      if (mounted) {
-        setState(() {
-          films.update(value);
-
-          _addFilteredFilms(value, filtrationFilms);
-          _isLoading = false;
-        });
-      }
-    });
-  }
-
-  void errorCallbackMethod(String errorMessage) {
-    showErrorDialog(context, error: errorMessage);
   }
 
   static const int _paginationOffset = 200;
 
   void _pagination() {
-    if (_isLoading == false &&
-        ((_scrollController?.position.pixels ?? 0) >=
-            (_scrollController?.position.maxScrollExtent ??
-                0 - _paginationOffset)) &&
-        (_films.pagesCount > _page)) {
-      setState(() {
-        _page += 1;
-        _fetchDataForPage(
-          _page,
-          _films,
-          _filteredFilms,
-        );
-      });
+    if (((_scrollController?.position.pixels ?? 0) >=
+        (_scrollController?.position.maxScrollExtent ??
+            0 - _paginationOffset))) {
+      context.read<FilteringPageBloc>().add(FetchDataEvent());
     }
   }
 
   Future<void> _onRefresh() async {
-    await _reload();
-  }
-
-  Future<void> _reload() async {
-    setState(() {
-      _filteredFilms = Films(0, []);
-      _films = Films(0, []);
-      _page = 1;
-      _showShimmer = false;
-      _fetchDataForPage(
-        _page,
-        _films,
-        _filteredFilms,
-      );
-    });
+    context.read<FilteringPageBloc>().add(ReloadDataEvent());
   }
 }

@@ -6,7 +6,7 @@ class AppThemeShimmerContainer extends StatelessWidget {
       : super(key: key);
   final Widget child;
   final int? duration;
-  final int _defaultDuration = 1000;
+  static const int _defaultDuration = 1000;
 
   @override
   Widget build(BuildContext context) {

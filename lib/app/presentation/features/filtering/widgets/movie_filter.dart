@@ -10,8 +10,7 @@ import 'package:collection/collection.dart';
 
 class MovieFilter extends StatefulWidget {
   const MovieFilter(this._onApply, {Key? key}) : super(key: key);
-  final Future<void> Function(AbstractFilter<Future<List<AbstractFilm>>>)
-      _onApply;
+  final void Function(AbstractFilter<Future<List<AbstractFilm>>>) _onApply;
 
   @override
   State<MovieFilter> createState() => _MovieFilterState();
@@ -43,8 +42,7 @@ class _MovieFilterState extends State<MovieFilter>
                   highlightColor: Colors.transparent),
               child: ExpansionTile(
                 onExpansionChanged: (value) {
-                  if(value == false)
-                  {
+                  if (value == false) {
                     FocusManager.instance.primaryFocus?.unfocus();
                   }
                 },
