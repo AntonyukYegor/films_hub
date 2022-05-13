@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:films_hub/app/domain/models/films/abstract_film.dart';
 
 class BaseFilm extends AbstractFilm {
@@ -11,7 +10,7 @@ class BaseFilm extends AbstractFilm {
   final String _duration;
   final String _language;
 
-  BaseFilm(this._id, this._title, this._poster, this._voteAverage,
+  const BaseFilm(this._id, this._title, this._poster, this._voteAverage,
       this._releaseDate, this._description, this._language, this._duration);
 
   @override
@@ -37,20 +36,4 @@ class BaseFilm extends AbstractFilm {
 
   @override
   String get duration => _duration;
-
-  @override
-  operator ==(other) =>
-      other is BaseFilm &&
-      other.id == id &&
-      other.description == description &&
-      other.poster == poster &&
-      other.releaseDate == releaseDate &&
-      other.title == title &&
-      other.voteAverage == voteAverage &&
-      other.duration == duration &&
-      other.language == language;
-
-  @override
-  int get hashCode => hashValues(id, description, poster, releaseDate, title,
-      voteAverage, duration, language);
 }

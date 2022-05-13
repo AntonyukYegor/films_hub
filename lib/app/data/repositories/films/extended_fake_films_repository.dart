@@ -1,8 +1,5 @@
-import 'dart:io';
 import 'package:films_hub/app/domain/models/films/abstract_film.dart';
 import 'package:films_hub/app/domain/models/films/base_film.dart';
-import 'package:films_hub/app/domain/models/languages/extensions/named_language.dart';
-import 'package:films_hub/app/domain/models/languages/language.dart';
 import 'package:films_hub/app/domain/repositories/films/abstract_films_repository.dart';
 
 class ExtendedFakeFilmsRepository implements AbstractFilmsRepository {
@@ -10,17 +7,9 @@ class ExtendedFakeFilmsRepository implements AbstractFilmsRepository {
 
   ExtendedFakeFilmsRepository() : this.delayed(const Duration());
 
-  factory ExtendedFakeFilmsRepository.delayedInSeconds(int seconds) {
-    return ExtendedFakeFilmsRepository.delayed(Duration(seconds: seconds));
-  }
+  const ExtendedFakeFilmsRepository.delayed(this._duration);
 
-  factory ExtendedFakeFilmsRepository.delayedInMilliseconds(int milliseconds) {
-    return ExtendedFakeFilmsRepository.delayed(Duration(milliseconds: milliseconds));
-  }
-
-  ExtendedFakeFilmsRepository.delayed(this._duration);
-
-  final List<AbstractFilm> _fakeFilms = [
+  static const List<AbstractFilm> _fakeFilms = [
     BaseFilm(
       "1",
       "Брат",
@@ -28,7 +17,7 @@ class ExtendedFakeFilmsRepository implements AbstractFilmsRepository {
       8.3,
       "1997",
       "Demobilizovannyy iz armii Danila Bagrov reshilsya podat'sya v Peterburg, gde uzhe neskol'ko let protsvetaet ego starshiy brat. Danila nashel brata. No vse okazalos' ne tak prosto.",
-      Language.russian.toPrettyString(),
+      "Russian",
       "1.40",
     ),
     BaseFilm(
@@ -38,7 +27,7 @@ class ExtendedFakeFilmsRepository implements AbstractFilmsRepository {
       8.0,
       "2001",
       "Знаете ли вы, что все события, происходящие в нашем мире, даже самые незначительные, взаимосвязаны самым удивительным и чудесным образом?",
-      Language.french.toPrettyString(),
+      "French",
       "2.2",
     ),
     BaseFilm(
@@ -48,7 +37,7 @@ class ExtendedFakeFilmsRepository implements AbstractFilmsRepository {
       8.6,
       "2014",
       "Наше время на Земле подошло к концу, команда исследователей берет на себя самую важную миссию в истории человечества; путешествуя за пределами нашей галактики, чтобы узнать есть ли у человечества будущее среди звезд.",
-      Language.english.toPrettyString(),
+      "English",
       "2.49",
     ),
     BaseFilm(
@@ -58,7 +47,7 @@ class ExtendedFakeFilmsRepository implements AbstractFilmsRepository {
       8.1,
       "2000",
       "Uchastvuya v programme na televidenii, Danila Bagrov vstrechaet svoikh druzey po Chechne. Odnogo iz nikh vnezapno ubivayut. Danila znaet, chto u togo byli nepriyatnosti iz-za brata-khokkeista v Amerike. Danila dolzhen razobrat'sya.",
-      Language.russian.toPrettyString(),
+      "Russian",
       "2.7",
     ),
     BaseFilm(
@@ -68,7 +57,7 @@ class ExtendedFakeFilmsRepository implements AbstractFilmsRepository {
       7.9,
       "2022",
       "Uchastvuya v programme na televidenii, Danila Bagrov vstrechaet svoikh druzey po Chechne. Odnogo iz nikh vnezapno ubivayut. Danila znaet, chto u togo byli nepriyatnosti iz-za brata-khokkeista v Amerike. Danila dolzhen razobrat'sya.",
-      Language.russian.toPrettyString(),
+      "Russian",
       "2.7",
     ),
     BaseFilm(
@@ -78,7 +67,7 @@ class ExtendedFakeFilmsRepository implements AbstractFilmsRepository {
       7,
       "2022",
       "Uchastvuya v programme na televidenii, Danila Bagrov vstrechaet svoikh druzey po Chechne. Odnogo iz nikh vnezapno ubivayut. Danila znaet, chto u togo byli nepriyatnosti iz-za brata-khokkeista v Amerike. Danila dolzhen razobrat'sya.",
-      Language.russian.toPrettyString(),
+      "Russian",
       "2.7",
     ),
     BaseFilm(
@@ -88,7 +77,7 @@ class ExtendedFakeFilmsRepository implements AbstractFilmsRepository {
       7.8,
       "2022",
       "Uchastvuya v programme na televidenii, Danila Bagrov vstrechaet svoikh druzey po Chechne. Odnogo iz nikh vnezapno ubivayut. Danila znaet, chto u togo byli nepriyatnosti iz-za brata-khokkeista v Amerike. Danila dolzhen razobrat'sya.",
-      Language.russian.toPrettyString(),
+      "Russian",
       "2.7",
     ),
     BaseFilm(
@@ -98,7 +87,7 @@ class ExtendedFakeFilmsRepository implements AbstractFilmsRepository {
       8.4,
       "2021",
       "Uchastvuya v programme na televidenii, Danila Bagrov vstrechaet svoikh druzey po Chechne. Odnogo iz nikh vnezapno ubivayut. Danila znaet, chto u togo byli nepriyatnosti iz-za brata-khokkeista v Amerike. Danila dolzhen razobrat'sya.",
-      Language.russian.toPrettyString(),
+      "Russian",
       "2.7",
     ),
     BaseFilm(
@@ -108,7 +97,7 @@ class ExtendedFakeFilmsRepository implements AbstractFilmsRepository {
       6.1,
       "2000",
       "Uchastvuya v programme na televidenii, Danila Bagrov vstrechaet svoikh druzey po Chechne. Odnogo iz nikh vnezapno ubivayut. Danila znaet, chto u togo byli nepriyatnosti iz-za brata-khokkeista v Amerike. Danila dolzhen razobrat'sya.",
-      Language.russian.toPrettyString(),
+      "Russian",
       "2.7",
     ),
     BaseFilm(
@@ -118,7 +107,7 @@ class ExtendedFakeFilmsRepository implements AbstractFilmsRepository {
       9.5,
       "2021",
       "Uchastvuya v programme na televidenii, Danila Bagrov vstrechaet svoikh druzey po Chechne. Odnogo iz nikh vnezapno ubivayut. Danila znaet, chto u togo byli nepriyatnosti iz-za brata-khokkeista v Amerike. Danila dolzhen razobrat'sya.",
-      Language.russian.toPrettyString(),
+      "Russian",
       "2.7",
     )
   ];
@@ -138,7 +127,7 @@ class ExtendedFakeFilmsRepository implements AbstractFilmsRepository {
 
   @override
   List<AbstractFilm> films() {
-    sleep(_duration * _fakeFilms.length);
+    //sleep(_duration * _fakeFilms.length);
     return _fakeFilms;
   }
 }
