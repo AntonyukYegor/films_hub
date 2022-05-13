@@ -9,6 +9,7 @@ class MovieCardModel {
   final String poster;
   final String description;
   final String releaseDate;
+  final String posterLowResolution;
 
   factory MovieCardModel.fromFilmModel(AbstractFilm film) {
     return MovieCardModel(
@@ -19,6 +20,7 @@ class MovieCardModel {
       film.poster,
       film.description,
       film.releaseDate,
+      film.posterLowResolution,
     );
   }
 
@@ -30,5 +32,6 @@ class MovieCardModel {
     this.poster,
     this.description,
     this.releaseDate,
+    this.posterLowResolution,
   );
 }

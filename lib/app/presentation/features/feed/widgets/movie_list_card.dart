@@ -19,7 +19,7 @@ class MovieListCard extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(left: 16, top: 16, right: 16, bottom: 16),
       child: Stack(children: [
-        AppThemeCardBackground(cardModel.poster, _cardBorderRadius, 32),
+        AppThemeCardBackground(cardModel.posterLowResolution, _cardBorderRadius, 32),
         Column(
           children: [
             SizedBox(

@@ -1,10 +1,17 @@
+import 'package:films_hub/app/components/delayed_action.dart';
+import 'package:films_hub/app/components/dialogs/error_dialog.dart';
 import 'package:films_hub/app/domain/models/films/abstract_film.dart';
+import 'package:films_hub/app/domain/models/films/abstract_films.dart';
+import 'package:films_hub/app/domain/models/films/films.dart';
 import 'package:films_hub/app/domain/models/filters/abstract_filter.dart';
+import 'package:films_hub/app/domain/models/filters/films/film_future_list_filter.dart';
 import 'package:films_hub/app/domain/models/settings_arguments.dart';
 import 'package:films_hub/app/domain/repositories/films/abstract_films_repository.dart';
 import 'package:films_hub/app/presentation/common/widgets/appbar/app_bar_flexible_space.dart';
+import 'package:films_hub/app/presentation/features/filtering/widgets/dont_have_more_results.dart';
 import 'package:films_hub/app/presentation/features/filtering/widgets/movie_filter.dart';
 import 'package:films_hub/app/presentation/features/filtering/widgets/not_getting_any_results.dart';
+import 'package:films_hub/app/presentation/features/filtering/widgets/search_field.dart';
 import 'package:films_hub/app/presentation/features/settings/pages/settings_page.dart';
 import 'package:flutter/material.dart';
 
@@ -32,29 +39,40 @@ class MovieFilterContainerPage extends StatefulWidget {
 }
 
 class _MovieFilterContainerPageState extends State<MovieFilterContainerPage> {
-  final double _appBarBorderRadius = 32;
-  final List<AbstractFilm> _films = [];
+  static const double _appBarBorderRadius = 32;
+
+  AbstractFilms _films = Films(0, []);
+  AbstractFilms _filteredFilms = Films(0, []);
+
   bool _showShimmer = true;
+  ScrollController? _scrollController;
+  bool _isLoading = false;
+  int _page = 1;
 
   _MovieFilterContainerPageState();
 
+  String _searchText = "Batman";
+  AbstractFilter<Future<List<AbstractFilm>>> _currentFilter =
+      FilmFutureListFilter.empty();
+
   @override
   void initState() {
+    _fetchDataForPage(_page, _films, _filteredFilms);
+    _scrollController?.addListener(_pagination);
     super.initState();
-    widget._filmsRepository.filmsAsync().then((value) {
-      if (mounted) {
-        setState(() {
-          _films.addAll(value);
-          _showShimmer = false;
-        });
-      }
-    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController?.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      extendBody: true,
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
           SliverAppBar(
@@ -72,6 +90,7 @@ class _MovieFilterContainerPageState extends State<MovieFilterContainerPage> {
                   child: IconButton(
                     icon: const Icon(Icons.settings),
                     onPressed: () {
+                      FocusManager.instance.primaryFocus?.unfocus();
                       Navigator.pushNamed(
                         context,
                         SettingsPage.navigationPath,
@@ -80,7 +99,7 @@ class _MovieFilterContainerPageState extends State<MovieFilterContainerPage> {
                     },
                   )),
             ],
-            shape: RoundedRectangleBorder(
+            shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(_appBarBorderRadius),
                 bottomRight: Radius.circular(_appBarBorderRadius),
@@ -90,29 +109,55 @@ class _MovieFilterContainerPageState extends State<MovieFilterContainerPage> {
                 AppBarFlexibleSpace(_appBarBorderRadius, widget.title),
           ),
         ],
-        body: CustomScrollView(
-          physics: const BouncingScrollPhysics(),
-          slivers: [
-            SliverToBoxAdapter(
-              child: Container(
-                padding: const EdgeInsets.only(
-                    left: 16, top: 40, right: 16, bottom: 16),
-                child: MovieFilter(_applyFilter),
-              ),
-            ),
-            _showShimmer
-                ? SliverToBoxAdapter(
-                    child: widget._shimmerBuilder(context),
-                  )
-                : _films.isNotEmpty
-                    ? widget._builder(context, _films)
-                    : const SliverToBoxAdapter(
-                        child: NotGettingAnyResults(),
-                      ),
-            const SliverPadding(
-              padding: EdgeInsets.only(bottom: 80),
-            ),
-          ],
+        body: RefreshIndicator(
+          onRefresh: _onRefresh,
+          child: Builder(builder: (context) {
+            _scrollController ??= PrimaryScrollController.of(context)
+              ?..addListener(_pagination);
+            return CustomScrollView(
+              physics: const BouncingScrollPhysics(),
+              slivers: [
+                SliverToBoxAdapter(
+                  child: SearchField(
+                    initialText: _searchText,
+                    onSearchFieldTextChanged: _onSearchFieldTextChanged,
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Container(
+                    padding: const EdgeInsets.only(
+                      left: 16,
+                      top: 40,
+                      right: 16,
+                      bottom: 16,
+                    ),
+                    child: MovieFilter(_applyFilter),
+                  ),
+                ),
+                widget._builder(context, _filteredFilms.films.toList()),
+                SliverToBoxAdapter(
+                  child: _isLoading || _showShimmer
+                      ? widget._shimmerBuilder(context)
+                      : Container(),
+                ),
+                SliverToBoxAdapter(
+                  child: (_isLoading == false && _filteredFilms.films.isEmpty)
+                      ? const NotGettingAnyResults()
+                      : Container(),
+                ),
+                SliverToBoxAdapter(
+                  child: (_isLoading == false &&
+                          _films.films.isNotEmpty &&
+                          _films.pagesCount <= _page)
+                      ? const DontHaveMoreResults()
+                      : Container(),
+                ),
+                const SliverPadding(
+                  padding: EdgeInsets.only(bottom: 80),
+                ),
+              ],
+            );
+          }),
         ),
       ),
     );
@@ -120,22 +165,104 @@ class _MovieFilterContainerPageState extends State<MovieFilterContainerPage> {
 
   Future<void> _applyFilter(
       AbstractFilter<Future<List<AbstractFilm>>> filter) async {
+    _currentFilter = filter;
+    _performFiltration();
+  }
+
+  void _performFiltration() {
     if (mounted) {
       setState(() {
         _showShimmer = true;
-        _films.clear();
+        _filteredFilms = Films(0, []);
+        _addFilteredFilms(_films, _filteredFilms);
       });
     }
-    await filter.apply(widget._filmsRepository.filmsAsync()).then(
+  }
+
+  Future<void> _addFilteredFilms(
+      AbstractFilms source, AbstractFilms target) async {
+    await _currentFilter.apply(Future.value(source.films.toList())).then(
       (value) {
         if (mounted) {
           setState(() {
-            _films.clear();
-            _films.addAll(value);
+            target.addAll(value);
             _showShimmer = false;
           });
         }
       },
     );
+  }
+
+  void _onSearchFieldTextChanged(String text) {
+    DelayedAction.run(() {
+      setState(() {
+        _searchText = text;
+        _reload();
+      });
+    });
+  }
+
+  void _fetchDataForPage(
+      int page, AbstractFilms films, AbstractFilms filtrationFilms) async {
+    setState(() {
+      _isLoading = true;
+      _showShimmer = true;
+    });
+    widget._filmsRepository
+        .filmsAsync(
+            searchQuery: _searchText,
+            errorCallback: errorCallbackMethod,
+            page: page)
+        .then((value) {
+      if (mounted) {
+        setState(() {
+          films.update(value);
+
+          _addFilteredFilms(value, filtrationFilms);
+          _isLoading = false;
+        });
+      }
+    });
+  }
+
+  void errorCallbackMethod(String errorMessage) {
+    showErrorDialog(context, error: errorMessage);
+  }
+
+  static const int _paginationOffset = 200;
+
+  void _pagination() {
+    if (_isLoading == false &&
+        ((_scrollController?.position.pixels ?? 0) >=
+            (_scrollController?.position.maxScrollExtent ??
+                0 - _paginationOffset)) &&
+        (_films.pagesCount > _page)) {
+      setState(() {
+        _page += 1;
+        _fetchDataForPage(
+          _page,
+          _films,
+          _filteredFilms,
+        );
+      });
+    }
+  }
+
+  Future<void> _onRefresh() async {
+    await _reload();
+  }
+
+  Future<void> _reload() async {
+    setState(() {
+      _filteredFilms = Films(0, []);
+      _films = Films(0, []);
+      _page = 1;
+      _showShimmer = false;
+      _fetchDataForPage(
+        _page,
+        _films,
+        _filteredFilms,
+      );
+    });
   }
 }

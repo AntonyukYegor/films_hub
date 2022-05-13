@@ -39,7 +39,7 @@ class DetailsMoviePage extends StatelessWidget {
               margin: const EdgeInsets.only(
                   left: 16, top: 16, right: 16, bottom: 16),
               child: Stack(children: [
-                AppThemeCardBackground(_model.poster, _cardBorderRadius, 64),
+                AppThemeCardBackground(_model.posterLowResolution, _cardBorderRadius, 64),
                 Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
