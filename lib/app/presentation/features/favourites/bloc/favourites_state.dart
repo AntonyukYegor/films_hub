@@ -1,30 +1,22 @@
 import 'package:equatable/equatable.dart';
-import 'package:films_hub/app/domain/models/films/abstract_films.dart';
-import 'package:films_hub/app/presentation/features/favourites/bloc/favourites_event.dart';
+import 'package:films_hub/app/domain/models/films/abstract_film.dart';
 
 class FavouritesState extends Equatable {
-  final AbstractFilms films;
-  final bool isLoading;
+  final List<AbstractFilm> films;
 
   const FavouritesState({
     required this.films,
-    required this.isLoading,
   });
 
   FavouritesState copyWith({
-    AbstractFilms? films,
-    bool? isLoading,
-    FavouritesEvent? event,
-    int? page,
+    List<AbstractFilm>? films,
   }) =>
       FavouritesState(
         films: films ?? this.films,
-        isLoading: isLoading ?? this.isLoading,
       );
 
   @override
   List<Object> get props => [
-    isLoading,
     films,
   ];
 }

@@ -27,8 +27,7 @@ class IconCheckedButton extends StatefulWidget {
   State<IconCheckedButton> createState() => _IconCheckedButtonState();
 }
 
-class _IconCheckedButtonState extends State<IconCheckedButton>
-    with AutomaticKeepAliveClientMixin {
+class _IconCheckedButtonState extends State<IconCheckedButton> {
   bool icChecked = false;
 
   @override
@@ -72,7 +71,4 @@ class _IconCheckedButtonState extends State<IconCheckedButton>
       ),
     );
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }

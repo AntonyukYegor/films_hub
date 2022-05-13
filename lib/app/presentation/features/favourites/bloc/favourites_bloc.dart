@@ -1,40 +1,41 @@
-import 'package:films_hub/app/domain/models/films/films.dart';
-import 'package:films_hub/app/domain/repositories/films/abstract_films_repository.dart';
+import 'dart:async';
+
+import 'package:films_hub/app/domain/models/films/abstract_film.dart';
+import 'package:films_hub/app/domain/repositories/abstract_favourites_films_repository.dart';
+import 'package:films_hub/app/presentation/common/mappers/movie_list_card_mapper.dart';
+import 'package:films_hub/app/presentation/common/models/movie_list_card_model.dart';
 import 'package:films_hub/app/presentation/features/favourites/bloc/favourites_event.dart';
 import 'package:films_hub/app/presentation/features/favourites/bloc/favourites_state.dart';
-import 'package:films_hub/app/presentation/features/filtering/bloc/filtering_page_bloc.dart';
-import 'package:films_hub/app/presentation/features/filtering/bloc/filtering_page_event.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FavouritesBloc extends Bloc<FavouritesEvent, FavouritesState> {
-  final AbstractFilmsRepository _repository;
-  final FilteringPageBloc _filteringPageBloc;
+  final AbstractFavouritesFilmsRepository _repository;
 
-  FavouritesBloc(
-      {required AbstractFilmsRepository repository,
-        required FilteringPageBloc filteringPageBloc})
-      : _repository = repository,
-        _filteringPageBloc = filteringPageBloc,
-        super(FavouritesState(
-          films: Films(0, []),
-          isLoading: false)) {
-    on<ReloadFavouritesDataEvent>(_onReloadData);
-    add(ReloadFavouritesDataEvent());
+  FavouritesBloc({
+    required AbstractFavouritesFilmsRepository repository,
+  })  : _repository = repository,
+        super(const FavouritesState(films: [])) {
+    on<ChangedFavourite>(_onChangedFavourite);
+    on<ChangedFavourites>(_onChangedFavourites);
+    _repository.onChangedFavourites().listen((event) {
+      add(ChangedFavourites(models: event));
+    });
   }
 
-  void _onReloadData(
-      ReloadFavouritesDataEvent event, Emitter<FavouritesState> emit) async {
-    emit(state.copyWith(
-      event: event,
-      isLoading: true,
-      films: Films(0, []),
-    ));
-    _filteringPageBloc.add(LoadFilterDataEvent(source: Films(0, [])));
-    var data = await _repository.filmsAsync();
+  FutureOr<void> _onChangedFavourite(
+      ChangedFavourite event, Emitter<FavouritesState> emit) {
+    final MovieCardModel targetMovie = event.model;
+    final AbstractFilm targetFilm = targetMovie.toDomain();
 
-    emit(
-      state.copyWith(films: data, isLoading: false),
-    );
-    _filteringPageBloc.add(LoadFilterDataEvent(source: data));
+    if (_repository.checkForFavourite(targetFilm)) {
+      _repository.deleteFavourite(targetFilm);
+    } else {
+      _repository.insertFavourite(targetFilm);
+    }
+  }
+
+  FutureOr<void> _onChangedFavourites(
+      ChangedFavourites event, Emitter<FavouritesState> emit) {
+    emit(state.copyWith(films: event.models));
   }
 }

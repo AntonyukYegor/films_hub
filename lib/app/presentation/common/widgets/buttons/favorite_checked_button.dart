@@ -3,16 +3,17 @@ import 'package:flutter/material.dart';
 
 class FavoriteCheckedButton extends StatelessWidget {
   const FavoriteCheckedButton(
-      {Key? key, required this.initialChecked, required this.alignment})
+      {Key? key, required this.initialChecked, required this.alignment, required this.onPressed})
       : super(key: key);
   final bool initialChecked;
   final Alignment alignment;
+  final void Function(bool checked) onPressed;
 
   @override
   Widget build(BuildContext context) {
     return IconCheckedButton(
-      onPressed: (bool value) {},
-      initialChecked: false,
+      onPressed: onPressed,
+      initialChecked: initialChecked,
       foregroundIcon: Icons.favorite_outline,
       backgroundIcon: Icons.favorite,
       backgroundColorUnchecked: Theme.of(context).scaffoldBackgroundColor,

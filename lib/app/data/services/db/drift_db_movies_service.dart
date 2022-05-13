@@ -1,8 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:films_hub/app/data/db/database.dart';
 import 'package:films_hub/app/domain/models/films/abstract_film.dart';
-import 'package:films_hub/app/domain/models/films/abstract_films.dart';
-import 'package:films_hub/app/domain/models/films/films.dart';
 import 'package:films_hub/app/data/mappers/drift/movie_table_data_mapper.dart';
 
 class DriftDBMoviesService {
@@ -12,24 +10,17 @@ class DriftDBMoviesService {
     _db.close();
   }
 
-  Future<AbstractFilms> getAllMoviesDB() async {
-    // int moviesCount = await _db.moviesCount();
+  Future<List<AbstractFilm>> getAllMoviesDB() async {
     var moviesDB = await _db.select(_db.movieTable).get();
 
-    var films = moviesDB
+    return moviesDB
         .map((MovieTableData movieTableData) => movieTableData.toDomain())
         .toList();
-
-    return Films(films.length, films);
   }
 
-  // Future<List<MovieTableData>> _limitMovieTableData(int limit, {int? offset}) {
-  //   return (_db.select(_db.movieTable)..limit(limit, offset: offset)).get();
-  // }
-
-  Future<void> insertMovieDB(AbstractFilm movieCardModel) async {
+  Future<void> insertMovieDB(AbstractFilm film) async {
     await _db.into(_db.movieTable).insert(
-          movieCardModel.toDatabase(),
+          film.toDatabase(),
           mode: InsertMode.insertOrReplace,
         );
   }
@@ -38,5 +29,11 @@ class DriftDBMoviesService {
     await (_db.delete(_db.movieTable)
           ..where((movieTable) => movieTable.id.equals(id)))
         .go();
+  }
+
+  Stream<List<AbstractFilm>> onChangedMoviesDB() {
+    return (_db.select(_db.movieTable))
+        .map((MovieTableData movieTableData) => movieTableData.toDomain())
+        .watch();
   }
 }

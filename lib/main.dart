@@ -1,7 +1,9 @@
 import 'package:films_hub/app/components/constants.dart';
+import 'package:films_hub/app/data/repositories/favourites_films_repository.dart';
 import 'package:films_hub/app/data/services/dio/omdb_service.dart';
 import 'package:films_hub/app/data/repositories/films/extended_fake_films_repository.dart';
 import 'package:films_hub/app/data/repositories/films/omdb_films_repository.dart';
+import 'package:films_hub/app/domain/repositories/abstract_favourites_films_repository.dart';
 import 'package:films_hub/app/presentation/common/models/movie_list_card_model.dart';
 import 'package:films_hub/app/presentation/features/favourites/bloc/favourites_bloc.dart';
 import 'package:films_hub/app/presentation/features/favourites/pages/favourites_page.dart';
@@ -58,7 +60,7 @@ class MyApp extends StatelessWidget {
       },
       debugShowCheckedModeBanner: false,
       title: AppLocal.appName,
-      themeMode: ThemeMode.dark,
+      themeMode: ThemeMode.system,
       darkTheme: ThemeData(
           brightness: Brightness.dark,
           primarySwatch: CustomColors.darkBlack,
@@ -92,54 +94,56 @@ class MyApp extends StatelessWidget {
                   ),
                   child: BlocProvider<FilteringPageBloc>(
                     create: (providerContext) => FilteringPageBloc(),
-                    child: BlocProvider<FavouritesBloc>(
-                      create: (providerContext) => FavouritesBloc(
-                          repository: ExtendedFakeFilmsRepository(),
-                          filteringPageBloc:
-                              providerContext.read<FilteringPageBloc>()),
-                      child: BlocProvider<SearchPageBloc>(
-                        lazy: false,
-                        create: (providerContext) => SearchPageBloc(
-                            filteringPageBloc:
-                                providerContext.read<FilteringPageBloc>(),
-                            repository: providerContext
-                                .read<AbstractFilmsRepository>()),
-                        child: RepositoryProvider<AbstractFilmsRepository>(
+                    child: RepositoryProvider<AbstractFavouritesFilmsRepository>(
+                      lazy: false,
+                      create: (providerContext) => FavouritesFilmsRepository(),
+                      child: BlocProvider<FavouritesBloc>(
+                        create: (providerContext) => FavouritesBloc(
+                            repository: providerContext.read<AbstractFavouritesFilmsRepository>()),
+                        child: BlocProvider<SearchPageBloc>(
                           lazy: false,
-                          create: (providerContext) =>
-                              ExtendedFakeFilmsRepository(),
-                          child: RepositoryProvider<TabsSource>(
+                          create: (providerContext) => SearchPageBloc(
+                              filteringPageBloc:
+                                  providerContext.read<FilteringPageBloc>(),
+                              repository: providerContext
+                                  .read<AbstractFilmsRepository>()),
+                          child: RepositoryProvider<AbstractFilmsRepository>(
                             lazy: false,
-                            create: (_) => const _BaseTabsSource(
-                              [
-                                NavigationTab(
-                                  icon: FeedLocal.navigationBarIcon,
-                                  label: FeedLocal.title,
-                                  page: FeedPage(
-                                    title: FeedLocal.title,
+                            create: (providerContext) =>
+                                ExtendedFakeFilmsRepository(),
+                            child: RepositoryProvider<TabsSource>(
+                              lazy: false,
+                              create: (_) => const _BaseTabsSource(
+                                [
+                                  NavigationTab(
+                                    icon: FeedLocal.navigationBarIcon,
+                                    label: FeedLocal.title,
+                                    page: FeedPage(
+                                      title: FeedLocal.title,
+                                    ),
                                   ),
-                                ),
-                                NavigationTab(
-                                  icon: CatalogLocal.navigationBarIcon,
-                                  label: CatalogLocal.title,
-                                  page: CatalogPage(
-                                    title: CatalogLocal.title,
+                                  NavigationTab(
+                                    icon: CatalogLocal.navigationBarIcon,
+                                    label: CatalogLocal.title,
+                                    page: CatalogPage(
+                                      title: CatalogLocal.title,
+                                    ),
                                   ),
-                                ),
-                                NavigationTab(
-                                  icon: FavouritesLocal.navigationBarIcon,
-                                  label: FavouritesLocal.title,
-                                  page: FavouritesPage(
-                                    title: FavouritesLocal.title,
+                                  NavigationTab(
+                                    icon: FavouritesLocal.navigationBarIcon,
+                                    label: FavouritesLocal.title,
+                                    page: FavouritesPage(
+                                      title: FavouritesLocal.title,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            child: BlocProvider<MainBloc>(
-                              create: (providerContext) => MainBloc(
-                                  tabsSource:
-                                      providerContext.read<TabsSource>()),
-                              child: const MainPage(),
+                                ],
+                              ),
+                              child: BlocProvider<MainBloc>(
+                                create: (mainContext) => MainBloc(
+                                    tabsSource:
+                                    mainContext.read<TabsSource>()),
+                                child: const MainPage(),
+                              ),
                             ),
                           ),
                         ),

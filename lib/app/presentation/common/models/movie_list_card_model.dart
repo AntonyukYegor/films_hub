@@ -3,6 +3,7 @@ import 'package:films_hub/app/domain/models/languages/extensions/named_language.
 
 class MovieCardModel {
   final String title;
+  final String id;
   final double voteAverage;
   final double voteAverageInPercent;
   final String language;
@@ -13,6 +14,7 @@ class MovieCardModel {
 
   factory MovieCardModel.fromFilmModel(AbstractFilm film) {
     return MovieCardModel(
+      film.id,
       film.title,
       film.voteAverage,
       film.voteAverage * 0.1,
@@ -25,6 +27,7 @@ class MovieCardModel {
   }
 
   const MovieCardModel(
+    this.id,
     this.title,
     this.voteAverage,
     this.voteAverageInPercent,
