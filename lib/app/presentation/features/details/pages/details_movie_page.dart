@@ -8,6 +8,7 @@ import 'package:films_hub/app/presentation/common/widgets/poster.dart';
 import 'package:films_hub/app/presentation/common/widgets/rating/combine_rate.dart';
 import 'package:films_hub/app/presentation/features/favourites/bloc/favourites_bloc.dart';
 import 'package:films_hub/app/presentation/features/favourites/bloc/favourites_event.dart';
+import 'package:films_hub/app/presentation/features/favourites/bloc/favourites_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -45,7 +46,8 @@ class DetailsMoviePage extends StatelessWidget {
               margin: const EdgeInsets.only(
                   left: 16, top: 16, right: 16, bottom: 16),
               child: Stack(children: [
-                AppThemeCardBackground(_model.posterLowResolution, _cardBorderRadius, 64),
+                AppThemeCardBackground(
+                    _model.posterLowResolution, _cardBorderRadius, 64),
                 Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -62,22 +64,28 @@ class DetailsMoviePage extends StatelessWidget {
                                 alignment: Alignment.topCenter,
                                 children: [
                                   Poster(_model.poster, _cardBorderRadius),
-                                   Opacity(
-                                     opacity: 0.65,
+                                  Opacity(
+                                    opacity: 0.65,
                                     child: FittedBox(
                                       fit: BoxFit.cover,
-                                      child: FavoriteCheckedTransparentButton(
-                                        key: Key(_model.id),
-                                        alignment: Alignment.center,
-                                        initialChecked: context
-                                            .read<AbstractFavouritesFilmsRepository>()
-                                            .checkForFavouriteById(_model.id),
-                                        onPressed: (bool checked) {
-                                          context.read<FavouritesBloc>().add(
-                                            ChangedFavourite(model: _model),
-                                          );
-                                        },
-                                        scale: 4,
+                                      child: BlocBuilder<FavouritesBloc,
+                                          FavouritesState>(
+                                        builder: (context, _) =>
+                                            FavoriteCheckedTransparentButton(
+                                          key: Key(_model.id),
+                                          alignment: Alignment.center,
+                                          initialChecked: context
+                                              .read<
+                                                  AbstractFavouritesFilmsRepository>()
+                                              .checkForFavouriteById(_model.id),
+                                          onPressed: () {
+                                            context.read<FavouritesBloc>().add(
+                                                  ChangedFavourite(
+                                                      model: _model),
+                                                );
+                                          },
+                                          scale: 4,
+                                        ),
                                       ),
                                     ),
                                   )
@@ -107,7 +115,8 @@ class DetailsMoviePage extends StatelessWidget {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.stretch,
                                           children: [
-                                            const Text(DetailsMovieLocal.release,
+                                            const Text(
+                                                DetailsMovieLocal.release,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
                                                   fontWeight: FontWeight.bold,

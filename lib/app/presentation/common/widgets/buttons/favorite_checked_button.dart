@@ -7,7 +7,7 @@ class FavoriteCheckedButton extends StatelessWidget {
       : _scale = scale, super(key: key);
   final bool initialChecked;
   final Alignment alignment;
-  final void Function(bool checked) onPressed;
+  final void Function() onPressed;
   final double _scale;
 
   @override

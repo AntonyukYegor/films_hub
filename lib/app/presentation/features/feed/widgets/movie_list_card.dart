@@ -9,6 +9,7 @@ import 'package:films_hub/app/presentation/common/widgets/poster.dart';
 import 'package:films_hub/app/presentation/common/widgets/rating/combine_rate.dart';
 import 'package:films_hub/app/presentation/features/favourites/bloc/favourites_bloc.dart';
 import 'package:films_hub/app/presentation/features/favourites/bloc/favourites_event.dart';
+import 'package:films_hub/app/presentation/features/favourites/bloc/favourites_state.dart';
 import 'package:films_hub/app/presentation/features/feed/widgets/short_details_movie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -60,27 +61,33 @@ class MovieListCard extends StatelessWidget {
                                         )),
                                   ),
                                   Padding(
-                                    padding:
-                                        const EdgeInsets.only(left: 8.0, right: 0),
+                                    padding: const EdgeInsets.only(
+                                        left: 8.0, right: 0),
                                     child: SizedBox(
                                       height: 40,
                                       child: FittedBox(
                                         fit: BoxFit.cover,
-                                        child: FavoriteCheckedTransparentButton(key: Key(cardModel.id),
-                                          alignment: Alignment.topRight,
-                                          initialChecked: context
-                                              .read<
-                                                  AbstractFavouritesFilmsRepository>()
-                                              .checkForFavouriteById(
-                                                  cardModel.id),
-                                          onPressed: (bool checked) {
-                                            context.read<FavouritesBloc>().add(
-                                                  ChangedFavourite(
-                                                    model: cardModel,
-                                                  ),
-                                                );
-                                          },
-                                        ),
+                                        child: BlocBuilder<FavouritesBloc,
+                                                FavouritesState>(
+                                            builder: (context, state) =>
+                                                FavoriteCheckedTransparentButton(
+                                                  // key: Key(cardModel.id),
+                                                  alignment: Alignment.topRight,
+                                                  initialChecked: context
+                                                      .read<
+                                                          AbstractFavouritesFilmsRepository>()
+                                                      .checkForFavouriteById(
+                                                          cardModel.id),
+                                                  onPressed: () {
+                                                    context
+                                                        .read<FavouritesBloc>()
+                                                        .add(
+                                                          ChangedFavourite(
+                                                            model: cardModel,
+                                                          ),
+                                                        );
+                                                  },
+                                                )),
                                       ),
                                     ),
                                   ),

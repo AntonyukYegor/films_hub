@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class IconCheckedButton extends StatefulWidget {
+class IconCheckedButton extends StatelessWidget {
   const IconCheckedButton({
     required this.onPressed,
     required this.backgroundIcon,
@@ -22,52 +22,36 @@ class IconCheckedButton extends StatefulWidget {
   final bool initialChecked;
   final EdgeInsets padding;
   final Alignment alignment;
-  final void Function(bool value) onPressed;
+  final void Function() onPressed;
   final double _scale;
-  @override
-  State<IconCheckedButton> createState() => _IconCheckedButtonState();
-}
 
-class _IconCheckedButtonState extends State<IconCheckedButton> {
-  bool icChecked = false;
   static const double defaultIconWidth = 20;
   static const double defaultContainerWidth = 40;
 
   @override
-  void initState() {
-    icChecked = widget.initialChecked;
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => {
-        setState(() {
-          icChecked = !icChecked;
-        }),
-        widget.onPressed(icChecked)
-      },
+      onTap: () => onPressed(),
       child: Container(
         color: Colors.transparent,
         child: SizedBox(
-          height: defaultContainerWidth*widget._scale,
-          width: defaultContainerWidth*widget._scale,
+          height: defaultContainerWidth*_scale,
+          width: defaultContainerWidth*_scale,
           child: Padding(
             padding: EdgeInsets.zero, // widget.padding,
             child: Stack(
-              alignment: widget.alignment,
+              alignment: alignment,
               children: [
                 Icon(
-                  widget.backgroundIcon,
-                  color: icChecked
-                      ? widget.backgroundColorChecked
-                      : widget.backgroundColorUnchecked,
-                  size: defaultIconWidth*widget._scale,
+                  backgroundIcon,
+                  color: initialChecked
+                      ? backgroundColorChecked
+                      : backgroundColorUnchecked,
+                  size: defaultIconWidth*_scale,
                 ),
                 Icon(
-                  widget.foregroundIcon,
-                  size: defaultIconWidth*widget._scale,
+                  foregroundIcon,
+                  size: defaultIconWidth*_scale,
                 ),
               ],
             ),

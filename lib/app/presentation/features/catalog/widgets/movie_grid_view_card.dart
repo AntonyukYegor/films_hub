@@ -9,6 +9,7 @@ import 'package:films_hub/app/presentation/common/widgets/rating/combine_rate.da
 import 'package:films_hub/app/presentation/common/widgets/shimmers/app_theme_shimmer_container.dart';
 import 'package:films_hub/app/presentation/features/favourites/bloc/favourites_bloc.dart';
 import 'package:films_hub/app/presentation/features/favourites/bloc/favourites_event.dart';
+import 'package:films_hub/app/presentation/features/favourites/bloc/favourites_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -125,17 +126,19 @@ class MovieGridViewCard extends StatelessWidget {
             alignment: Alignment.topRight,
             child: Padding(
               padding: const EdgeInsets.only(right: 8.0, top: 8.0),
-              child: FavoriteCheckedButton(
-                key: Key(cardModel.id),
-                alignment: Alignment.center,
-                initialChecked: context
-                    .read<AbstractFavouritesFilmsRepository>()
-                    .checkForFavouriteById(cardModel.id),
-                onPressed: (bool checked) {
-                  context.read<FavouritesBloc>().add(
-                        ChangedFavourite(model: cardModel),
-                      );
-                },
+              child: BlocBuilder<FavouritesBloc, FavouritesState>(
+                builder: (context, _) => FavoriteCheckedButton(
+                  key: Key(cardModel.id),
+                  alignment: Alignment.center,
+                  initialChecked: context
+                      .read<AbstractFavouritesFilmsRepository>()
+                      .checkForFavouriteById(cardModel.id),
+                  onPressed: () {
+                    context.read<FavouritesBloc>().add(
+                          ChangedFavourite(model: cardModel),
+                        );
+                  },
+                ),
               ),
             ),
           ),

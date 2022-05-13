@@ -8,7 +8,7 @@ class FavoriteCheckedTransparentButton extends StatelessWidget {
 
   final bool initialChecked;
   final Alignment alignment;
-  final void Function(bool checked) onPressed;
+  final void Function() onPressed;
   final double _scale;
 
   @override
