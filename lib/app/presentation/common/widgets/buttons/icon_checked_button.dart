@@ -10,8 +10,9 @@ class IconCheckedButton extends StatefulWidget {
     required this.initialChecked,
     required this.padding,
     required this.alignment,
+    double scale = 1,
     Key? key,
-  }) : super(key: key);
+  }) : _scale = scale, super(key: key);
 
   final IconData backgroundIcon;
   final IconData foregroundIcon;
@@ -22,13 +23,15 @@ class IconCheckedButton extends StatefulWidget {
   final EdgeInsets padding;
   final Alignment alignment;
   final void Function(bool value) onPressed;
-
+  final double _scale;
   @override
   State<IconCheckedButton> createState() => _IconCheckedButtonState();
 }
 
 class _IconCheckedButtonState extends State<IconCheckedButton> {
   bool icChecked = false;
+  static const double defaultIconWidth = 20;
+  static const double defaultContainerWidth = 40;
 
   @override
   void initState() {
@@ -48,8 +51,8 @@ class _IconCheckedButtonState extends State<IconCheckedButton> {
       child: Container(
         color: Colors.transparent,
         child: SizedBox(
-          height: 40,
-          width: 40,
+          height: defaultContainerWidth*widget._scale,
+          width: defaultContainerWidth*widget._scale,
           child: Padding(
             padding: EdgeInsets.zero, // widget.padding,
             child: Stack(
@@ -60,9 +63,11 @@ class _IconCheckedButtonState extends State<IconCheckedButton> {
                   color: icChecked
                       ? widget.backgroundColorChecked
                       : widget.backgroundColorUnchecked,
+                  size: defaultIconWidth*widget._scale,
                 ),
                 Icon(
                   widget.foregroundIcon,
+                  size: defaultIconWidth*widget._scale,
                 ),
               ],
             ),

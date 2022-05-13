@@ -31,8 +31,7 @@ class FavouritesFilmsRepository implements AbstractFavouritesFilmsRepository {
 
   @override
   bool checkForFavouriteById(String id) {
-    final result = _favouritesFilmsIds.contains(id);
-    return result;
+    return _favouritesFilmsIds.contains(id);
   }
 
   @override

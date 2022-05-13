@@ -51,69 +51,67 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      builder: (context, child) {
-        return ScrollConfiguration(
-          behavior: CustomScrollBehavior(),
-          child: child ?? const SizedBox(),
-        );
-      },
-      debugShowCheckedModeBanner: false,
-      title: AppLocal.appName,
-      themeMode: ThemeMode.system,
-      darkTheme: ThemeData(
-          brightness: Brightness.dark,
-          primarySwatch: CustomColors.darkBlack,
-          fontFamily: AppStyle.fontFamily,
-          shadowColor: Colors.white.withOpacity(0.08),
-          scaffoldBackgroundColor: Colors.black),
-      theme: ThemeData(
-        brightness: Brightness.light,
-        primarySwatch: Colors.grey,
-        shadowColor: Colors.black.withOpacity(0.3),
-        fontFamily: AppStyle.fontFamily,
-      ),
-      initialRoute: MainPage.navigationPath,
-      onGenerateRoute: (RouteSettings settings) {
-        if (settings.name == MainPage.navigationPath) {
-          return MaterialPageRoute(
-            builder: (context) {
-              return BlocProvider<ErrorBloc>(
-                lazy: false,
-                create: (BuildContext providerContext) =>
-                    ErrorBloc(providerContext),
-                child: RepositoryProvider<AbstractFilmsRepository>(
-                  lazy: false,
-                  create: (providerContext) => OMDBFilmsRepository(
-                    client: OMDBService(
-                      onErrorHandler: (String code, String message) {
-                        providerContext.read<ErrorBloc>().add(
-                            ShowDialogEvent(title: code, message: message));
-                      },
-                    ),
-                  ),
-                  child: BlocProvider<FilteringPageBloc>(
-                    create: (providerContext) => FilteringPageBloc(),
-                    child: RepositoryProvider<AbstractFavouritesFilmsRepository>(
+    return RepositoryProvider<AbstractFavouritesFilmsRepository>(
+      lazy: false,
+      create: (context) => FavouritesFilmsRepository(),
+      child: BlocProvider<FavouritesBloc>(
+        create: (context) => FavouritesBloc(
+            repository: context.read<AbstractFavouritesFilmsRepository>()),
+        child: MaterialApp(
+          builder: (context, child) {
+            return ScrollConfiguration(
+              behavior: CustomScrollBehavior(),
+              child: child ?? const SizedBox(),
+            );
+          },
+          debugShowCheckedModeBanner: false,
+          title: AppLocal.appName,
+          themeMode: ThemeMode.dark,
+          darkTheme: ThemeData(
+              brightness: Brightness.dark,
+              primarySwatch: CustomColors.darkBlack,
+              fontFamily: AppStyle.fontFamily,
+              shadowColor: Colors.white.withOpacity(0.08),
+              scaffoldBackgroundColor: Colors.black),
+          theme: ThemeData(
+            brightness: Brightness.light,
+            primarySwatch: Colors.grey,
+            shadowColor: Colors.black.withOpacity(0.3),
+            fontFamily: AppStyle.fontFamily,
+          ),
+          initialRoute: MainPage.navigationPath,
+          onGenerateRoute: (RouteSettings settings) {
+            if (settings.name == MainPage.navigationPath) {
+              return MaterialPageRoute(
+                builder: (context) {
+                  return BlocProvider<ErrorBloc>(
+                    lazy: false,
+                    create: (context) => ErrorBloc(context),
+                    child: RepositoryProvider<AbstractFilmsRepository>(
                       lazy: false,
-                      create: (providerContext) => FavouritesFilmsRepository(),
-                      child: BlocProvider<FavouritesBloc>(
-                        create: (providerContext) => FavouritesBloc(
-                            repository: providerContext.read<AbstractFavouritesFilmsRepository>()),
+                      create: (context) => OMDBFilmsRepository(
+                        client: OMDBService(
+                          onErrorHandler: (String code, String message) {
+                            context.read<ErrorBloc>().add(
+                                ShowDialogEvent(title: code, message: message));
+                          },
+                        ),
+                      ),
+                      child: BlocProvider<FilteringPageBloc>(
+                        create: (context) => FilteringPageBloc(),
                         child: BlocProvider<SearchPageBloc>(
                           lazy: false,
-                          create: (providerContext) => SearchPageBloc(
+                          create: (context) => SearchPageBloc(
                               filteringPageBloc:
-                                  providerContext.read<FilteringPageBloc>(),
-                              repository: providerContext
-                                  .read<AbstractFilmsRepository>()),
+                                  context.read<FilteringPageBloc>(),
+                              repository:
+                                  context.read<AbstractFilmsRepository>()),
                           child: RepositoryProvider<AbstractFilmsRepository>(
                             lazy: false,
-                            create: (providerContext) =>
-                                ExtendedFakeFilmsRepository(),
+                            create: (context) => ExtendedFakeFilmsRepository(),
                             child: RepositoryProvider<TabsSource>(
                               lazy: false,
-                              create: (_) => const _BaseTabsSource(
+                              create: (context) => const _BaseTabsSource(
                                 [
                                   NavigationTab(
                                     icon: FeedLocal.navigationBarIcon,
@@ -139,9 +137,8 @@ class MyApp extends StatelessWidget {
                                 ],
                               ),
                               child: BlocProvider<MainBloc>(
-                                create: (mainContext) => MainBloc(
-                                    tabsSource:
-                                    mainContext.read<TabsSource>()),
+                                create: (context) => MainBloc(
+                                    tabsSource: context.read<TabsSource>()),
                                 child: const MainPage(),
                               ),
                             ),
@@ -149,36 +146,36 @@ class MyApp extends StatelessWidget {
                         ),
                       ),
                     ),
-                  ),
-                ),
+                  );
+                },
               );
-            },
-          );
-        }
+            }
 
-        if (settings.name == SettingsPage.navigationPath) {
-          return MaterialPageRoute(
-            builder: (BuildContext context) {
-              return BlocProvider<SettingsBloc>(
-                  create: (context) => SettingsBloc(),
-                  child: const SettingsPage());
-            },
-          );
-        }
+            if (settings.name == SettingsPage.navigationPath) {
+              return MaterialPageRoute(
+                builder: (_) {
+                  return BlocProvider<SettingsBloc>(
+                      create: (_) => SettingsBloc(),
+                      child: const SettingsPage());
+                },
+              );
+            }
 
-        if (settings.name == DetailsMoviePage.navigationPath) {
-          final MovieCardModel model = settings.arguments as MovieCardModel;
-          return MaterialPageRoute(
-            builder: (BuildContext context) {
-              return DetailsMoviePage(model: model);
-            },
-          );
-        }
+            if (settings.name == DetailsMoviePage.navigationPath) {
+              final MovieCardModel model = settings.arguments as MovieCardModel;
+              return MaterialPageRoute(
+                builder: (_) {
+                  return DetailsMoviePage(model: model);
+                },
+              );
+            }
 
-        return MaterialPageRoute(
-          builder: (_) => const NotFoundPage(),
-        );
-      },
+            return MaterialPageRoute(
+              builder: (_) => const NotFoundPage(),
+            );
+          },
+        ),
+      ),
     );
   }
 }

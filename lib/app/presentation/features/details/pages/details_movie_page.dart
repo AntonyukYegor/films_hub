@@ -1,10 +1,15 @@
 import 'package:films_hub/app/components/constants.dart';
+import 'package:films_hub/app/domain/repositories/abstract_favourites_films_repository.dart';
 import 'package:films_hub/app/presentation/common/models/movie_list_card_model.dart';
 import 'package:films_hub/app/presentation/common/widgets/appbar/app_bar_flexible_space.dart';
 import 'package:films_hub/app/presentation/common/widgets/app_theme_card_background.dart';
+import 'package:films_hub/app/presentation/common/widgets/buttons/favorite_checked_transparent_button.dart';
 import 'package:films_hub/app/presentation/common/widgets/poster.dart';
 import 'package:films_hub/app/presentation/common/widgets/rating/combine_rate.dart';
+import 'package:films_hub/app/presentation/features/favourites/bloc/favourites_bloc.dart';
+import 'package:films_hub/app/presentation/features/favourites/bloc/favourites_event.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DetailsMoviePage extends StatelessWidget {
   static const navigationPath = '/details';
@@ -53,7 +58,31 @@ class DetailsMoviePage extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Poster(_model.poster, _cardBorderRadius),
+                              Stack(
+                                alignment: Alignment.topCenter,
+                                children: [
+                                  Poster(_model.poster, _cardBorderRadius),
+                                   Opacity(
+                                     opacity: 0.65,
+                                    child: FittedBox(
+                                      fit: BoxFit.cover,
+                                      child: FavoriteCheckedTransparentButton(
+                                        key: Key(_model.id),
+                                        alignment: Alignment.center,
+                                        initialChecked: context
+                                            .read<AbstractFavouritesFilmsRepository>()
+                                            .checkForFavouriteById(_model.id),
+                                        onPressed: (bool checked) {
+                                          context.read<FavouritesBloc>().add(
+                                            ChangedFavourite(model: _model),
+                                          );
+                                        },
+                                        scale: 4,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
                               Expanded(
                                 child: Padding(
                                   padding: const EdgeInsets.only(

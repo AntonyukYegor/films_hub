@@ -30,6 +30,7 @@ class _MovieFilterState extends State<MovieFilter>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Stack(children: [
       const AppThemeCardBackground(AppStyle.randomBackgroundImageUrl, 8, 0),
       Column(

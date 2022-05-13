@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 
 class FavoriteCheckedButton extends StatelessWidget {
   const FavoriteCheckedButton(
-      {Key? key, required this.initialChecked, required this.alignment, required this.onPressed})
-      : super(key: key);
+      {Key? key, required this.initialChecked, required this.alignment, required this.onPressed, double scale = 1})
+      : _scale = scale, super(key: key);
   final bool initialChecked;
   final Alignment alignment;
   final void Function(bool checked) onPressed;
+  final double _scale;
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +21,7 @@ class FavoriteCheckedButton extends StatelessWidget {
       backgroundColorChecked: Colors.red,
       padding: const EdgeInsets.all(16),
       alignment: alignment,
+      scale: _scale,
     );
   }
 }
