@@ -1,5 +1,3 @@
-import 'package:films_hub/app/blocs/locale_bloc/local_bloc.dart';
-import 'package:films_hub/app/blocs/locale_bloc/local_event.dart';
 import 'package:films_hub/app/components/constants.dart';
 import 'package:films_hub/app/components/locals/locals.dart';
 import 'package:films_hub/app/presentation/common/widgets/buttons/settings_button.dart';
@@ -46,10 +44,6 @@ class SettingsPage extends StatelessWidget {
                         value: state.isEnLocale,
                         onChanged: (val) {
                           final isEnLocale = val ?? false;
-                          context.read<LocaleBloc>().add(ChangeLocaleEvent(
-                              !isEnLocale
-                                  ? availableLocales[ruLocale]!
-                                  : availableLocales[enLocale]!));
                           context
                               .read<SettingsBloc>()
                               .add(UpdateLocaleEvent(value: isEnLocale));

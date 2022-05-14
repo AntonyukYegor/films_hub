@@ -69,11 +69,12 @@ class MyApp extends StatelessWidget {
       child: BlocProvider<FavouritesBloc>(
         create: (context) => FavouritesBloc(
             repository: context.read<AbstractFavouritesFilmsRepository>()),
-        child: BlocProvider<SettingsBloc>(
-          create: (_) => SettingsBloc(),
-          child: BlocProvider<LocaleBloc>(
+        child: BlocProvider<LocaleBloc>(
+          lazy: false,
+          create: (_) => LocaleBloc(),
+          child: BlocProvider<SettingsBloc>(
             lazy: false,
-            create: (_) => LocaleBloc(),
+            create: (context) => SettingsBloc(context.read<LocaleBloc>())..init(),
             child: BlocBuilder<LocaleBloc, LocaleState>(
               builder: (context, state) => MaterialApp(
                 locale: state.locale,
