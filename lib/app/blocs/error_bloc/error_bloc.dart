@@ -1,6 +1,6 @@
 import 'package:films_hub/app/components/dialogs/error_dialog.dart';
-import 'package:films_hub/app/error_bloc/error_event.dart';
-import 'package:films_hub/app/error_bloc/error_state.dart';
+import 'package:films_hub/app/blocs/error_bloc/error_event.dart';
+import 'package:films_hub/app/blocs/error_bloc/error_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

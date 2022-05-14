@@ -12,8 +12,8 @@ import 'package:films_hub/app/presentation/features/main/models/tabs_source.dart
 import 'package:films_hub/app/domain/repositories/films/abstract_films_repository.dart';
 import 'package:films_hub/app/components/behaviors/custom_scroll_behavior.dart';
 import 'package:films_hub/app/components/colors/custom_colors.dart';
-import 'package:films_hub/app/error_bloc/error_bloc.dart';
-import 'package:films_hub/app/error_bloc/error_event.dart';
+import 'package:films_hub/app/blocs/error_bloc/error_bloc.dart';
+import 'package:films_hub/app/blocs/error_bloc/error_event.dart';
 import 'package:films_hub/app/presentation/features/catalog/pages/catalog_page.dart';
 import 'package:films_hub/app/presentation/features/details/pages/details_movie_page.dart';
 import 'package:films_hub/app/presentation/features/feed/pages/feed_page.dart';
