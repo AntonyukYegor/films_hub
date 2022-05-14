@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LocaleBloc extends Bloc<LocaleEvent, LocaleState> {
-  LocaleBloc() : super(const LocaleState(Locale('ru', 'RU'))) {
+  LocaleBloc() : super(const LocaleState(Locale('en', 'US'))) {
     on<ChangeLocaleEvent>(_onLocaleChanged);
   }
 

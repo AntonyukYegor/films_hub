@@ -68,6 +68,8 @@ abstract class SettingsLocalBase {
   String get clearName;
 
   String get saveName;
+
+  String get switchLanguage;
 }
 
 abstract class NoFoundLocalBase {

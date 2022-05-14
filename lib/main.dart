@@ -83,7 +83,7 @@ class MyApp extends StatelessWidget {
               debugShowCheckedModeBanner: false,
               onGenerateTitle: (BuildContext context) =>
                   context.locale.app.appName,
-              themeMode: ThemeMode.dark,
+              themeMode: ThemeMode.system,
               darkTheme: ThemeData(
                   brightness: Brightness.dark,
                   primarySwatch: CustomColors.darkBlack,

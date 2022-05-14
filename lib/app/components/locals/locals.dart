@@ -21,7 +21,7 @@ Map<String, Locale> availableLocales = const <String, Locale>{
 };
 
 extension LocalContextExtension on BuildContext {
-  LocaleBase get locale => Localizations.of<Locals>(this, Locals)?.current ?? const LocaleRu();
+  LocaleBase get locale => Localizations.of<Locals>(this, Locals)!.current;
 }
 
 class Locals {
@@ -48,7 +48,7 @@ class MyLocalizationsDelegate extends LocalizationsDelegate<Locals> {
   @override
   Future<Locals> load(Locale locale) => SynchronousFuture<Locals>(
     Locals(
-      isSupported(locale) ? locale : availableLocales[ruLocale]!,
+      isSupported(locale) ? locale : availableLocales[enLocale]!,
       localizedValues,
     ),
   );

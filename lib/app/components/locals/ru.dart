@@ -56,7 +56,7 @@ class MovieLocalRu implements MovieLocalBase {
 
 class FeedLocalRu implements FeedLocalBase {
   @override
-  String get title => 'Список';
+  String get title => 'Лента';
 }
 
 class CatalogLocalRu implements CatalogLocalBase {
@@ -102,6 +102,9 @@ class SettingsLocalRu implements SettingsLocalBase {
 
   @override
   String get saveName => 'Сохранить имя';
+
+  @override
+  String get switchLanguage => 'Сменить язык';
 }
 
 class NoFoundLocalRu implements NoFoundLocalBase {
@@ -116,7 +119,7 @@ class ShortDetailsLocalRu implements ShortDetailsLocalBase {
 
 class DetailsMovieLocalRu implements DetailsMovieLocalBase {
   @override
-  String get descriptionTitle => 'Описание: ';
+  String get descriptionTitle => 'Описание';
 
   @override
   String get title => "Детали";
@@ -152,5 +155,5 @@ class SearchLocalRu implements SearchLocalBase {
 
 class AppLocalRu implements AppLocalBase {
   @override
-  String get appName => 'Movies Hub';
+  String get appName => 'Центрофильм';
 }

@@ -102,6 +102,9 @@ class SettingsLocalEn implements SettingsLocalBase {
 
   @override
   String get saveName => 'Save Name';
+
+  @override
+  String get switchLanguage => 'Switch Language';
 }
 
 class NoFoundLocalEn implements NoFoundLocalBase {
@@ -116,7 +119,7 @@ class ShortDetailsLocalEn implements ShortDetailsLocalBase {
 
 class DetailsMovieLocalEn implements DetailsMovieLocalBase {
   @override
-  String get descriptionTitle => 'Description: ';
+  String get descriptionTitle => 'Description';
 
   @override
   String get title => "Details";
