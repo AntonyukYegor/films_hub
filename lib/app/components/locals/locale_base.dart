@@ -1,25 +1,27 @@
 abstract class LocaleBase {
-  MovieLocalBase get movieLocal;
+  MovieLocalBase get movie;
 
-  FeedLocalBase get feedLocalBase;
+  FeedLocalBase get feed;
 
-  CatalogLocalBase get catalogLocalBase;
+  CatalogLocalBase get catalog;
 
-  FavouritesLocalBase get favouritesLocalBase;
+  FavouritesLocalBase get favourites;
 
-  CommonLocalBase get commonLocalBase;
+  CommonLocalBase get common;
 
-  SettingsLocalBase get settingsLocalBase;
+  SettingsLocalBase get settings;
 
-  NoFoundLocalBase get noFoundLocalBase;
+  NoFoundLocalBase get noFound;
 
-  ShortDetailsLocalBase get shortDetailsLocalBase;
+  ShortDetailsLocalBase get shortDetails;
 
-  FilteringLocalBase get filteringLocalBase;
+  DetailsMovieLocalBase get detailsMovie;
 
-  SearchLocalBase get searchLocalBase;
+  FilteringLocalBase get filtering;
 
-  AppLocalBase get appLocalBase;
+  SearchLocalBase get search;
+
+  AppLocalBase get app;
 }
 
 abstract class MovieLocalBase {
@@ -73,11 +75,11 @@ abstract class NoFoundLocalBase {
 }
 
 abstract class ShortDetailsLocalBase {
-  String get description;
+  String get descriptionTitle;
 }
 
 abstract class DetailsMovieLocalBase {
-  String get description;
+  String get descriptionTitle;
 
   String get title;
 

@@ -1,38 +1,43 @@
 import 'package:films_hub/app/components/locals/locale_base.dart';
 
 class LocaleEn implements LocaleBase {
-  @override
-  MovieLocalBase get movieLocal => MovieLocalEn();
+  const LocaleEn();
 
   @override
-  FeedLocalBase get feedLocalBase => FeedLocalEn();
+  MovieLocalBase get movie => MovieLocalEn();
 
   @override
-  CatalogLocalBase get catalogLocalBase => CatalogLocalEn();
+  FeedLocalBase get feed => FeedLocalEn();
 
   @override
-  FavouritesLocalBase get favouritesLocalBase => FavouritesLocalEn();
+  CatalogLocalBase get catalog => CatalogLocalEn();
 
   @override
-  CommonLocalBase get commonLocalBase => CommonLocalEn();
+  FavouritesLocalBase get favourites => FavouritesLocalEn();
 
   @override
-  SettingsLocalBase get settingsLocalBase => SettingsLocalEn();
+  CommonLocalBase get common => CommonLocalEn();
 
   @override
-  NoFoundLocalBase get noFoundLocalBase => NoFoundLocalEn();
+  SettingsLocalBase get settings => SettingsLocalEn();
 
   @override
-  ShortDetailsLocalBase get shortDetailsLocalBase => ShortDetailsLocalEn();
+  NoFoundLocalBase get noFound => NoFoundLocalEn();
 
   @override
-  FilteringLocalBase get filteringLocalBase => FilteringLocalEn();
+  ShortDetailsLocalBase get shortDetails => ShortDetailsLocalEn();
 
   @override
-  SearchLocalBase get searchLocalBase => SearchLocalEn();
+  FilteringLocalBase get filtering => FilteringLocalEn();
 
   @override
-  AppLocalBase get appLocalBase => AppLocalEn();
+  SearchLocalBase get search => SearchLocalEn();
+
+  @override
+  AppLocalBase get app => AppLocalEn();
+
+  @override
+  DetailsMovieLocalBase get detailsMovie => DetailsMovieLocalEn();
 }
 
 class MovieLocalEn implements MovieLocalBase {
@@ -106,12 +111,12 @@ class NoFoundLocalEn implements NoFoundLocalBase {
 
 class ShortDetailsLocalEn implements ShortDetailsLocalBase {
   @override
-  String get description => 'Description:';
+  String get descriptionTitle => 'Description:';
 }
 
 class DetailsMovieLocalEn implements DetailsMovieLocalBase {
   @override
-  String get description => 'Description: ';
+  String get descriptionTitle => 'Description: ';
 
   @override
   String get title => "Details";

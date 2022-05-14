@@ -1,4 +1,4 @@
-import 'package:films_hub/app/components/constants.dart';
+import 'package:films_hub/app/components/locals/locals.dart';
 import 'package:flutter/material.dart';
 
 class NotGettingAnyResults extends StatelessWidget {
@@ -10,13 +10,13 @@ class NotGettingAnyResults extends StatelessWidget {
       padding: const EdgeInsets.only(left: 64, top: 40, right: 64, bottom: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: const [
-          Padding(
+        children: [
+          const Padding(
             padding: EdgeInsets.all(16.0),
             child: Icon(Icons.search),
           ),
           Text(
-            CommonLocal.notGettingAnyResults,
+            context.locale.common.notGettingAnyResults,
             textAlign: TextAlign.center,
           ),
         ],

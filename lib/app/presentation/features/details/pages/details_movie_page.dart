@@ -1,4 +1,5 @@
 import 'package:films_hub/app/components/constants.dart';
+import 'package:films_hub/app/components/locals/locals.dart';
 import 'package:films_hub/app/domain/repositories/abstract_favourites_films_repository.dart';
 import 'package:films_hub/app/presentation/common/models/movie_list_card_model.dart';
 import 'package:films_hub/app/presentation/common/widgets/appbar/app_bar_flexible_space.dart';
@@ -35,7 +36,8 @@ class DetailsMoviePage extends StatelessWidget {
             bottomRight: Radius.circular(AppStyle.appBarBorderRadius),
           ),
         ),
-        flexibleSpace: const AppBarFlexibleSpace(32, DetailsMovieLocal.title),
+        flexibleSpace:
+            AppBarFlexibleSpace(32, context.locale.detailsMovie.title),
       ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -115,10 +117,11 @@ class DetailsMoviePage extends StatelessWidget {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.stretch,
                                           children: [
-                                            const Text(
-                                                DetailsMovieLocal.release,
+                                            Text(
+                                                context.locale.detailsMovie
+                                                    .release,
                                                 overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   fontWeight: FontWeight.bold,
                                                 )),
                                             Padding(
@@ -201,11 +204,12 @@ class DetailsMoviePage extends StatelessWidget {
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold,
                                 )),
-                            const Padding(
-                              padding: EdgeInsets.only(top: 32.0),
-                              child: Text(DetailsMovieLocal.description,
+                            Padding(
+                              padding: const EdgeInsets.only(top: 32.0),
+                              child: Text(
+                                  context.locale.detailsMovie.descriptionTitle,
                                   overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                   )),
                             ),
@@ -214,7 +218,8 @@ class DetailsMoviePage extends StatelessWidget {
                               child: Padding(
                                 padding: const EdgeInsets.only(top: 8),
                                 child: Text(
-                                  CommonLocal.tab + _model.description,
+                                  context.locale.common.tab +
+                                      _model.description,
                                   textAlign: TextAlign.justify,
                                   style: const TextStyle(
                                     fontStyle: FontStyle.italic,

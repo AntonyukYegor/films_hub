@@ -10,18 +10,18 @@ import 'package:flutter/material.dart'
 const String ruLocale = 'ru_RU';
 const String enLocale = 'en_US';
 
-Map<String, LocaleBase> get initialLocals => <String, LocaleBase>{
+Map<String, LocaleBase> initialLocals = const <String, LocaleBase>{
   ruLocale: LocaleRu(),
   enLocale: LocaleEn(),
 };
 
-Map<String, Locale> get availableLocales => <String, Locale>{
-  ruLocale: const Locale('ru', 'RU'),
-  enLocale: const Locale('en', 'US'),
+Map<String, Locale> availableLocales = const <String, Locale>{
+  ruLocale: Locale('ru', 'RU'),
+  enLocale: Locale('en', 'US'),
 };
 
 extension LocalContextExtension on BuildContext {
-  LocaleBase get locale => Localizations.of<Locals>(this, Locals)!.current;
+  LocaleBase get locale => Localizations.of<Locals>(this, Locals)?.current ?? const LocaleRu();
 }
 
 class Locals {

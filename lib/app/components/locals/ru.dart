@@ -1,38 +1,43 @@
 import 'package:films_hub/app/components/locals/locale_base.dart';
 
 class LocaleRu implements LocaleBase {
-  @override
-  MovieLocalBase get movieLocal => MovieLocalRu();
+  const LocaleRu();
 
   @override
-  FeedLocalBase get feedLocalBase => FeedLocalRu();
+  MovieLocalBase get movie => MovieLocalRu();
 
   @override
-  CatalogLocalBase get catalogLocalBase => CatalogLocalRu();
+  FeedLocalBase get feed => FeedLocalRu();
 
   @override
-  FavouritesLocalBase get favouritesLocalBase => FavouritesLocalRu();
+  CatalogLocalBase get catalog => CatalogLocalRu();
 
   @override
-  CommonLocalBase get commonLocalBase => CommonLocalRu();
+  FavouritesLocalBase get favourites => FavouritesLocalRu();
 
   @override
-  SettingsLocalBase get settingsLocalBase => SettingsLocalRu();
+  CommonLocalBase get common => CommonLocalRu();
 
   @override
-  NoFoundLocalBase get noFoundLocalBase => NoFoundLocalRu();
+  SettingsLocalBase get settings => SettingsLocalRu();
 
   @override
-  ShortDetailsLocalBase get shortDetailsLocalBase => ShortDetailsLocalRu();
+  NoFoundLocalBase get noFound => NoFoundLocalRu();
 
   @override
-  FilteringLocalBase get filteringLocalBase => FilteringLocalRu();
+  ShortDetailsLocalBase get shortDetails => ShortDetailsLocalRu();
 
   @override
-  SearchLocalBase get searchLocalBase => SearchLocalRu();
+  FilteringLocalBase get filtering => FilteringLocalRu();
 
   @override
-  AppLocalBase get appLocalBase => AppLocalRu();
+  SearchLocalBase get search => SearchLocalRu();
+
+  @override
+  AppLocalBase get app => AppLocalRu();
+
+  @override
+  DetailsMovieLocalBase get detailsMovie => DetailsMovieLocalRu();
 }
 
 class MovieLocalRu implements MovieLocalBase {
@@ -106,12 +111,12 @@ class NoFoundLocalRu implements NoFoundLocalBase {
 
 class ShortDetailsLocalRu implements ShortDetailsLocalBase {
   @override
-  String get description => 'Описание:';
+  String get descriptionTitle => 'Описание:';
 }
 
 class DetailsMovieLocalRu implements DetailsMovieLocalBase {
   @override
-  String get description => 'Описание: ';
+  String get descriptionTitle => 'Описание: ';
 
   @override
   String get title => "Детали";

@@ -1,4 +1,4 @@
-import 'package:films_hub/app/components/constants.dart';
+import 'package:films_hub/app/components/locals/locals.dart';
 import 'package:films_hub/app/domain/repositories/abstract_favourites_films_repository.dart';
 import 'package:films_hub/app/presentation/common/models/movie_list_card_model.dart';
 import 'package:films_hub/app/presentation/features/details/pages/details_movie_page.dart';
@@ -130,8 +130,8 @@ class MovieListCard extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   child: PrimaryButton(
-                    const Center(
-                      child: Text(MovieLocal.more),
+                    Center(
+                      child: Text(context.locale.movie.more),
                     ),
                     onPressed: () {
                       Navigator.pushNamed(

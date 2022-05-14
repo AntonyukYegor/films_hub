@@ -1,4 +1,5 @@
 import 'package:films_hub/app/components/constants.dart';
+import 'package:films_hub/app/components/locals/locals.dart';
 import 'package:films_hub/app/presentation/common/widgets/app_theme_card_background_without_shadow.dart';
 import 'package:flutter/material.dart';
 
@@ -54,7 +55,7 @@ class SearchFieldState extends State<SearchField> {
                 hoverColor: Theme.of(context).textTheme.titleSmall?.color,
                 enabledBorder: InputBorder.none,
                 focusedBorder: InputBorder.none,
-                labelText: SearchLocal.search,
+                labelText: context.locale.search.search,
                 labelStyle: TextStyle(
                   color: Theme.of(context).textTheme.titleSmall?.color,
                 ),

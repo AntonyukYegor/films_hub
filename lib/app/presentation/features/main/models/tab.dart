@@ -4,14 +4,15 @@ class NavigationTab {
   const NavigationTab({
     required this.icon,
     required this.page,
-    required this.label,
+    required this.onGenerateLabel,
   });
 
+  final String Function() onGenerateLabel;
+
   final Icon icon;
-  final String label;
   final Widget page;
 
   BottomNavigationBarItem toBottomNavigationBarItem() {
-    return BottomNavigationBarItem(icon: icon, label: label);
+    return BottomNavigationBarItem(icon: icon, label: onGenerateLabel.call());
   }
 }
