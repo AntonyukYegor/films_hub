@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "254181406092",
+    "project_id": "films-hub-9e356",
+    "storage_bucket": "films-hub-9e356.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:254181406092:android:817854d64d9e0c543a12a9",
+        "android_client_info": {
+          "package_name": "com.antonyukyegor.filmshub.films_hub"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "254181406092-a3grnf37nan9qt3te2np5gk6lq5kd6bh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPKRACfQuQJ0sANcxF_LEeQFVqfXInRAI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "254181406092-a3grnf37nan9qt3te2np5gk6lq5kd6bh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

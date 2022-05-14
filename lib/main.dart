@@ -27,11 +27,19 @@ import 'package:films_hub/app/presentation/features/no_found/pages/not_found_pag
 import 'package:films_hub/app/presentation/features/search/bloc/search_page_bloc.dart';
 import 'package:films_hub/app/presentation/features/settings/bloc/settings_bloc.dart';
 import 'package:films_hub/app/presentation/features/settings/pages/settings_page.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp();
+  await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+
   runApp(const MyApp());
 }
 
@@ -123,8 +131,8 @@ class MyApp extends StatelessWidget {
                                 create: (context) => SearchPageBloc(
                                     filteringPageBloc:
                                         context.read<FilteringPageBloc>(),
-                                    repository:
-                                        context.read<AbstractFilmsRepository>()),
+                                    repository: context
+                                        .read<AbstractFilmsRepository>()),
                                 child:
                                     RepositoryProvider<AbstractFilmsRepository>(
                                   lazy: false,
@@ -141,7 +149,8 @@ class MyApp extends StatelessWidget {
                                           page: const FeedPage(),
                                         ),
                                         NavigationTab(
-                                          icon: AppStyle.catalogNavigationBarIcon,
+                                          icon:
+                                              AppStyle.catalogNavigationBarIcon,
                                           onGenerateLabel: () =>
                                               context.locale.catalog.title,
                                           page: const CatalogPage(),
@@ -157,7 +166,8 @@ class MyApp extends StatelessWidget {
                                     ),
                                     child: BlocProvider<MainBloc>(
                                       create: (context) => MainBloc(
-                                          tabsSource: context.read<TabsSource>()),
+                                          tabsSource:
+                                              context.read<TabsSource>()),
                                       child: const MainPage(),
                                     ),
                                   ),
