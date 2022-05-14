@@ -42,17 +42,14 @@ class SettingsPage extends StatelessWidget {
                 child: Row(
                   children: [
                     BlocBuilder<SettingsBloc, SettingsState>(
-                      buildWhen: (oldState, newState) =>
-                          oldState.isEnLocale != newState.isEnLocale,
-                      builder: (_, state) => Checkbox(
+                      builder: (context, state) => Checkbox(
                         value: state.isEnLocale,
                         onChanged: (val) {
                           final isEnLocale = val ?? false;
-
                           context.read<LocaleBloc>().add(ChangeLocaleEvent(
-                              isEnLocale
-                                  ? availableLocales[enLocale]!
-                                  : availableLocales[ruLocale]!));
+                              !isEnLocale
+                                  ? availableLocales[ruLocale]!
+                                  : availableLocales[enLocale]!));
                           context
                               .read<SettingsBloc>()
                               .add(UpdateLocaleEvent(value: isEnLocale));

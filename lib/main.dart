@@ -61,137 +61,138 @@ class MyApp extends StatelessWidget {
       child: BlocProvider<FavouritesBloc>(
         create: (context) => FavouritesBloc(
             repository: context.read<AbstractFavouritesFilmsRepository>()),
-        child: BlocProvider<LocaleBloc>(
-          lazy: false,
-          create: (_) => LocaleBloc(),
-          child: BlocBuilder<LocaleBloc, LocaleState>(
-            builder: (context, state) => MaterialApp(
-              locale: state.locale,
-              localizationsDelegates: <LocalizationsDelegate<dynamic>>[
-                GlobalWidgetsLocalizations.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-                MyLocalizationsDelegate(initialLocals),
-              ],
-              supportedLocales: availableLocales.values,
-              builder: (context, child) {
-                return ScrollConfiguration(
-                  behavior: CustomScrollBehavior(),
-                  child: child ?? const SizedBox(),
-                );
-              },
-              debugShowCheckedModeBanner: false,
-              onGenerateTitle: (BuildContext context) =>
-                  context.locale.app.appName,
-              themeMode: ThemeMode.system,
-              darkTheme: ThemeData(
-                  brightness: Brightness.dark,
-                  primarySwatch: CustomColors.darkBlack,
+        child: BlocProvider<SettingsBloc>(
+          create: (_) => SettingsBloc(),
+          child: BlocProvider<LocaleBloc>(
+            lazy: false,
+            create: (_) => LocaleBloc(),
+            child: BlocBuilder<LocaleBloc, LocaleState>(
+              builder: (context, state) => MaterialApp(
+                locale: state.locale,
+                localizationsDelegates: <LocalizationsDelegate<dynamic>>[
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                  MyLocalizationsDelegate(initialLocals),
+                ],
+                supportedLocales: availableLocales.values,
+                builder: (context, child) {
+                  return ScrollConfiguration(
+                    behavior: CustomScrollBehavior(),
+                    child: child ?? const SizedBox(),
+                  );
+                },
+                debugShowCheckedModeBanner: false,
+                onGenerateTitle: (BuildContext context) =>
+                    context.locale.app.appName,
+                themeMode: ThemeMode.system,
+                darkTheme: ThemeData(
+                    brightness: Brightness.dark,
+                    primarySwatch: CustomColors.darkBlack,
+                    fontFamily: AppStyle.fontFamily,
+                    shadowColor: Colors.white.withOpacity(0.08),
+                    scaffoldBackgroundColor: Colors.black),
+                theme: ThemeData(
+                  brightness: Brightness.light,
+                  primarySwatch: Colors.grey,
+                  shadowColor: Colors.black.withOpacity(0.3),
                   fontFamily: AppStyle.fontFamily,
-                  shadowColor: Colors.white.withOpacity(0.08),
-                  scaffoldBackgroundColor: Colors.black),
-              theme: ThemeData(
-                brightness: Brightness.light,
-                primarySwatch: Colors.grey,
-                shadowColor: Colors.black.withOpacity(0.3),
-                fontFamily: AppStyle.fontFamily,
-              ),
-              initialRoute: MainPage.navigationPath,
-              onGenerateRoute: (RouteSettings settings) {
-                if (settings.name == MainPage.navigationPath) {
-                  return MaterialPageRoute(
-                    builder: (context) {
-                      return BlocProvider<ErrorBloc>(
-                        lazy: false,
-                        create: (context) => ErrorBloc(context),
-                        child: RepositoryProvider<AbstractFilmsRepository>(
+                ),
+                initialRoute: MainPage.navigationPath,
+                onGenerateRoute: (RouteSettings settings) {
+                  if (settings.name == MainPage.navigationPath) {
+                    return MaterialPageRoute(
+                      builder: (context) {
+                        return BlocProvider<ErrorBloc>(
                           lazy: false,
-                          create: (context) => OMDBFilmsRepository(
-                            client: OMDBService(
-                              onErrorHandler: (String code, String message) {
-                                context.read<ErrorBloc>().add(ShowDialogEvent(
-                                    title: code, message: message));
-                              },
+                          create: (context) => ErrorBloc(context),
+                          child: RepositoryProvider<AbstractFilmsRepository>(
+                            lazy: false,
+                            create: (context) => OMDBFilmsRepository(
+                              client: OMDBService(
+                                onErrorHandler: (String code, String message) {
+                                  context.read<ErrorBloc>().add(ShowDialogEvent(
+                                      title: code, message: message));
+                                },
+                              ),
                             ),
-                          ),
-                          child: BlocProvider<FilteringPageBloc>(
-                            create: (context) => FilteringPageBloc(),
-                            child: BlocProvider<SearchPageBloc>(
-                              lazy: false,
-                              create: (context) => SearchPageBloc(
-                                  filteringPageBloc:
-                                      context.read<FilteringPageBloc>(),
-                                  repository:
-                                      context.read<AbstractFilmsRepository>()),
-                              child:
-                                  RepositoryProvider<AbstractFilmsRepository>(
+                            child: BlocProvider<FilteringPageBloc>(
+                              create: (context) => FilteringPageBloc(),
+                              child: BlocProvider<SearchPageBloc>(
                                 lazy: false,
-                                create: (context) =>
-                                    ExtendedFakeFilmsRepository(),
-                                child: RepositoryProvider<TabsSource>(
+                                create: (context) => SearchPageBloc(
+                                    filteringPageBloc:
+                                        context.read<FilteringPageBloc>(),
+                                    repository:
+                                        context.read<AbstractFilmsRepository>()),
+                                child:
+                                    RepositoryProvider<AbstractFilmsRepository>(
                                   lazy: false,
-                                  create: (context) => _BaseTabsSource(
-                                    [
-                                      NavigationTab(
-                                        icon: AppStyle.feedNavigationBarIcon,
-                                        onGenerateLabel: () =>
-                                            context.locale.feed.title,
-                                        page: const FeedPage(),
-                                      ),
-                                      NavigationTab(
-                                        icon: AppStyle.catalogNavigationBarIcon,
-                                        onGenerateLabel: () =>
-                                            context.locale.catalog.title,
-                                        page: const CatalogPage(),
-                                      ),
-                                      NavigationTab(
-                                        icon: AppStyle
-                                            .favouritesNavigationBarIcon,
-                                        onGenerateLabel: () =>
-                                            context.locale.favourites.title,
-                                        page: const FavouritesPage(),
-                                      ),
-                                    ],
-                                  ),
-                                  child: BlocProvider<MainBloc>(
-                                    create: (context) => MainBloc(
-                                        tabsSource: context.read<TabsSource>()),
-                                    child: const MainPage(),
+                                  create: (context) =>
+                                      ExtendedFakeFilmsRepository(),
+                                  child: RepositoryProvider<TabsSource>(
+                                    lazy: false,
+                                    create: (context) => _BaseTabsSource(
+                                      [
+                                        NavigationTab(
+                                          icon: AppStyle.feedNavigationBarIcon,
+                                          onGenerateLabel: () =>
+                                              context.locale.feed.title,
+                                          page: const FeedPage(),
+                                        ),
+                                        NavigationTab(
+                                          icon: AppStyle.catalogNavigationBarIcon,
+                                          onGenerateLabel: () =>
+                                              context.locale.catalog.title,
+                                          page: const CatalogPage(),
+                                        ),
+                                        NavigationTab(
+                                          icon: AppStyle
+                                              .favouritesNavigationBarIcon,
+                                          onGenerateLabel: () =>
+                                              context.locale.favourites.title,
+                                          page: const FavouritesPage(),
+                                        ),
+                                      ],
+                                    ),
+                                    child: BlocProvider<MainBloc>(
+                                      create: (context) => MainBloc(
+                                          tabsSource: context.read<TabsSource>()),
+                                      child: const MainPage(),
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      );
-                    },
-                  );
-                }
+                        );
+                      },
+                    );
+                  }
 
-                if (settings.name == SettingsPage.navigationPath) {
+                  if (settings.name == SettingsPage.navigationPath) {
+                    return MaterialPageRoute(
+                      builder: (_) {
+                        return const SettingsPage();
+                      },
+                    );
+                  }
+
+                  if (settings.name == DetailsMoviePage.navigationPath) {
+                    final MovieCardModel model =
+                        settings.arguments as MovieCardModel;
+                    return MaterialPageRoute(
+                      builder: (_) {
+                        return DetailsMoviePage(model: model);
+                      },
+                    );
+                  }
+
                   return MaterialPageRoute(
-                    builder: (_) {
-                      return BlocProvider<SettingsBloc>(
-                          create: (_) => SettingsBloc(),
-                          child: const SettingsPage());
-                    },
+                    builder: (_) => const NotFoundPage(),
                   );
-                }
-
-                if (settings.name == DetailsMoviePage.navigationPath) {
-                  final MovieCardModel model =
-                      settings.arguments as MovieCardModel;
-                  return MaterialPageRoute(
-                    builder: (_) {
-                      return DetailsMoviePage(model: model);
-                    },
-                  );
-                }
-
-                return MaterialPageRoute(
-                  builder: (_) => const NotFoundPage(),
-                );
-              },
+                },
+              ),
             ),
           ),
         ),

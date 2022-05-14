@@ -4,6 +4,8 @@ import 'package:films_hub/app/presentation/common/widgets/appbar/app_bar_flexibl
 import 'package:films_hub/app/presentation/features/catalog/widgets/movies_grid.dart';
 import 'package:films_hub/app/presentation/features/favourites/bloc/favourites_bloc.dart';
 import 'package:films_hub/app/presentation/features/favourites/bloc/favourites_state.dart';
+import 'package:films_hub/app/presentation/features/settings/models/settings_arguments.dart';
+import 'package:films_hub/app/presentation/features/settings/pages/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -29,6 +31,24 @@ class _FavouritesPageState extends State<FavouritesPage> {
             bottomRight: Radius.circular(AppStyle.appBarBorderRadius),
           ),
         ),
+        actions: [
+          Theme(
+              data: Theme.of(context).copyWith(
+                  dividerColor: Colors.transparent,
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent),
+              child: IconButton(
+                icon: const Icon(Icons.settings),
+                onPressed: () {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                  Navigator.pushNamed(
+                    context,
+                    SettingsPage.navigationPath,
+                    arguments: const SettingsArguments('Egor'),
+                  );
+                },
+              )),
+        ],
         flexibleSpace: AppBarFlexibleSpace(
             AppStyle.appBarBorderRadius, context.locale.favourites.title),
       ),
