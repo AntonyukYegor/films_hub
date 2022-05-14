@@ -9,17 +9,17 @@ class MovieLocal {
 }
 
 class FeedLocal {
-  static const title = 'Feed';
+  static const String title = 'Feed';
   static const Icon navigationBarIcon = Icon(Icons.list);
 }
 
 class CatalogLocal {
-  static const title = 'Catalog';
+  static const String title = 'Catalog';
   static const Icon navigationBarIcon = Icon(Icons.grid_view);
 }
 
 class FavouritesLocal {
-  static const title = 'Favourites';
+  static const String title = 'Favourites';
   static const Icon navigationBarIcon = Icon(Icons.favorite);
 }
 
