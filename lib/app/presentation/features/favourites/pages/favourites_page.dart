@@ -57,14 +57,16 @@ class _FavouritesPageState extends State<FavouritesPage> {
         slivers: [
           const SliverPadding(
               padding: EdgeInsets.only(top: AppStyle.safePadding)),
+          const SliverPadding(
+              padding: EdgeInsets.only(top: AppStyle.safePadding)),
           Builder(builder: (context) {
             return BlocBuilder<FavouritesBloc, FavouritesState>(
                 buildWhen: (oldState, newState) => oldState != newState,
                 builder: (context, state) {
-              return MoviesGrid(
-                films: state.films,
-              );
-            });
+                  return MoviesGrid(
+                    films: state.films,
+                  );
+                });
           }),
           const SliverPadding(
               padding: EdgeInsets.only(bottom: AppStyle.safePadding)),
