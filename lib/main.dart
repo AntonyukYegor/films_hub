@@ -20,10 +20,8 @@ import 'package:films_hub/app/blocs/error_bloc/error_event.dart';
 import 'package:films_hub/app/presentation/features/catalog/pages/catalog_page.dart';
 import 'package:films_hub/app/presentation/features/details/pages/details_movie_page.dart';
 import 'package:films_hub/app/presentation/features/feed/pages/feed_page.dart';
-import 'package:films_hub/app/presentation/features/filtering/bloc/filtering_page_bloc.dart';
 import 'package:films_hub/app/presentation/features/main/pages/main_page.dart';
 import 'package:films_hub/app/presentation/features/no_found/pages/not_found_page.dart';
-import 'package:films_hub/app/presentation/features/search/bloc/search_page_bloc.dart';
 import 'package:films_hub/app/presentation/features/settings/bloc/settings_bloc.dart';
 import 'package:films_hub/app/presentation/features/settings/pages/settings_page.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -125,46 +123,35 @@ class MyApp extends StatelessWidget {
                                 },
                               ),
                             ),
-                            child: BlocProvider<FilteringPageBloc>(
-                              create: (context) => FilteringPageBloc(),
-                              child: BlocProvider<SearchPageBloc>(
-                                lazy: false,
-                                create: (context) => SearchPageBloc(
-                                    filteringPageBloc:
-                                        context.read<FilteringPageBloc>(),
-                                    repository: context
-                                        .read<AbstractFilmsRepository>()),
-                                child: RepositoryProvider<TabsSource>(
-                                  lazy: false,
-                                  create: (context) => _BaseTabsSource(
-                                    [
-                                      NavigationTab(
-                                        icon: AppStyle.feedNavigationBarIcon,
-                                        onGenerateLabel: () =>
-                                            context.locale.feed.title,
-                                        page: const FeedPage(),
-                                      ),
-                                      NavigationTab(
-                                        icon: AppStyle.catalogNavigationBarIcon,
-                                        onGenerateLabel: () =>
-                                            context.locale.catalog.title,
-                                        page: const CatalogPage(),
-                                      ),
-                                      NavigationTab(
-                                        icon: AppStyle
-                                            .favouritesNavigationBarIcon,
-                                        onGenerateLabel: () =>
-                                            context.locale.favourites.title,
-                                        page: const FavouritesPage(),
-                                      ),
-                                    ],
+                            child: RepositoryProvider<TabsSource>(
+                              lazy: false,
+                              create: (context) => _BaseTabsSource(
+                                [
+                                  NavigationTab(
+                                    icon: AppStyle.catalogNavigationBarIcon,
+                                    onGenerateLabel: () =>
+                                        context.locale.catalog.title,
+                                    page: const CatalogPage(),
                                   ),
-                                  child: BlocProvider<MainBloc>(
-                                    create: (context) => MainBloc(
-                                        tabsSource: context.read<TabsSource>()),
-                                    child: const MainPage(),
+                                  NavigationTab(
+                                    icon: AppStyle.feedNavigationBarIcon,
+                                    onGenerateLabel: () =>
+                                        context.locale.feed.title,
+                                    page: const FeedPage(),
                                   ),
-                                ),
+                                  NavigationTab(
+                                    icon: AppStyle.favouritesNavigationBarIcon,
+                                    onGenerateLabel: () =>
+                                        context.locale.favourites.title,
+                                    page: const FavouritesPage(),
+                                    // page: const FavouritesPage(),
+                                  ),
+                                ],
+                              ),
+                              child: BlocProvider<MainBloc>(
+                                create: (context) => MainBloc(
+                                    tabsSource: context.read<TabsSource>()),
+                                child: const MainPage(),
                               ),
                             ),
                           ),
