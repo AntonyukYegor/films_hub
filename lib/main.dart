@@ -144,17 +144,17 @@ class MyApp extends StatelessWidget {
                                     create: (context) => _BaseTabsSource(
                                       [
                                         NavigationTab(
+                                          icon: AppStyle.feedNavigationBarIcon,
+                                          onGenerateLabel: () =>
+                                              context.locale.feed.title,
+                                          page: const FeedPage(),
+                                        ),
+                                        NavigationTab(
                                           icon:
                                               AppStyle.catalogNavigationBarIcon,
                                           onGenerateLabel: () =>
                                               context.locale.catalog.title,
                                           page: const CatalogPage(),
-                                        ),
-                                        NavigationTab(
-                                          icon: AppStyle.feedNavigationBarIcon,
-                                          onGenerateLabel: () =>
-                                              context.locale.feed.title,
-                                          page: const FeedPage(),
                                         ),
                                         NavigationTab(
                                           icon: AppStyle
