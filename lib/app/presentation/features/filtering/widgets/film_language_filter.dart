@@ -6,7 +6,10 @@ import 'package:films_hub/app/domain/models/filters/films/film_future_list_filte
 import 'package:films_hub/app/domain/models/languages/extensions/named_language.dart';
 import 'package:films_hub/app/domain/models/languages/language.dart';
 import 'package:films_hub/app/domain/models/languages/language_filter_entry.dart';
+import 'package:films_hub/app/presentation/features/filtering/filters_bloc/filters_bloc.dart';
+import 'package:films_hub/app/presentation/features/filtering/filters_bloc/filters_event.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FilmLanguageFilter extends StatefulWidget {
   const FilmLanguageFilter({Key? key}) : super(key: key);
@@ -22,6 +25,13 @@ class FilmLanguageFilterState extends State<FilmLanguageFilter>
   ];
 
   final List<String> _filters = <String>[];
+
+  @override
+  void initState() {
+    super.initState();
+    _filters.clear();
+    _filters.addAll(context.read<FiltersBloc>().state.selectedLanguages);
+  }
 
   Iterable<Widget> get actorWidgets {
     return _cast.map((LanguageFilterEntry language) {
@@ -39,6 +49,9 @@ class FilmLanguageFilterState extends State<FilmLanguageFilter>
                   return name == language.name;
                 });
               }
+              context
+                  .read<FiltersBloc>()
+                  .add(ChangeLanguageFilterEvent(selectedLanguage: _filters));
             });
           },
         ),
@@ -60,6 +73,9 @@ class FilmLanguageFilterState extends State<FilmLanguageFilter>
   void reset() {
     setState(() {
       _filters.clear();
+      context
+          .read<FiltersBloc>()
+          .add(ChangeLanguageFilterEvent(selectedLanguage: _filters));
     });
   }
 
