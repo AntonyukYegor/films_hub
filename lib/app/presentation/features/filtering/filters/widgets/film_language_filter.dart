@@ -24,35 +24,31 @@ class FilmLanguageFilterState extends State<FilmLanguageFilter>
     ...Language.values.map((l) => LanguageFilterEntry(l.toPrettyString()))
   ];
 
-  final List<String> _filters = <String>[];
-
   @override
   void initState() {
     super.initState();
-    _filters.clear();
-    _filters.addAll(context.read<FiltersBloc>().state.selectedLanguages);
   }
 
   Iterable<Widget> get actorWidgets {
     return _cast.map((LanguageFilterEntry language) {
+      final currentFilters =
+          context.read<FiltersBloc>().state.selectedLanguages;
+
       return Padding(
         padding: const EdgeInsets.all(4.0),
         child: FilterChip(
           label: Text(language.name),
-          selected: _filters.contains(language.name),
+          selected: currentFilters.contains(language.name),
           onSelected: (bool value) {
-            setState(() {
-              if (value) {
-                _filters.add(language.name);
-              } else {
-                _filters.removeWhere((String name) {
-                  return name == language.name;
-                });
-              }
-              context
-                  .read<FiltersBloc>()
-                  .add(ChangeLanguageFilterEvent(selectedLanguage: _filters));
-            });
+            if (value) {
+              currentFilters.add(language.name);
+            } else {
+              currentFilters.removeWhere((String name) {
+                return name == language.name;
+              });
+            }
+            context.read<FiltersBloc>().add(
+                ChangeLanguageFilterEvent(selectedLanguage: currentFilters));
           },
         ),
       );
@@ -71,21 +67,20 @@ class FilmLanguageFilterState extends State<FilmLanguageFilter>
 
   @override
   void reset() {
-    setState(() {
-      _filters.clear();
-      context
-          .read<FiltersBloc>()
-          .add(ChangeLanguageFilterEvent(selectedLanguage: _filters));
-    });
+    context
+        .read<FiltersBloc>()
+        .add(const ChangeLanguageFilterEvent(selectedLanguage: []));
   }
 
   @override
   AbstractFilter<Future<List<AbstractFilm>>> filter() {
-    if (_filters.isEmpty) {
+    final currentFilters = context.read<FiltersBloc>().state.selectedLanguages;
+    if (currentFilters.isEmpty) {
       return FilmFutureListFilter.empty();
     }
 
-    var filmConditions = _filters.map((f) => FilmLanguageEqualsCondition(f));
+    var filmConditions =
+        currentFilters.map((f) => FilmLanguageEqualsCondition(f));
     return FilmFutureListFilter.anyCondition(filmConditions);
   }
 }
