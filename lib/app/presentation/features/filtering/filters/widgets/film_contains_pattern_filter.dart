@@ -3,8 +3,8 @@ import 'package:films_hub/app/domain/models/filters/abstract_filter.dart';
 import 'package:films_hub/app/domain/models/filters/conditions/films/film_contains_pattern_condition.dart';
 import 'package:films_hub/app/domain/models/filters/film_filter_source.dart';
 import 'package:films_hub/app/domain/models/filters/films/film_future_list_filter.dart';
-import 'package:films_hub/app/presentation/features/filtering/filters_bloc/filters_bloc.dart';
-import 'package:films_hub/app/presentation/features/filtering/filters_bloc/filters_event.dart';
+import 'package:films_hub/app/presentation/features/filtering/filters/bloc/filters_bloc.dart';
+import 'package:films_hub/app/presentation/features/filtering/filters/bloc/filters_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

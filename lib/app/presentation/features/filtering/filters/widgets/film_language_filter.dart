@@ -6,8 +6,8 @@ import 'package:films_hub/app/domain/models/filters/films/film_future_list_filte
 import 'package:films_hub/app/domain/models/languages/extensions/named_language.dart';
 import 'package:films_hub/app/domain/models/languages/language.dart';
 import 'package:films_hub/app/domain/models/languages/language_filter_entry.dart';
-import 'package:films_hub/app/presentation/features/filtering/filters_bloc/filters_bloc.dart';
-import 'package:films_hub/app/presentation/features/filtering/filters_bloc/filters_event.dart';
+import 'package:films_hub/app/presentation/features/filtering/filters/bloc/filters_bloc.dart';
+import 'package:films_hub/app/presentation/features/filtering/filters/bloc/filters_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

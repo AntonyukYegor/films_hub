@@ -68,7 +68,8 @@ class SearchPageBloc extends Bloc<SearchPageEvent, SearchPageState> {
               isLoading: false,
               page: nextPage,
             ));
-            _filteringPageBloc.add(FetchFilterDataEvent(source: Films(0, value.films)));
+            _filteringPageBloc
+                .add(FetchFilterDataEvent(source: Films(0, value.films)));
           }
         },
       );

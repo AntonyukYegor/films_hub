@@ -10,7 +10,7 @@ import 'package:films_hub/app/presentation/common/models/movie_list_card_model.d
 import 'package:films_hub/app/presentation/features/favourites/bloc/favourites_bloc.dart';
 import 'package:films_hub/app/presentation/features/favourites/pages/favourites_page.dart';
 import 'package:films_hub/app/presentation/features/filtering/bloc/filtering_page_bloc.dart';
-import 'package:films_hub/app/presentation/features/filtering/filters_bloc/filters_bloc.dart';
+import 'package:films_hub/app/presentation/features/filtering/filters/bloc/filters_bloc.dart';
 import 'package:films_hub/app/presentation/features/main/bloc/main_block.dart';
 import 'package:films_hub/app/presentation/features/main/models/tab.dart';
 import 'package:films_hub/app/presentation/features/main/models/tabs_source.dart';

@@ -1,5 +1,5 @@
-import 'package:films_hub/app/presentation/features/filtering/filters_bloc/filters_event.dart';
-import 'package:films_hub/app/presentation/features/filtering/filters_bloc/filters_state.dart';
+import 'package:films_hub/app/presentation/features/filtering/filters/bloc/filters_event.dart';
+import 'package:films_hub/app/presentation/features/filtering/filters/bloc/filters_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
