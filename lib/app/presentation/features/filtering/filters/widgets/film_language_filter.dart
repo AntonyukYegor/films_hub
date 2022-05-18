@@ -25,11 +25,6 @@ class FilmLanguageFilterState extends State<FilmLanguageFilter>
     ...Language.values.map((l) => LanguageFilterEntry(l.toPrettyString()))
   ];
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
   Iterable<Widget> get actorWidgets {
     return _cast.map((LanguageFilterEntry language) {
       final currentFilters = [
@@ -39,7 +34,8 @@ class FilmLanguageFilterState extends State<FilmLanguageFilter>
       return Padding(
         padding: const EdgeInsets.all(4.0),
         child: BlocBuilder<FiltersBloc, FiltersState>(
-          buildWhen: (oldState, newState) => oldState.selectedLanguages != newState.selectedLanguages,
+          buildWhen: (oldState, newState) =>
+              oldState.selectedLanguages != newState.selectedLanguages,
           builder: (context, state) => FilterChip(
             label: Text(language.name),
             selected: currentFilters.contains(language.name),
