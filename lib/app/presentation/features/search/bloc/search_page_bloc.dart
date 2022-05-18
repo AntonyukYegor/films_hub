@@ -25,6 +25,10 @@ class SearchPageBloc extends Bloc<SearchPageEvent, SearchPageState> {
     on<ReloadDataEvent>(_onReloadData);
   }
 
+  void init() {
+    add(ReloadDataEvent());
+  }
+
   void _onSearchChanged(
       SearchChangedEvent event, Emitter<SearchPageState> emit) async {
     if (state.searchText != event.search) {

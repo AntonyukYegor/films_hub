@@ -97,7 +97,8 @@ class MyApp extends StatelessWidget {
                     lazy: false,
                     create: (context) => SearchPageBloc(
                         filteringPageBloc: context.read<FilteringPageBloc>(),
-                        repository: context.read<AbstractFilmsRepository>()),
+                        repository: context.read<AbstractFilmsRepository>())
+                      ..init(),
                     child: BlocBuilder<LocaleBloc, LocaleState>(
                       builder: (context, state) => MaterialApp(
                         locale: state.locale,

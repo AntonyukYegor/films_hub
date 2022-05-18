@@ -43,11 +43,7 @@ class _MovieSearchContainerPageState extends State<MovieSearchContainerPage> {
 
   _MovieSearchContainerPageState();
 
-  @override
-  void didChangeDependencies() {
-    context.read<SearchPageBloc>().add(ReloadDataEvent());
-    super.didChangeDependencies();
-  }
+
 
   @override
   Widget build(BuildContext context) {
