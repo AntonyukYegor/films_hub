@@ -50,9 +50,7 @@ class FilmContainsPatternFilterState extends State<FilmContainsPatternFilter>
 
   @override
   void reset() {
-    setState(() {
-      _controller.value = TextEditingValue.empty;
-    });
+    _controller.value = TextEditingValue.empty;
     context
         .read<FiltersBloc>()
         .add(const ChangeFilterPatternEvent(textPattern: ""));
