@@ -8,6 +8,7 @@ import 'package:films_hub/app/domain/models/languages/language.dart';
 import 'package:films_hub/app/domain/models/languages/language_filter_entry.dart';
 import 'package:films_hub/app/presentation/features/filtering/filters/bloc/filters_bloc.dart';
 import 'package:films_hub/app/presentation/features/filtering/filters/bloc/filters_event.dart';
+import 'package:films_hub/app/presentation/features/filtering/filters/bloc/filters_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -31,25 +32,29 @@ class FilmLanguageFilterState extends State<FilmLanguageFilter>
 
   Iterable<Widget> get actorWidgets {
     return _cast.map((LanguageFilterEntry language) {
-      final currentFilters =
-          context.read<FiltersBloc>().state.selectedLanguages;
+      final currentFilters = [
+        ...context.read<FiltersBloc>().state.selectedLanguages
+      ];
 
       return Padding(
         padding: const EdgeInsets.all(4.0),
-        child: FilterChip(
-          label: Text(language.name),
-          selected: currentFilters.contains(language.name),
-          onSelected: (bool value) {
-            if (value) {
-              currentFilters.add(language.name);
-            } else {
-              currentFilters.removeWhere((String name) {
-                return name == language.name;
-              });
-            }
-            context.read<FiltersBloc>().add(
-                ChangeLanguageFilterEvent(selectedLanguage: currentFilters));
-          },
+        child: BlocBuilder<FiltersBloc, FiltersState>(
+          buildWhen: (oldState, newState) => oldState.selectedLanguages != newState.selectedLanguages,
+          builder: (context, state) => FilterChip(
+            label: Text(language.name),
+            selected: currentFilters.contains(language.name),
+            onSelected: (bool value) {
+              if (value) {
+                currentFilters.add(language.name);
+              } else {
+                currentFilters.removeWhere((String name) {
+                  return name == language.name;
+                });
+              }
+              context.read<FiltersBloc>().add(
+                  ChangeLanguageFilterEvent(selectedLanguage: currentFilters));
+            },
+          ),
         ),
       );
     });
