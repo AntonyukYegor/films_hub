@@ -39,6 +39,7 @@ class _IconCheckedButtonState extends State<IconCheckedButton>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return GestureDetector(
       onTap: () => {
         setState(() {
