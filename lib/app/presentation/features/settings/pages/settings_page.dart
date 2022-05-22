@@ -9,11 +9,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
 
   static const navigationPath = '/settings';
 
+  @override
+  State<SettingsPage> createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,6 +40,32 @@ class SettingsPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              BlocBuilder<SettingsBloc, SettingsState>(
+              buildWhen: (oldState, newState) =>
+              oldState.themeMode != newState.themeMode,
+              builder: (context, state) => Column(
+                  children: <Widget>[
+                    RadioListTile<ThemeMode>(
+                      title: Text(context.locale.settings.darkThemeMode),
+                      value: ThemeMode.dark,
+                      groupValue: state.themeMode,
+                      onChanged: _onThemeModeChanged,
+                    ),
+                    RadioListTile<ThemeMode>(
+                      title: Text(context.locale.settings.lightThemeMode),
+                      value: ThemeMode.light,
+                      groupValue: state.themeMode,
+                      onChanged: _onThemeModeChanged,
+                    ),
+                    RadioListTile<ThemeMode>(
+                      title: Text(context.locale.settings.systemThemeMode),
+                      value: ThemeMode.system,
+                      groupValue: state.themeMode,
+                      onChanged: _onThemeModeChanged,
+                    ),
+                  ],
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.only(left: 10.0),
                 child: Row(
@@ -58,7 +89,7 @@ class SettingsPage extends StatelessWidget {
               ),
               BlocBuilder<SettingsBloc, SettingsState>(
                   buildWhen: (oldState, newState) =>
-                      oldState.name != newState.name,
+                  oldState.name != newState.name,
                   builder: (_, state) {
                     return Text(state.name);
                   }),
@@ -101,5 +132,11 @@ class SettingsPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _onThemeModeChanged(ThemeMode? value) {
+    if(value!=null) {
+      context.read<SettingsBloc>().add(ChangeThemeModeEvent(value!));
+    }
   }
 }

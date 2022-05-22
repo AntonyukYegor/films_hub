@@ -70,6 +70,13 @@ abstract class SettingsLocalBase {
   String get saveName;
 
   String get switchLanguage;
+
+  String get darkThemeMode;
+
+  String get lightThemeMode;
+
+  String get systemThemeMode;
+
 }
 
 abstract class NoFoundLocalBase {

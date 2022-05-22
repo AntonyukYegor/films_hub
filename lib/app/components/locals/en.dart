@@ -105,6 +105,15 @@ class SettingsLocalEn implements SettingsLocalBase {
 
   @override
   String get switchLanguage => 'Switch Language';
+
+  @override
+  String get darkThemeMode => 'Dark Theme Mode';
+
+  @override
+  String get lightThemeMode => 'Light Theme Mode';
+
+  @override
+  String get systemThemeMode => 'System Theme Mode';
 }
 
 class NoFoundLocalEn implements NoFoundLocalBase {

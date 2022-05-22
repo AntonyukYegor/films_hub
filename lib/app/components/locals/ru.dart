@@ -105,6 +105,15 @@ class SettingsLocalRu implements SettingsLocalBase {
 
   @override
   String get switchLanguage => 'Сменить язык';
+
+  @override
+  String get darkThemeMode => 'Тёмная тема';
+
+  @override
+  String get lightThemeMode => 'Светлая тема';
+
+  @override
+  String get systemThemeMode => 'Системная тема';
 }
 
 class NoFoundLocalRu implements NoFoundLocalBase {
