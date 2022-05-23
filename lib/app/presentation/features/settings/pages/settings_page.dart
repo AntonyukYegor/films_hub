@@ -41,9 +41,9 @@ class _SettingsPageState extends State<SettingsPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               BlocBuilder<SettingsBloc, SettingsState>(
-              buildWhen: (oldState, newState) =>
-              oldState.themeMode != newState.themeMode,
-              builder: (context, state) => Column(
+                buildWhen: (oldState, newState) =>
+                    oldState.themeMode != newState.themeMode,
+                builder: (context, state) => Column(
                   children: <Widget>[
                     RadioListTile<ThemeMode>(
                       title: Text(context.locale.settings.darkThemeMode),
@@ -89,7 +89,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               BlocBuilder<SettingsBloc, SettingsState>(
                   buildWhen: (oldState, newState) =>
-                  oldState.name != newState.name,
+                      oldState.name != newState.name,
                   builder: (_, state) {
                     return Text(state.name);
                   }),
@@ -135,8 +135,8 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   void _onThemeModeChanged(ThemeMode? value) {
-    if(value!=null) {
-      context.read<SettingsBloc>().add(ChangeThemeModeEvent(value!));
-    }
+    context
+        .read<SettingsBloc>()
+        .add(ChangeThemeModeEvent(value ?? ThemeMode.dark));
   }
 }

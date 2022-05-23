@@ -1,4 +1,3 @@
-import 'package:films_hub/app/components/locals/locals.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
@@ -39,7 +38,7 @@ class ErrorDialog extends StatelessWidget {
                 const Icon(Icons.error, color: Colors.white),
                 const SizedBox(height: 12),
                 Text(
-                  '${context.locale.movie.error} ${error ?? context.locale.movie.unknown}',
+                  'Error ${error ?? 'Unknown'}',
                   style: Theme.of(context)
                       .textTheme
                       .bodyText1
