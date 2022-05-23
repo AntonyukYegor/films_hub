@@ -120,7 +120,6 @@ class MyApp extends StatelessWidget {
             ),
           ],
           child: BlocBuilder<SettingsBloc, SettingsState>(
-
             builder: (_, __) => BlocBuilder<LocaleBloc, LocaleState>(
               builder: (context, state) => MaterialApp(
                 locale: state.locale,
