@@ -39,14 +39,7 @@ class SearchPageBloc extends Bloc<SearchFromPageEvent, SearchPageState> {
         isLoading: true,
         films: Films(0, []),
       ));
-      _searchBackupBloc.add(SearchBackupEvent(
-        searchState: state.copyWith(
-          event: event,
-          searchText: event.search,
-          isLoading: true,
-          films: Films(0, []),
-        ),
-      ));
+      _searchBackupBloc.add(SearchBackupEvent(searchState: state));
       await _repository.filmsAsync(searchQuery: state.searchText).then(
         (value) async {
           if (state.lastEvent == event) {
@@ -57,13 +50,7 @@ class SearchPageBloc extends Bloc<SearchFromPageEvent, SearchPageState> {
                 showShimmer: false,
               ),
             );
-            _searchBackupBloc.add(SearchBackupEvent(
-              searchState: state.copyWith(
-                films: value,
-                isLoading: false,
-                showShimmer: false,
-              ),
-            ));
+            _searchBackupBloc.add(SearchBackupEvent(searchState: state));
             _filteringPageBloc.add(LoadFilterDataEvent(source: value));
           }
         },
@@ -77,8 +64,7 @@ class SearchPageBloc extends Bloc<SearchFromPageEvent, SearchPageState> {
       int nextPage = state.page + 1;
 
       emit(state.copyWith(event: event, isLoading: true));
-      _searchBackupBloc.add(SearchBackupEvent(
-          searchState: state.copyWith(event: event, isLoading: true)));
+      _searchBackupBloc.add(SearchBackupEvent(searchState: state));
 
       await _repository
           .filmsAsync(searchQuery: state.searchText, page: nextPage)
@@ -92,12 +78,7 @@ class SearchPageBloc extends Bloc<SearchFromPageEvent, SearchPageState> {
               isLoading: false,
               page: nextPage,
             ));
-            _searchBackupBloc.add(SearchBackupEvent(
-                searchState: state.copyWith(
-              films: fetchedFilm,
-              isLoading: false,
-              page: nextPage,
-            )));
+            _searchBackupBloc.add(SearchBackupEvent(searchState: state));
             _filteringPageBloc
                 .add(FetchFilterDataEvent(source: Films(0, value.films)));
           }
@@ -114,13 +95,7 @@ class SearchPageBloc extends Bloc<SearchFromPageEvent, SearchPageState> {
       showShimmer: false,
       films: Films(0, []),
     ));
-    _searchBackupBloc.add(SearchBackupEvent(
-        searchState: state.copyWith(
-      event: event,
-      isLoading: true,
-      showShimmer: false,
-      films: Films(0, []),
-    )));
+    _searchBackupBloc.add(SearchBackupEvent(searchState: state));
     _filteringPageBloc.add(LoadFilterDataEvent(source: Films(0, [])));
     var data = await _repository.filmsAsync(searchQuery: state.searchText);
 
@@ -128,9 +103,7 @@ class SearchPageBloc extends Bloc<SearchFromPageEvent, SearchPageState> {
       emit(
         state.copyWith(films: data, isLoading: false, showShimmer: false),
       );
-      _searchBackupBloc.add(SearchBackupEvent(
-          searchState: state.copyWith(
-              films: data, isLoading: false, showShimmer: false)));
+      _searchBackupBloc.add(SearchBackupEvent(searchState: state));
       _filteringPageBloc.add(LoadFilterDataEvent(source: data));
     }
   }
