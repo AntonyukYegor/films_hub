@@ -76,11 +76,14 @@ class MovieGridViewCard extends StatelessWidget {
                               Padding(
                                 padding: const EdgeInsets.only(
                                     top: 4.0, bottom: 4.0),
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  child: CombineRate(
-                                    cardModel.voteAverageInPercent,
-                                    height: 20,
+                                child: FittedBox(
+                                  fit: BoxFit.contain,
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    child: CombineRate(
+                                      cardModel.voteAverageInPercent,
+                                      height: 20,
+                                    ),
                                   ),
                                 ),
                               ),
