@@ -1,4 +1,6 @@
+import 'package:films_hub/app/components/constants.dart';
 import 'package:films_hub/app/presentation/common/widgets/blur/symmetrical_blur.dart';
+import 'package:films_hub/app/presentation/common/widgets/opacity_fade_in.dart';
 import 'package:flutter/material.dart';
 
 class AppThemeCardBackgroundWithoutShadow extends StatelessWidget {
@@ -36,13 +38,11 @@ class AppThemeCardBackgroundWithoutShadow extends StatelessWidget {
                   border: Border.all(
                       color: Theme.of(context).primaryColor, width: 20),
                   borderRadius: BorderRadius.all(
-                    Radius.circular(
-                        _borderRadius),
+                    Radius.circular(_borderRadius),
                   ),
                 ),
-                child: Opacity(
-                  opacity: 0.7,
-                  child: Image(
+                child: OpacityFadeIn(
+                  childBuilder: (_) => Image(
                     image: ResizeImage(
                         Image.network(
                           _posterUrl,
@@ -51,6 +51,8 @@ class AppThemeCardBackgroundWithoutShadow extends StatelessWidget {
                         height: 2),
                     fit: BoxFit.fill,
                   ),
+                  duration: AppStyle.blurBackgroundFadeAnimationDuration,
+                  endValueOpacity: 0.7,
                 ),
               ),
             ),
@@ -58,8 +60,7 @@ class AppThemeCardBackgroundWithoutShadow extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                 border: Border.all(
-                    color:
-                    Theme.of(context).primaryColor.withOpacity(0.2),
+                    color: Theme.of(context).primaryColor.withOpacity(0.2),
                     width: 2),
                 borderRadius: BorderRadius.all(
                   Radius.circular(_borderRadius),
