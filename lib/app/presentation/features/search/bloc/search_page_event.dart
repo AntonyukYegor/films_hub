@@ -1,40 +1,40 @@
 import 'package:equatable/equatable.dart';
 
-abstract class SearchPageEvent extends Equatable {
+abstract class SearchFromPageEvent extends Equatable {
   DateTime get eventDate;
 
-  const SearchPageEvent();
+  const SearchFromPageEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class TimedSearchPageEvent extends SearchPageEvent {
+class TimedSearchFromPageEvent extends SearchFromPageEvent {
   @override
   DateTime get eventDate => _dateTime;
 
   final DateTime _dateTime;
 
-  const TimedSearchPageEvent({required DateTime eventDate})
+  const TimedSearchFromPageEvent({required DateTime eventDate})
       : _dateTime = eventDate;
 
   @override
   List<Object> get props => [_dateTime];
 }
 
-class BaseSearchPageEvent extends TimedSearchPageEvent {
-  BaseSearchPageEvent() : super(eventDate: DateTime.now());
+class BaseSearchFromPageEvent extends TimedSearchFromPageEvent {
+  BaseSearchFromPageEvent() : super(eventDate: DateTime.now());
 }
 
-class SearchChangedEvent extends BaseSearchPageEvent {
+class SearchPageChangedEvent extends BaseSearchFromPageEvent {
   final String search;
 
-  SearchChangedEvent({required this.search});
+  SearchPageChangedEvent({required this.search});
 
   @override
   List<Object> get props => [...super.props, search];
 }
 
-class FetchDataEvent extends BaseSearchPageEvent {}
+class FetchDataFromPageEvent extends BaseSearchFromPageEvent {}
 
-class ReloadDataEvent extends BaseSearchPageEvent {}
+class ReloadDataFromPageEvent extends BaseSearchFromPageEvent {}
