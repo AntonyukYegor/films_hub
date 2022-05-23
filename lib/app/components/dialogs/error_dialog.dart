@@ -1,11 +1,12 @@
+import 'package:films_hub/app/components/locals/locals.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
 void showErrorDialog(BuildContext context, {required String error}) {
   SchedulerBinding.instance?.addPostFrameCallback((_) => showDialog(
-    context: context,
-    builder: (_) => ErrorDialog(error),
-  ));
+        context: context,
+        builder: (_) => ErrorDialog(error),
+      ));
 }
 
 class ErrorDialog extends StatelessWidget {
@@ -38,7 +39,7 @@ class ErrorDialog extends StatelessWidget {
                 const Icon(Icons.error, color: Colors.white),
                 const SizedBox(height: 12),
                 Text(
-                  'Error ${error ?? 'Unknown'}',
+                  '${context.locale.error.error} ${error ?? context.locale.error.unknown}',
                   style: Theme.of(context)
                       .textTheme
                       .bodyText1

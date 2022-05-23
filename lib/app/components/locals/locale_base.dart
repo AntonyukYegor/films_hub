@@ -22,13 +22,11 @@ abstract class LocaleBase {
   SearchLocalBase get search;
 
   AppLocalBase get app;
+
+  ErrorLocalBase get error;
 }
 
 abstract class MovieLocalBase {
-  String get error;
-
-  String get unknown;
-
   String get more;
 
   String get description;
@@ -115,4 +113,10 @@ abstract class SearchLocalBase {
 
 abstract class AppLocalBase {
   String get appName;
+}
+
+abstract class ErrorLocalBase {
+  String get error;
+
+  String get unknown;
 }
