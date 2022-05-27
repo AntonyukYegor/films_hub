@@ -3,7 +3,10 @@ import 'package:films_hub/app/domain/models/filters/abstract_filter.dart';
 import 'package:films_hub/app/domain/models/filters/conditions/films/film_contains_pattern_condition.dart';
 import 'package:films_hub/app/domain/models/filters/film_filter_source.dart';
 import 'package:films_hub/app/domain/models/filters/films/film_future_list_filter.dart';
+import 'package:films_hub/app/presentation/features/filtering/filters/bloc/filters_bloc.dart';
+import 'package:films_hub/app/presentation/features/filtering/filters/bloc/filters_event.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FilmContainsPatternFilter extends StatefulWidget {
   const FilmContainsPatternFilter({Key? key}) : super(key: key);
@@ -16,12 +19,12 @@ class FilmContainsPatternFilter extends StatefulWidget {
 class FilmContainsPatternFilterState extends State<FilmContainsPatternFilter>
     implements FilmFilterSource {
   late TextEditingController _controller;
-  String _currentText = '';
 
   @override
   void initState() {
     super.initState();
     _controller = TextEditingController();
+    _controller.text = context.read<FiltersBloc>().state.textPattern;
   }
 
   @override
@@ -40,27 +43,28 @@ class FilmContainsPatternFilterState extends State<FilmContainsPatternFilter>
   }
 
   void _onSearchFieldTextChanged(String text) {
-    setState(() {
-      _currentText = text;
-    });
+    context
+        .read<FiltersBloc>()
+        .add(ChangeFilterPatternEvent(textPattern: text));
   }
 
   @override
   void reset() {
-    setState(() {
-      _currentText = "";
-      _controller.value = TextEditingValue.empty;
-    });
+    _controller.value = TextEditingValue.empty;
+    context
+        .read<FiltersBloc>()
+        .add(const ChangeFilterPatternEvent(textPattern: ""));
   }
 
   @override
   AbstractFilter<Future<List<AbstractFilm>>> filter() {
-    if (_currentText.isEmpty) {
+    final currentText = context.read<FiltersBloc>().state.textPattern;
+    if (currentText.isEmpty) {
       return FilmFutureListFilter.empty();
     }
 
     return FilmFutureListFilter.condition(
-      FilmContainsPatternCondition(_currentText),
+      FilmContainsPatternCondition(currentText),
     );
   }
 }

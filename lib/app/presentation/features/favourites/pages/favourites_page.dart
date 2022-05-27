@@ -20,60 +20,58 @@ class _FavouritesPageState extends State<FavouritesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(AppStyle.appBarBorderRadius),
-            bottomRight: Radius.circular(AppStyle.appBarBorderRadius),
-          ),
-        ),
-        actions: [
-          Theme(
-              data: Theme.of(context).copyWith(
-                  dividerColor: Colors.transparent,
-                  splashColor: Colors.transparent,
-                  highlightColor: Colors.transparent),
-              child: IconButton(
-                icon: const Icon(Icons.settings),
-                onPressed: () {
-                  FocusManager.instance.primaryFocus?.unfocus();
-                  Navigator.pushNamed(
-                    context,
-                    SettingsPage.navigationPath,
-                    arguments: const SettingsArguments('Egor'),
-                  );
-                },
-              )),
-        ],
-        flexibleSpace: AppBarFlexibleSpace(
-            AppStyle.appBarBorderRadius, context.locale.favourites.title),
-      ),
-      body: CustomScrollView(
-        physics: const BouncingScrollPhysics(),
-        slivers: [
-          const SliverPadding(
-              padding: EdgeInsets.only(top: AppStyle.safePadding)),
-          const SliverPadding(
-              padding: EdgeInsets.only(top: AppStyle.safePadding)),
-          Builder(builder: (context) {
-            return BlocBuilder<FavouritesBloc, FavouritesState>(
-                buildWhen: (oldState, newState) => oldState != newState,
-                builder: (context, state) {
-                  return MoviesGrid(
-                    films: state.films,
-                  );
-                });
-          }),
-          const SliverPadding(
-              padding: EdgeInsets.only(bottom: AppStyle.safePadding)),
-          const SliverPadding(
-              padding: EdgeInsets.only(bottom: AppStyle.safePadding)),
-        ],
-      ),
+      resizeToAvoidBottomInset: false,
+      extendBody: true,
+      body: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) => [
+                SliverAppBar(
+                  backgroundColor: Colors.transparent,
+                  pinned: true,
+                  elevation: 0,
+                  centerTitle: true,
+                  actions: [
+                    Theme(
+                        data: Theme.of(context).copyWith(
+                            dividerColor: Colors.transparent,
+                            splashColor: Colors.transparent,
+                            highlightColor: Colors.transparent),
+                        child: IconButton(
+                          icon: const Icon(Icons.settings),
+                          onPressed: () {
+                            FocusManager.instance.primaryFocus?.unfocus();
+                            Navigator.pushNamed(
+                              context,
+                              SettingsPage.navigationPath,
+                              arguments: const SettingsArguments('Egor'),
+                            );
+                          },
+                        )),
+                  ],
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(AppStyle.appBarBorderRadius),
+                      bottomRight: Radius.circular(AppStyle.appBarBorderRadius),
+                    ),
+                  ),
+                  flexibleSpace: AppBarFlexibleSpace(
+                      AppStyle.appBarBorderRadius,
+                      context.locale.favourites.title),
+                ),
+              ],
+          body: CustomScrollView(
+            physics: const BouncingScrollPhysics(),
+            slivers: [
+              Builder(builder: (context) {
+                return BlocBuilder<FavouritesBloc, FavouritesState>(
+                    buildWhen: (oldState, newState) => oldState != newState,
+                    builder: (context, state) {
+                      return MoviesGrid(
+                        films: state.films,
+                      );
+                    });
+              }),
+            ],
+          )),
     );
   }
 }

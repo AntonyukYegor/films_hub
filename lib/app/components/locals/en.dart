@@ -38,15 +38,12 @@ class LocaleEn implements LocaleBase {
 
   @override
   DetailsMovieLocalBase get detailsMovie => DetailsMovieLocalEn();
+
+  @override
+  ErrorLocalBase get error => ErrorLocalEn();
 }
 
 class MovieLocalEn implements MovieLocalBase {
-  @override
-  String get error => 'Error';
-
-  @override
-  String get unknown => 'Unknown';
-
   @override
   String get more => 'More';
 
@@ -105,6 +102,15 @@ class SettingsLocalEn implements SettingsLocalBase {
 
   @override
   String get switchLanguage => 'Switch Language';
+
+  @override
+  String get darkThemeMode => 'Dark Theme Mode';
+
+  @override
+  String get lightThemeMode => 'Light Theme Mode';
+
+  @override
+  String get systemThemeMode => 'System Theme Mode';
 }
 
 class NoFoundLocalEn implements NoFoundLocalBase {
@@ -156,4 +162,12 @@ class SearchLocalEn implements SearchLocalBase {
 class AppLocalEn implements AppLocalBase {
   @override
   String get appName => 'Movies Hub';
+}
+
+class ErrorLocalEn implements ErrorLocalBase {
+  @override
+  String get error => 'Error';
+
+  @override
+  String get unknown => 'Unknown';
 }

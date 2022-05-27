@@ -38,15 +38,12 @@ class LocaleRu implements LocaleBase {
 
   @override
   DetailsMovieLocalBase get detailsMovie => DetailsMovieLocalRu();
+
+  @override
+  ErrorLocalBase get error => ErrorLocalRu();
 }
 
 class MovieLocalRu implements MovieLocalBase {
-  @override
-  String get error => 'Ошибка';
-
-  @override
-  String get unknown => 'Неизвестно';
-
   @override
   String get more => 'Больше';
 
@@ -105,6 +102,15 @@ class SettingsLocalRu implements SettingsLocalBase {
 
   @override
   String get switchLanguage => 'Сменить язык';
+
+  @override
+  String get darkThemeMode => 'Тёмная тема';
+
+  @override
+  String get lightThemeMode => 'Светлая тема';
+
+  @override
+  String get systemThemeMode => 'Системная тема';
 }
 
 class NoFoundLocalRu implements NoFoundLocalBase {
@@ -156,4 +162,12 @@ class SearchLocalRu implements SearchLocalBase {
 class AppLocalRu implements AppLocalBase {
   @override
   String get appName => 'Центрофильм';
+}
+
+class ErrorLocalRu implements ErrorLocalBase {
+  @override
+  String get error => 'Ошибка';
+
+  @override
+  String get unknown => 'Неизвестно';
 }

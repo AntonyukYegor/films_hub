@@ -4,7 +4,7 @@ import 'package:films_hub/app/domain/models/filters/abstract_filter.dart';
 import 'package:films_hub/app/presentation/features/filtering/bloc/filtering_page_bloc.dart';
 import 'package:films_hub/app/presentation/features/filtering/bloc/filtering_page_event.dart';
 import 'package:films_hub/app/presentation/features/filtering/bloc/filtering_page_state.dart';
-import 'package:films_hub/app/presentation/features/filtering/widgets/movie_filter.dart';
+import 'package:films_hub/app/presentation/features/filtering/filters/widgets/movie_filter.dart';
 import 'package:films_hub/app/presentation/features/filtering/widgets/not_getting_any_results.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

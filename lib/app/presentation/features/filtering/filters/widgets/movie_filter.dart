@@ -3,12 +3,15 @@ import 'package:films_hub/app/components/locals/locals.dart';
 import 'package:films_hub/app/domain/models/films/abstract_film.dart';
 import 'package:films_hub/app/domain/models/filters/abstract_filter.dart';
 import 'package:films_hub/app/domain/models/filters/films/film_future_list_filter.dart';
-import 'package:films_hub/app/presentation/features/filtering/widgets/film_contains_pattern_filter.dart';
-import 'package:films_hub/app/presentation/features/filtering/widgets/film_language_filter.dart';
-import 'package:films_hub/app/presentation/features/filtering/widgets/film_vote_average_slider_filter.dart';
+import 'package:films_hub/app/presentation/features/filtering/filters/bloc/filters_bloc.dart';
+import 'package:films_hub/app/presentation/features/filtering/filters/bloc/filters_event.dart';
+import 'package:films_hub/app/presentation/features/filtering/filters/widgets/film_contains_pattern_filter.dart';
+import 'package:films_hub/app/presentation/features/filtering/filters/widgets/film_language_filter.dart';
+import 'package:films_hub/app/presentation/features/filtering/filters/widgets/film_vote_average_slider_filter.dart';
 import 'package:films_hub/app/presentation/common/widgets/app_theme_card_background.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MovieFilter extends StatefulWidget {
   const MovieFilter(this._onApply, {Key? key}) : super(key: key);
@@ -44,10 +47,12 @@ class _MovieFilterState extends State<MovieFilter>
                   splashColor: Colors.transparent,
                   highlightColor: Colors.transparent),
               child: ExpansionTile(
+                initiallyExpanded: context.read<FiltersBloc>().state.isExpanded,
                 onExpansionChanged: (value) {
                   if (value == false) {
                     FocusManager.instance.primaryFocus?.unfocus();
                   }
+                  context.read<FiltersBloc>().add(ChangeWidgetExpandedEvent(isExpanded: value));
                 },
                 maintainState: true,
                 iconColor: Theme.of(context)

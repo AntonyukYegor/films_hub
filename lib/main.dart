@@ -1,5 +1,6 @@
 import 'package:films_hub/app/blocs/locale_bloc/local_bloc.dart';
 import 'package:films_hub/app/blocs/locale_bloc/local_state.dart';
+import 'package:films_hub/app/blocs/search_backup_bloc/search_backup_bloc.dart';
 import 'package:films_hub/app/components/constants.dart';
 import 'package:films_hub/app/components/locals/locals.dart';
 import 'package:films_hub/app/data/repositories/favourites_films_repository.dart';
@@ -9,6 +10,8 @@ import 'package:films_hub/app/domain/repositories/abstract_favourites_films_repo
 import 'package:films_hub/app/presentation/common/models/movie_list_card_model.dart';
 import 'package:films_hub/app/presentation/features/favourites/bloc/favourites_bloc.dart';
 import 'package:films_hub/app/presentation/features/favourites/pages/favourites_page.dart';
+import 'package:films_hub/app/presentation/features/filtering/bloc/filtering_page_bloc.dart';
+import 'package:films_hub/app/presentation/features/filtering/filters/bloc/filters_bloc.dart';
 import 'package:films_hub/app/presentation/features/main/bloc/main_block.dart';
 import 'package:films_hub/app/presentation/features/main/models/tab.dart';
 import 'package:films_hub/app/presentation/features/main/models/tabs_source.dart';
@@ -20,11 +23,11 @@ import 'package:films_hub/app/blocs/error_bloc/error_event.dart';
 import 'package:films_hub/app/presentation/features/catalog/pages/catalog_page.dart';
 import 'package:films_hub/app/presentation/features/details/pages/details_movie_page.dart';
 import 'package:films_hub/app/presentation/features/feed/pages/feed_page.dart';
-import 'package:films_hub/app/presentation/features/filtering/bloc/filtering_page_bloc.dart';
 import 'package:films_hub/app/presentation/features/main/pages/main_page.dart';
 import 'package:films_hub/app/presentation/features/no_found/pages/not_found_page.dart';
 import 'package:films_hub/app/presentation/features/search/bloc/search_page_bloc.dart';
 import 'package:films_hub/app/presentation/features/settings/bloc/settings_bloc.dart';
+import 'package:films_hub/app/presentation/features/settings/bloc/settings_state.dart';
 import 'package:films_hub/app/presentation/features/settings/pages/settings_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -38,7 +41,6 @@ void main() async {
   await Firebase.initializeApp();
   await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-
   runApp(const MyApp());
 }
 
@@ -65,54 +67,99 @@ class MyApp extends StatelessWidget {
     return RepositoryProvider<AbstractFavouritesFilmsRepository>(
       lazy: false,
       create: (_) => FavouritesFilmsRepository(),
-      child: BlocProvider<FavouritesBloc>(
-        create: (context) => FavouritesBloc(
-            repository: context.read<AbstractFavouritesFilmsRepository>()),
-        child: BlocProvider<LocaleBloc>(
-          lazy: false,
-          create: (_) => LocaleBloc(),
-          child: BlocProvider<SettingsBloc>(
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<LocaleBloc>(
+            lazy: false,
+            create: (_) => LocaleBloc(),
+          ),
+          BlocProvider<SettingsBloc>(
             lazy: false,
             create: (context) =>
                 SettingsBloc(context.read<LocaleBloc>())..init(),
-            child: BlocBuilder<LocaleBloc, LocaleState>(
-              builder: (context, state) => MaterialApp(
-                locale: state.locale,
-                localizationsDelegates: <LocalizationsDelegate<dynamic>>[
-                  GlobalWidgetsLocalizations.delegate,
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                  MyLocalizationsDelegate(initialLocals),
-                ],
-                supportedLocales: availableLocales.values,
-                builder: (context, child) {
-                  return ScrollConfiguration(
-                    behavior: CustomScrollBehavior(),
-                    child: child ?? const SizedBox(),
-                  );
-                },
-                debugShowCheckedModeBanner: false,
-                onGenerateTitle: (BuildContext context) =>
-                    context.locale.app.appName,
-                themeMode: ThemeMode.system,
-                darkTheme: ThemeData(
-                    brightness: Brightness.dark,
-                    primarySwatch: CustomColors.darkBlack,
-                    fontFamily: AppStyle.fontFamily,
-                    shadowColor: Colors.white.withOpacity(0.08),
-                    scaffoldBackgroundColor: Colors.black),
-                theme: ThemeData(
-                  brightness: Brightness.light,
-                  primarySwatch: Colors.grey,
-                  shadowColor: Colors.black.withOpacity(0.3),
+          ),
+          BlocProvider<FiltersBloc>(
+            lazy: false,
+            create: (_) => FiltersBloc(),
+          ),
+          BlocProvider<FilteringPageBloc>(
+            lazy: false,
+            create: (_) => FilteringPageBloc(),
+          ),
+          BlocProvider<SearchBackupBloc>(
+            lazy: false,
+            create: (_) => SearchBackupBloc(),
+          ),
+          BlocProvider<FavouritesBloc>(
+            lazy: false,
+            create: (context) => FavouritesBloc(
+              repository: context.read<AbstractFavouritesFilmsRepository>(),
+            ),
+          ),
+        ],
+        child: BlocBuilder<SettingsBloc, SettingsState>(
+          builder: (_, __) => BlocBuilder<LocaleBloc, LocaleState>(
+            builder: (context, state) => MaterialApp(
+              locale: state.locale,
+              localizationsDelegates: <LocalizationsDelegate<dynamic>>[
+                GlobalWidgetsLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+                MyLocalizationsDelegate(initialLocals),
+              ],
+              supportedLocales: availableLocales.values,
+              builder: (context, child) {
+                return ScrollConfiguration(
+                  behavior: CustomScrollBehavior(),
+                  child: child ?? const SizedBox(),
+                );
+              },
+              debugShowCheckedModeBanner: false,
+              onGenerateTitle: (BuildContext context) =>
+                  context.locale.app.appName,
+              themeMode: context.read<SettingsBloc>().state.themeMode,
+              darkTheme: ThemeData(
+                  brightness: Brightness.dark,
+                  primarySwatch: CustomColors.darkBlack,
                   fontFamily: AppStyle.fontFamily,
-                ),
-                initialRoute: MainPage.navigationPath,
-                onGenerateRoute: (RouteSettings settings) {
-                  if (settings.name == MainPage.navigationPath) {
-                    return MaterialPageRoute(
-                      builder: (context) {
-                        return BlocProvider<ErrorBloc>(
+                  shadowColor: Colors.white.withOpacity(0.08),
+                  scaffoldBackgroundColor: Colors.black),
+              theme: ThemeData(
+                brightness: Brightness.light,
+                primarySwatch: Colors.grey,
+                shadowColor: Colors.black.withOpacity(0.3),
+                fontFamily: AppStyle.fontFamily,
+              ),
+              initialRoute: MainPage.navigationPath,
+              onGenerateRoute: (RouteSettings settings) {
+                if (settings.name == MainPage.navigationPath) {
+                  return MaterialPageRoute(
+                    builder: (context) {
+                      return RepositoryProvider<TabsSource>(
+                        lazy: false,
+                        create: (context) => _BaseTabsSource(
+                          [
+                            NavigationTab(
+                              icon: AppStyle.feedNavigationBarIcon,
+                              onGenerateLabel: () => context.locale.feed.title,
+                              page: const FeedPage(),
+                            ),
+                            NavigationTab(
+                              icon: AppStyle.catalogNavigationBarIcon,
+                              onGenerateLabel: () =>
+                                  context.locale.catalog.title,
+                              page: const CatalogPage(),
+                            ),
+                            NavigationTab(
+                              icon: AppStyle.favouritesNavigationBarIcon,
+                              onGenerateLabel: () =>
+                                  context.locale.favourites.title,
+                              page: const FavouritesPage(),
+                              // page: const FavouritesPage(),
+                            ),
+                          ],
+                        ),
+                        child: BlocProvider<ErrorBloc>(
                           lazy: false,
                           create: (context) => ErrorBloc(context),
                           child: RepositoryProvider<AbstractFilmsRepository>(
@@ -125,77 +172,51 @@ class MyApp extends StatelessWidget {
                                 },
                               ),
                             ),
-                            child: BlocProvider<FilteringPageBloc>(
-                              create: (context) => FilteringPageBloc(),
-                              child: BlocProvider<SearchPageBloc>(
-                                lazy: false,
-                                create: (context) => SearchPageBloc(
-                                    filteringPageBloc:
-                                        context.read<FilteringPageBloc>(),
-                                    repository: context
-                                        .read<AbstractFilmsRepository>()),
-                                child: RepositoryProvider<TabsSource>(
-                                  lazy: false,
-                                  create: (context) => _BaseTabsSource(
-                                    [
-                                      NavigationTab(
-                                        icon: AppStyle.feedNavigationBarIcon,
-                                        onGenerateLabel: () =>
-                                            context.locale.feed.title,
-                                        page: const FeedPage(),
-                                      ),
-                                      NavigationTab(
-                                        icon: AppStyle.catalogNavigationBarIcon,
-                                        onGenerateLabel: () =>
-                                            context.locale.catalog.title,
-                                        page: const CatalogPage(),
-                                      ),
-                                      NavigationTab(
-                                        icon: AppStyle
-                                            .favouritesNavigationBarIcon,
-                                        onGenerateLabel: () =>
-                                            context.locale.favourites.title,
-                                        page: const FavouritesPage(),
-                                      ),
-                                    ],
-                                  ),
-                                  child: BlocProvider<MainBloc>(
-                                    create: (context) => MainBloc(
-                                        tabsSource: context.read<TabsSource>()),
-                                    child: const MainPage(),
-                                  ),
-                                ),
+                            child: BlocProvider<SearchPageBloc>(
+                              lazy: true,
+                              create: (context) => SearchPageBloc(
+                                filteringPageBloc:
+                                    context.read<FilteringPageBloc>(),
+                                repository:
+                                    context.read<AbstractFilmsRepository>(),
+                                searchBackupBloc:
+                                    context.read<SearchBackupBloc>(),
+                              )..init(),
+                              child: BlocProvider<MainBloc>(
+                                create: (context) => MainBloc(
+                                    tabsSource: context.read<TabsSource>()),
+                                child: const MainPage(),
                               ),
                             ),
                           ),
-                        );
-                      },
-                    );
-                  }
-
-                  if (settings.name == SettingsPage.navigationPath) {
-                    return MaterialPageRoute(
-                      builder: (_) {
-                        return const SettingsPage();
-                      },
-                    );
-                  }
-
-                  if (settings.name == DetailsMoviePage.navigationPath) {
-                    final MovieCardModel model =
-                        settings.arguments as MovieCardModel;
-                    return MaterialPageRoute(
-                      builder: (_) {
-                        return DetailsMoviePage(model: model);
-                      },
-                    );
-                  }
-
-                  return MaterialPageRoute(
-                    builder: (_) => const NotFoundPage(),
+                        ),
+                      );
+                    },
                   );
-                },
-              ),
+                }
+
+                if (settings.name == SettingsPage.navigationPath) {
+                  return MaterialPageRoute(
+                    builder: (_) {
+                      return const SettingsPage();
+                    },
+                  );
+                }
+
+                if (settings.name == DetailsMoviePage.navigationPath) {
+                  final MovieCardModel model =
+                      settings.arguments as MovieCardModel;
+                  return MaterialPageRoute(
+                    builder: (_) {
+                      return DetailsMoviePage(model: model);
+                    },
+                  );
+                }
+
+                return MaterialPageRoute(
+                  builder: (_) => const NotFoundPage(),
+                );
+              },
             ),
           ),
         ),

@@ -8,16 +8,16 @@ class SearchPageState extends Equatable {
   final bool isLoading;
   final int page;
   final String searchText;
-  final SearchPageEvent lastEvent;
+  final SearchFromPageEvent lastEvent;
 
   SearchPageState({
     required this.films,
     required this.searchText,
     required this.isLoading,
     required this.showShimmer,
-    SearchPageEvent? event,
+    SearchFromPageEvent? event,
     int? page = 1,
-  })  : lastEvent = event ?? BaseSearchPageEvent(),
+  })  : lastEvent = event ?? BaseSearchFromPageEvent(),
         page = page ?? 1;
 
   SearchPageState copyWith({
@@ -25,7 +25,7 @@ class SearchPageState extends Equatable {
     AbstractFilms? films,
     bool? isLoading,
     bool? showShimmer,
-    SearchPageEvent? event,
+    SearchFromPageEvent? event,
     int? page,
   }) =>
       SearchPageState(

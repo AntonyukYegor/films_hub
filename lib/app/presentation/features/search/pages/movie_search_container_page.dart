@@ -43,11 +43,7 @@ class _MovieSearchContainerPageState extends State<MovieSearchContainerPage> {
 
   _MovieSearchContainerPageState();
 
-  @override
-  void didChangeDependencies() {
-    context.read<SearchPageBloc>().add(ReloadDataEvent());
-    super.didChangeDependencies();
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -139,7 +135,7 @@ class _MovieSearchContainerPageState extends State<MovieSearchContainerPage> {
   }
 
   void _onSearchFieldTextChanged(String text) {
-    var searchChangedEvent = SearchChangedEvent(search: text);
+    var searchChangedEvent = SearchPageChangedEvent(search: text);
     DelayedAction.run(() {
       context.read<SearchPageBloc>().add(searchChangedEvent);
     });
@@ -151,11 +147,11 @@ class _MovieSearchContainerPageState extends State<MovieSearchContainerPage> {
     if (((_scrollController?.position.pixels ?? 0) >=
         (_scrollController?.position.maxScrollExtent ??
             0 - _paginationOffset))) {
-      context.read<SearchPageBloc>().add(FetchDataEvent());
+      context.read<SearchPageBloc>().add(FetchDataFromPageEvent());
     }
   }
 
   Future<void> _onRefresh() async {
-    context.read<SearchPageBloc>().add(ReloadDataEvent());
+    context.read<SearchPageBloc>().add(ReloadDataFromPageEvent());
   }
 }

@@ -5,6 +5,7 @@ import 'package:films_hub/app/presentation/features/feed/widgets/app_theme_list_
 import 'package:films_hub/app/presentation/features/search/pages/movie_search_container_page.dart';
 import 'package:flutter/material.dart';
 
+
 class FeedPage extends StatelessWidget {
   const FeedPage({Key? key}) : super(key: key);
 
@@ -15,7 +16,7 @@ class FeedPage extends StatelessWidget {
           MoviesList(films: films),
       title: context.locale.feed.title,
       shimmerBuilder: (BuildContext context) =>
-          const AppThemeListMoviesCardsShimmer(),
+      const AppThemeListMoviesCardsShimmer(),
     );
   }
 }

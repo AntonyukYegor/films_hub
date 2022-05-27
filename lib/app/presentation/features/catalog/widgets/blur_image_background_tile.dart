@@ -1,4 +1,6 @@
+import 'package:films_hub/app/components/constants.dart';
 import 'package:films_hub/app/presentation/common/widgets/blur/symmetrical_blur.dart';
+import 'package:films_hub/app/presentation/common/widgets/opacity_fade_in.dart';
 import 'package:flutter/material.dart';
 
 class BlurImageBackgroundTile extends StatelessWidget {
@@ -33,18 +35,18 @@ class BlurImageBackgroundTile extends StatelessWidget {
                       ),
                     ),
                   ),
-                  child: Opacity(
-                    opacity: 0.7,
-                    child: Image(
+                  child: OpacityFadeIn(
+                    childBuilder: (_) => Image(
                       image: ResizeImage(
-                        Image.network(
-                          _posterUrl,
-                        ).image,
-                        width: 4,
-                        height: 2,
-                      ),
+                          Image.network(
+                            _posterUrl,
+                          ).image,
+                          width: 4,
+                          height: 2),
                       fit: BoxFit.fill,
                     ),
+                    duration: AppStyle.blurBackgroundFadeAnimationDuration,
+                    endValueOpacity: 0.7,
                   ),
                 ),
                 const SymmetricalBlur.frost(),
