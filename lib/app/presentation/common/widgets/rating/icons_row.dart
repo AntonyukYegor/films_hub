@@ -1,4 +1,4 @@
-import 'package:films_hub/app/domain/models/icons_row_model.dart';
+import 'package:films_hub/app/presentation/common/widgets/rating/models/icons_row_model.dart';
 import 'package:flutter/material.dart';
 
 class IconsRow extends StatelessWidget {

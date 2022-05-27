@@ -1,4 +1,4 @@
-class OMDBClientApiKeysContainer {
+class OMDBServiceApiKeysContainer {
   int _currentApiKeyIndex = -1;
 
   static const _apiKeys = [
@@ -9,7 +9,7 @@ class OMDBClientApiKeysContainer {
     '71febfac',
   ];
 
-  OMDBClientApiKeysContainer();
+  OMDBServiceApiKeysContainer();
 
   String getApiKey() {
     return _apiKeys[_currentApiKeyIndex++%_apiKeys.length];

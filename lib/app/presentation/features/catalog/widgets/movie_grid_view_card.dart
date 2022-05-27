@@ -1,4 +1,5 @@
-import 'package:films_hub/app/domain/models/movie_list_card_model.dart';
+import 'package:films_hub/app/domain/repositories/abstract_favourites_films_repository.dart';
+import 'package:films_hub/app/presentation/common/models/movie_list_card_model.dart';
 import 'package:films_hub/app/presentation/features/catalog/widgets/blur_image_background_tile.dart';
 import 'package:films_hub/app/presentation/features/details/pages/details_movie_page.dart';
 import 'package:films_hub/app/presentation/common/widgets/buttons/favorite_checked_button.dart';
@@ -6,7 +7,11 @@ import 'package:films_hub/app/presentation/common/widgets/buttons/primary_button
 import 'package:films_hub/app/presentation/common/widgets/poster.dart';
 import 'package:films_hub/app/presentation/common/widgets/rating/combine_rate.dart';
 import 'package:films_hub/app/presentation/common/widgets/shimmers/app_theme_shimmer_container.dart';
+import 'package:films_hub/app/presentation/features/favourites/bloc/favourites_bloc.dart';
+import 'package:films_hub/app/presentation/features/favourites/bloc/favourites_event.dart';
+import 'package:films_hub/app/presentation/features/favourites/bloc/favourites_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MovieGridViewCard extends StatelessWidget {
   final MovieCardModel cardModel;
@@ -117,13 +122,23 @@ class MovieGridViewCard extends StatelessWidget {
               ),
             ),
           ),
-          const Align(
+          Align(
             alignment: Alignment.topRight,
             child: Padding(
-              padding: EdgeInsets.only(right: 8.0, top: 8.0),
-              child: FavoriteCheckedButton(
-                initialChecked: false,
-                alignment: Alignment.center,
+              padding: const EdgeInsets.only(right: 8.0, top: 8.0),
+              child: BlocBuilder<FavouritesBloc, FavouritesState>(
+                builder: (context, _) => FavoriteCheckedButton(
+                  key: Key(cardModel.id),
+                  alignment: Alignment.center,
+                  initialChecked: context
+                      .read<AbstractFavouritesFilmsRepository>()
+                      .checkForFavouriteById(cardModel.id),
+                  onPressed: () {
+                    context.read<FavouritesBloc>().add(
+                          ChangedFavourite(model: cardModel),
+                        );
+                  },
+                ),
               ),
             ),
           ),

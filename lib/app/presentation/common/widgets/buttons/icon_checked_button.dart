@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class IconCheckedButton extends StatefulWidget {
+class IconCheckedButton extends StatelessWidget {
   const IconCheckedButton({
     required this.onPressed,
     required this.backgroundIcon,
@@ -10,8 +10,9 @@ class IconCheckedButton extends StatefulWidget {
     required this.initialChecked,
     required this.padding,
     required this.alignment,
+    double scale = 1,
     Key? key,
-  }) : super(key: key);
+  }) : _scale = scale, super(key: key);
 
   final IconData backgroundIcon;
   final IconData foregroundIcon;
@@ -21,49 +22,36 @@ class IconCheckedButton extends StatefulWidget {
   final bool initialChecked;
   final EdgeInsets padding;
   final Alignment alignment;
-  final void Function(bool value) onPressed;
+  final void Function() onPressed;
+  final double _scale;
 
-  @override
-  State<IconCheckedButton> createState() => _IconCheckedButtonState();
-}
-
-class _IconCheckedButtonState extends State<IconCheckedButton>
-    with AutomaticKeepAliveClientMixin {
-  bool icChecked = false;
-
-  @override
-  void initState() {
-    icChecked = widget.initialChecked;
-    super.initState();
-  }
+  static const double defaultIconWidth = 20;
+  static const double defaultContainerWidth = 40;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => {
-        setState(() {
-          icChecked = !icChecked;
-        }),
-        widget.onPressed(icChecked)
-      },
+      onTap: () => onPressed(),
       child: Container(
         color: Colors.transparent,
         child: SizedBox(
-          height: 40,
-          width: 40,
+          height: defaultContainerWidth*_scale,
+          width: defaultContainerWidth*_scale,
           child: Padding(
             padding: EdgeInsets.zero, // widget.padding,
             child: Stack(
-              alignment: widget.alignment,
+              alignment: alignment,
               children: [
                 Icon(
-                  widget.backgroundIcon,
-                  color: icChecked
-                      ? widget.backgroundColorChecked
-                      : widget.backgroundColorUnchecked,
+                  backgroundIcon,
+                  color: initialChecked
+                      ? backgroundColorChecked
+                      : backgroundColorUnchecked,
+                  size: defaultIconWidth*_scale,
                 ),
                 Icon(
-                  widget.foregroundIcon,
+                  foregroundIcon,
+                  size: defaultIconWidth*_scale,
                 ),
               ],
             ),
@@ -72,7 +60,4 @@ class _IconCheckedButtonState extends State<IconCheckedButton>
       ),
     );
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }

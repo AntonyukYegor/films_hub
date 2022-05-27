@@ -55,7 +55,7 @@ class BlurImageBackgroundTile extends StatelessWidget {
                         width: 2),
                     borderRadius: BorderRadius.all(
                       Radius.circular(
-                          _borderRadius), //         <--- border radius here
+                          _borderRadius),
                     ),
                     // color: Colors.transparent,
                   ),

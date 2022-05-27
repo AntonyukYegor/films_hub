@@ -1,13 +1,13 @@
-import 'package:films_hub/app/data/clients/omdb_client.dart';
+import 'package:films_hub/app/data/services/dio/omdb_service.dart';
 import 'package:films_hub/app/data/mappers/omdb/movie_details_omdb_from_dto_to_domain.dart';
 import 'package:films_hub/app/domain/models/films/abstract_film.dart';
 import 'package:films_hub/app/domain/models/films/abstract_films.dart';
 import 'package:films_hub/app/domain/repositories/films/abstract_films_repository.dart';
 
 class OMDBFilmsRepository implements AbstractFilmsRepository {
-  final OMDBClient _client;
+  final OMDBService _client;
 
-  OMDBFilmsRepository({required OMDBClient client}) : _client = client;
+  OMDBFilmsRepository({required OMDBService client}) : _client = client;
 
   @override
   Stream<AbstractFilm> filmsAsStream(

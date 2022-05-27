@@ -1,4 +1,5 @@
-import 'package:films_hub/app/presentation/common/widgets/app_theme_card_background.dart';
+import 'package:films_hub/app/components/constants.dart';
+import 'package:films_hub/app/presentation/common/widgets/app_theme_card_background_without_shadow.dart';
 import 'package:flutter/material.dart';
 
 class SearchField extends StatefulWidget {
@@ -33,29 +34,38 @@ class SearchFieldState extends State<SearchField> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(left: 16, top: 32, right: 16),
-      child: Stack(
-        children: [
-          const AppThemeCardBackground('https://picsum.photos/4', 8, 0),
-          ClipRRect(
-            borderRadius: const BorderRadius.all(Radius.circular(8)),
+    return Stack(
+      children: [
+        const Positioned.fill(
+            child: AppThemeCardBackgroundWithoutShadow(
+                AppStyle.randomBackgroundImageUrl, 16, 0)),
+        ClipRRect(
+          borderRadius: const BorderRadius.all(Radius.circular(16)),
+          child: Theme(
+            data: Theme.of(context).copyWith(
+                focusColor: Theme.of(context).textTheme.titleSmall?.color),
             child: TextField(
               controller: _textController,
               maxLines: 1,
               autofocus: false,
-              decoration: const InputDecoration(
+              cursorColor: Theme.of(context).textTheme.titleSmall?.color,
+              decoration: InputDecoration(
+                focusColor: Theme.of(context).textTheme.titleSmall?.color,
+                hoverColor: Theme.of(context).textTheme.titleSmall?.color,
                 enabledBorder: InputBorder.none,
                 focusedBorder: InputBorder.none,
-                labelText: 'Search',
+                labelText: SearchLocal.search,
+                labelStyle: TextStyle(
+                  color: Theme.of(context).textTheme.titleSmall?.color,
+                ),
                 filled: true,
                 fillColor: Colors.transparent,
               ),
               onChanged: widget._onSearchFieldTextChanged,
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

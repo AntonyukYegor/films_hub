@@ -1,12 +1,12 @@
 import 'package:dio/dio.dart';
-import 'package:films_hub/app/data/clients/omdb_client_api_keys_container.dart';
+import 'package:films_hub/app/data/services/dio/omdb_service_api_keys_container.dart';
 import 'package:films_hub/app/data/dtos/omdb/movie_details_omdb_dto.dart';
 import 'package:films_hub/app/data/dtos/omdb/movies_with_details_omdb_to_response.dart';
 import 'package:films_hub/app/data/dtos/omdb/search_by_title_response_omdb_dto.dart';
 import 'package:films_hub/app/data/repositories/interceptors/dio_error_interceptor.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
-class OMDBClient {
+class OMDBService {
   late final Dio _dio = Dio()
     ..interceptors.addAll([
       PrettyDioLogger(
@@ -18,12 +18,12 @@ class OMDBClient {
 
   final Function(String, String) _onErrorHandler;
 
-  static final OMDBClientApiKeysContainer _apiKeysContainer =
-      OMDBClientApiKeysContainer();
+  static final OMDBServiceApiKeysContainer _apiKeysContainer =
+      OMDBServiceApiKeysContainer();
 
   static const _baseURL = 'https://www.omdbapi.com/?apikey=';
 
-  OMDBClient({required Function(String, String) onErrorHandler})
+  OMDBService({required Function(String, String) onErrorHandler})
       : _onErrorHandler = onErrorHandler;
 
   String get _currentBaseURL => _baseURL + _apiKeysContainer.getApiKey();

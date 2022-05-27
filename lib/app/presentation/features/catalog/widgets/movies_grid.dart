@@ -1,5 +1,5 @@
 import 'package:films_hub/app/domain/models/films/abstract_film.dart';
-import 'package:films_hub/app/domain/models/movie_list_card_model.dart';
+import 'package:films_hub/app/presentation/common/models/movie_list_card_model.dart';
 import 'package:films_hub/app/presentation/features/catalog/widgets/movie_grid_view_card.dart';
 import 'package:flutter/material.dart';
 
