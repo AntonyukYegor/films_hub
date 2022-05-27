@@ -12,12 +12,18 @@ dependencies:
   flutter:
     sdk: flutter
 
+  flutter_localizations:
+    sdk: flutter
+
   shared_preferences: ^2.0.13
 
   drift: ^1.5.0
   sqlite3_flutter_libs: ^0.5.0
   path_provider: ^2.0.0
   path: ^1.8.0
+
+  firebase_core: ^1.16.0
+  firebase_crashlytics: ^2.7.2
 
   equatable: 2.0.3
   flutter_bloc: ^8.0.1
@@ -43,8 +49,22 @@ dev_dependencies:
 
   flutter_lints: ^1.0.0
 
+  flutter_launcher_icons: 0.9.2
+
+flutter_icons:
+  # for ios
+  ios: true
+  image_path: "assets/images/ic_launcher.png"
+  remove_alpha_ios: true
+  # for android
+  android: true
+  adaptive_icon_foreground: "assets/images/ic_launcher.png"
+  adaptive_icon_background: "#000000"
+  # flutter pub run flutter_launcher_icons:main
+
 flutter:
   assets:
+    - assets/images/ic_launcher.png
     - assets/images/poster-placeholder.jpg
   fonts:
     - family: Comfortaa

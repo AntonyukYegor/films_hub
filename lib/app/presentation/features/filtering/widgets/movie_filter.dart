@@ -1,4 +1,5 @@
 import 'package:films_hub/app/components/constants.dart';
+import 'package:films_hub/app/components/locals/locals.dart';
 import 'package:films_hub/app/domain/models/films/abstract_film.dart';
 import 'package:films_hub/app/domain/models/filters/abstract_filter.dart';
 import 'package:films_hub/app/domain/models/filters/films/film_future_list_filter.dart';
@@ -62,7 +63,7 @@ class _MovieFilterState extends State<MovieFilter>
                     child: Padding(
                       padding: const EdgeInsets.only(left: 4.0),
                       child: Text(
-                        FilteringLocal.title,
+                        context.locale.filtering.title,
                         style: TextStyle(
                           color: Theme.of(context)
                                   .textTheme
@@ -83,9 +84,9 @@ class _MovieFilterState extends State<MovieFilter>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        const Text(
-                          FilteringLocal.byPattern,
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                        Text(
+                          context.locale.filtering.byPattern,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(bottom: 16.0),
@@ -101,9 +102,9 @@ class _MovieFilterState extends State<MovieFilter>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        const Text(
-                          FilteringLocal.byLanguage,
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                        Text(
+                          context.locale.filtering.byLanguage,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         ShaderMask(
                           blendMode: BlendMode.dstIn,
@@ -131,9 +132,9 @@ class _MovieFilterState extends State<MovieFilter>
                   ),
                   Row(
                     children: [
-                      const Text(
-                        FilteringLocal.byRating,
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                      Text(
+                        context.locale.filtering.byRating,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                       Expanded(
                         child: FilmVoteAverageSliderFilter(
@@ -148,7 +149,7 @@ class _MovieFilterState extends State<MovieFilter>
                           padding: const EdgeInsets.only(right: 8),
                           child: ElevatedButton(
                             onPressed: resetFilters,
-                            child: const Text(FilteringLocal.reset),
+                            child: Text(context.locale.filtering.reset),
                           ),
                         ),
                       ),
@@ -157,7 +158,7 @@ class _MovieFilterState extends State<MovieFilter>
                           padding: const EdgeInsets.only(left: 8),
                           child: ElevatedButton(
                             onPressed: onPressedApply,
-                            child: const Text( FilteringLocal.apply),
+                            child: Text( context.locale.filtering.apply),
                           ),
                         ),
                       ),

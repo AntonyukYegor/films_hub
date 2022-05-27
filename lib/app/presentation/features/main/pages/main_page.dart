@@ -22,6 +22,8 @@ class _MainPageState extends State<MainPage> {
     context.read<MainBloc>().add(SelectedIndexChangedEvent(index: index));
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MainBloc, MainState>(

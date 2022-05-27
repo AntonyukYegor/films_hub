@@ -1,4 +1,4 @@
-import 'package:films_hub/app/components/constants.dart';
+import 'package:films_hub/app/components/locals/locals.dart';
 import 'package:flutter/material.dart';
 
 class NotFoundPage extends StatelessWidget {
@@ -6,8 +6,8 @@ class NotFoundPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: Text(NoFoundLocal.pageNoFound)),
+    return Scaffold(
+      body: Center(child: Text(context.locale.noFound.pageNoFound)),
     );
   }
 }

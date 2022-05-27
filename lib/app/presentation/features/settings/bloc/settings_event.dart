@@ -19,3 +19,14 @@ class SaveNameEvent extends SettingsEvent {
 }
 
 class ClearNameEvent extends SettingsEvent {}
+
+class UpdateLocaleEvent extends SettingsEvent {
+  final bool value;
+
+  const UpdateLocaleEvent({required this.value});
+
+  @override
+  List<Object> get props => [value];
+}
+
+class LoadLocaleEvent extends SettingsEvent {}
