@@ -33,25 +33,19 @@ class FilmLanguageFilterState extends State<FilmLanguageFilter>
 
       return Padding(
         padding: const EdgeInsets.all(4.0),
-        child: BlocBuilder<FiltersBloc, FiltersState>(
-          buildWhen: (oldState, newState) =>
-              oldState.selectedLanguages != newState.selectedLanguages,
-          builder: (context, state) => FilterChip(
+        child: FilterChip(
             label: Text(language.name),
             selected: currentFilters.contains(language.name),
             onSelected: (bool value) {
               if (value) {
                 currentFilters.add(language.name);
               } else {
-                currentFilters.removeWhere((String name) {
-                  return name == language.name;
-                });
+                currentFilters
+                    .removeWhere((String name) => name == language.name);
               }
               context.read<FiltersBloc>().add(
                   ChangeLanguageFilterEvent(selectedLanguage: currentFilters));
-            },
-          ),
-        ),
+            }),
       );
     });
   }
@@ -60,8 +54,12 @@ class FilmLanguageFilterState extends State<FilmLanguageFilter>
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      child: Row(
-        children: actorWidgets.toList(),
+      child: BlocBuilder<FiltersBloc, FiltersState>(
+        buildWhen: (oldState, newState) =>
+            oldState.selectedLanguages != newState.selectedLanguages,
+        builder: (context, state) => Row(
+          children: actorWidgets.toList(),
+        ),
       ),
     );
   }
