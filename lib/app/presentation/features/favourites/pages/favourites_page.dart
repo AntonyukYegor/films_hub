@@ -66,6 +66,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
             child: CustomScrollView(
               physics: const BouncingScrollPhysics(),
               slivers: [
+                const SliverPadding(padding: EdgeInsets.only(top: 16)),
                 Builder(builder: (context) {
                   return BlocBuilder<FavouritesBloc, FavouritesState>(
                       buildWhen: (oldState, newState) => oldState != newState,
@@ -75,6 +76,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
                         );
                       });
                 }),
+                const SliverPadding(padding: EdgeInsets.only(top: AppStyle.safePadding)),
               ],
             ),
           )),
