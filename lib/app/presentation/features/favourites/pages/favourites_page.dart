@@ -3,6 +3,7 @@ import 'package:films_hub/app/components/locals/locals.dart';
 import 'package:films_hub/app/presentation/common/widgets/appbar/app_bar_flexible_space.dart';
 import 'package:films_hub/app/presentation/features/catalog/widgets/movies_grid.dart';
 import 'package:films_hub/app/presentation/features/favourites/bloc/favourites_bloc.dart';
+import 'package:films_hub/app/presentation/features/favourites/bloc/favourites_event.dart';
 import 'package:films_hub/app/presentation/features/favourites/bloc/favourites_state.dart';
 import 'package:films_hub/app/presentation/features/settings/models/settings_arguments.dart';
 import 'package:films_hub/app/presentation/features/settings/pages/settings_page.dart';
@@ -58,19 +59,24 @@ class _FavouritesPageState extends State<FavouritesPage> {
                       context.locale.favourites.title),
                 ),
               ],
-          body: CustomScrollView(
-            physics: const BouncingScrollPhysics(),
-            slivers: [
-              Builder(builder: (context) {
-                return BlocBuilder<FavouritesBloc, FavouritesState>(
-                    buildWhen: (oldState, newState) => oldState != newState,
-                    builder: (context, state) {
-                      return MoviesGrid(
-                        films: state.films,
-                      );
-                    });
-              }),
-            ],
+          body: RefreshIndicator(
+            onRefresh: () async {
+              context.read<FavouritesBloc>().add(const RefreshFavourites());
+            },
+            child: CustomScrollView(
+              physics: const BouncingScrollPhysics(),
+              slivers: [
+                Builder(builder: (context) {
+                  return BlocBuilder<FavouritesBloc, FavouritesState>(
+                      buildWhen: (oldState, newState) => oldState != newState,
+                      builder: (context, state) {
+                        return MoviesGrid(
+                          films: state.films,
+                        );
+                      });
+                }),
+              ],
+            ),
           )),
     );
   }

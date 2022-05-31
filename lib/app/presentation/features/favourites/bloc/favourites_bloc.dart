@@ -17,6 +17,7 @@ class FavouritesBloc extends Bloc<FavouritesEvent, FavouritesState> {
         super(const FavouritesState(films: [])) {
     on<ChangedFavourite>(_onChangedFavourite);
     on<ChangedFavourites>(_onChangedFavourites);
+    on<RefreshFavourites>(_onRefreshedFavourites);
     _repository.onChangedFavourites().listen((event) {
       add(ChangedFavourites(models: event));
     });
@@ -37,5 +38,11 @@ class FavouritesBloc extends Bloc<FavouritesEvent, FavouritesState> {
   FutureOr<void> _onChangedFavourites(
       ChangedFavourites event, Emitter<FavouritesState> emit) {
     emit(state.copyWith(films: event.models));
+  }
+
+  FutureOr<void> _onRefreshedFavourites(
+      RefreshFavourites event, Emitter<FavouritesState> emit) async {
+    var fetchedData = await _repository.onGetAllFavourites();
+    emit(state.copyWith(films: fetchedData));
   }
 }

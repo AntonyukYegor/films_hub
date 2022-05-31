@@ -20,3 +20,7 @@ class ChangedFavourites extends FavouritesEvent {
 
   const ChangedFavourites({required this.models});
 }
+
+class RefreshFavourites extends FavouritesEvent {
+  const RefreshFavourites();
+}
