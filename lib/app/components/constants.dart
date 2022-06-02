@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 class AppStyle {
   static const double appBarBorderRadius = 32;
@@ -15,4 +16,9 @@ class AppStyle {
   static const Icon favouritesNavigationBarIcon = Icon(Icons.favorite);
   static const Duration blurBackgroundFadeAnimationDuration =
       Duration(milliseconds: 750);
+}
+
+class MoviePictures {
+  static CacheManager pictureCache =
+  CacheManager(Config('movieImg', stalePeriod: const Duration(days: 7)));
 }
